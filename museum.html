@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+		<title>Museum</title>
+		<link rel="shortcut icon" href="http://png.findicons.com/files/icons/2778/maki/48/museum_24_2x.png" type="image/x-icon" />
+
+		<script id="vertex-shader" type="x-shader/x-vertex">
+
+			attribute vec4 vPosition;
+			uniform mat4 matrix;
+
+			void main() {
+			  // Apply translation, rotation, perspective to the position
+			  gl_Position = matrix * vPosition;
+			}
+
+		</script>
+
+		<script id="fragment-shader" type="x-shader/x-fragment">
+
+			precision mediump float;
+			uniform vec4 vColor;
+
+			void main() {
+				// Just use the most recently set color value
+				gl_FragColor = vec4(1.0, 1.0, 0.0, 1.0);
+			}
+
+		</script>
+
+		<script type="text/javascript" src="webgl-utils.js"></script>
+		<script type="text/javascript" src="initShaders.js"></script>
+		<script type="text/javascript" src="MV.js"></script>
+		<script type="text/javascript" src="map.js"></script>
+		<script type="text/javascript" src="vars.js"></script>
+		<script type="text/javascript" src="museum.js"></script>
+
+	</head>
+
+	<body onkeydown="keyPressed(event)">
+		<canvas id="gl-canvas" width="960" height="540">
+			Your browser doesn't support the HTML5 canvas element
+		</canvas>
+	</body>
+</html>
