@@ -102,6 +102,9 @@ function keyPressed(e) {
         case 16: //shift
             camY += .25;
             break;
+        case 27: // esc
+            exitFullscreen();
+            break;
         case 32: //space
             camY -= .25;
             break;
@@ -154,21 +157,25 @@ function keyPressed(e) {
     printCamCoords();
 };
 
+function exitFullscreen() {
+    if(document.exitFullscreen) {
+        document.exitFullscreen();
+    } else if(document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+    } else if(document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+    }
+    
+    canvas.width = INITIAL_CANVAS_WIDTH;
+    canvas.height = INITIAL_CANVAS_HEIGHT;
+    aspect = canvas.width / canvas.height;
+}
+
 function toggleFullscreen() {
     var canvas = document.getElementById("gl-canvas");
 
     if (canvas.width == screen.width && canvas.height == screen.height) {
-        if(document.exitFullscreen) {
-            document.exitFullscreen();
-        } else if(document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
-        } else if(document.webkitExitFullscreen) {
-            document.webkitExitFullscreen();
-        }
-        
-        canvas.width = INITIAL_CANVAS_WIDTH;
-        canvas.height = INITIAL_CANVAS_HEIGHT;
-        aspect = canvas.width / canvas.height;
+        exitFullscreen();
     }
     
 
