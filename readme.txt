@@ -21,7 +21,7 @@ Museum Project
 	Scott shrine
 		HUGE room
 		spotlights
-		strauss zera... song
+		Strauss - Zarathustra song
 	Mirror
 		show self as smiley face
 	Themed rooms w/ matching music

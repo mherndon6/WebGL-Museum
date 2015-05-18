@@ -96,6 +96,8 @@ function applyTransforms(translation, rotation, scaleFactor) {
 
 // ---------------- Other Stuff -------------------
 function keyPressed(e) {
+    console.log(e.keyCode);
+
     switch(e.keyCode) {
         case 16: //shift
             camY += .25;
@@ -120,6 +122,9 @@ function keyPressed(e) {
             break;
         case 68: //d
             transCam(0, -.5);
+            break;
+        case 70: //f
+            toggleFullscreen();
             break;
         case 72: //h
             break;
@@ -148,6 +153,43 @@ function keyPressed(e) {
     }
     printCamCoords();
 };
+
+function toggleFullscreen() {
+    var canvas = document.getElementById("gl-canvas");
+
+    if (canvas.width == screen.width && canvas.height == screen.height) {
+        if(document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if(document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if(document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        }
+        
+        canvas.width = INITIAL_CANVAS_WIDTH;
+        canvas.height = INITIAL_CANVAS_HEIGHT;
+        aspect = canvas.width / canvas.height;
+    }
+    
+
+    else {
+        canvas.requestPointerLock();
+
+        if(canvas.requestFullscreen) {
+            canvas.requestFullscreen();
+        } else if(canvas.mozRequestFullScreen) {
+            canvas.mozRequestFullScreen();
+        } else if(canvas.webkitRequestFullscreen) {
+            canvas.webkitRequestFullscreen();
+        } else if(canvas.msRequestFullscreen) {
+            canvas.msRequestFullscreen();
+        }
+        
+        canvas.width = screen.width;
+        canvas.height = screen.height;
+        aspect = canvas.width / canvas.height;
+    }
+}
 
 // Convert the given distance to changes in global X and Z coordinates based on the azimuth
 function transCam(axis, dist) {

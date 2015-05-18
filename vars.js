@@ -23,3 +23,8 @@ then = 0;
 noTranslation = [0,0,0];
 noRotation 	  = 0;
 noScale       = [1,1,1];
+
+
+// ---------------- CONSTANTS --------------- //
+INITIAL_CANVAS_WIDTH = 960;
+INITIAL_CANVAS_HEIGHT = 540;
