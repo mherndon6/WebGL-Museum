@@ -27,6 +27,11 @@ noTranslation = [0,0,0];
 noRotation 	  = 0;
 noScale       = [1,1,1];
 
+var curRoom = 0;
+var wallColor = [1.0, 1.0, 1.0, 1.0]; //white
+var doorColor = [0.0, 0.0, 0.0, 1.0]; //black
+var curColor = wallColor;
+
 
 // ---------------- CONSTANTS --------------- //
 INITIAL_CANVAS_WIDTH = 960;

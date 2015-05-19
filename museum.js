@@ -35,6 +35,7 @@ function setupShaders() {
     positionLocation = gl.getAttribLocation(program, "vPosition");
     matrixLocation = gl.getUniformLocation(program, "matrix");
     colorLocation = gl.getUniformLocation(program, "vColor");
+    fragTypeLocation = gl.getUniformLocation(program, "fragType");
 }
 
 function initCube() {
@@ -43,8 +44,6 @@ function initCube() {
     gl.bindBuffer(gl.ARRAY_BUFFER, cubeVerticesBuffer);
     gl.enableVertexAttribArray(positionLocation);
     gl.vertexAttribPointer(positionLocation, itemSize, gl.FLOAT, false, 0, 0);
-
-    cycleRooms();
 }
 
 function render(now) {
@@ -56,11 +55,29 @@ function render(now) {
     var timeChange = now - then;
     then = now;
 
-    applyTransforms(noTranslation, noRotation, noScale);
-    gl.drawArrays(gl.TRIANGLES, 0, numOutlineItems);    
+    renderRoom(curRoom);
 
     requestAnimationFrame(render);
 };
+
+function renderRoom(i) {
+    // Draw walls
+    curColor = wallColor; // Tell frag shader to draw walls
+    vertices = getRoomVertices(rooms[i]);   
+    renderCurrentVertices();
+
+    // Draw doors
+    curColor = doorColor; // Tell frag shader to draw doors
+    vertices = getDoorVertices(rooms[i]);
+    renderCurrentVertices();
+
+}
+function renderCurrentVertices() {
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+    gl.uniform4fv(colorLocation, curColor);
+    applyTransforms(noTranslation, noRotation, noScale);
+    gl.drawArrays(gl.TRIANGLES, 0, vertices.length/3);
+}
 
 function applyTransforms(translation, rotation, scaleFactor) {
         // Compute matrices
@@ -213,10 +230,6 @@ function cycleRooms() {
     curRoom++;
     if (curRoom == rooms.length)
         curRoom = 0;
-
-    vertices = getRoomVertices(rooms[curRoom]);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-    numOutlineItems = vertices.length / 3;
 }
 
 // ---------------- Debugging -------------------
