@@ -28,3 +28,34 @@ Museum Project
 		fade into idle song in hallway
 	Render only the current room
 		make doors black voids or red curtains
+
+-----------------Rooms-------------------------
+	__Stairs_
+	|  		|2/4
+3/6 | Hall 	|
+	|_ 	   _|1/5
+	  Shrine
+
+Hallway:
+
+
+1 (small):
+
+
+2 (small):
+
+
+3 (big):
+
+Upper Hallway:
+
+4 (small):
+
+
+5 (small):
+
+
+6 (big):
+
+
+Shrine:
