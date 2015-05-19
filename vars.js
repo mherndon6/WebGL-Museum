@@ -1,6 +1,8 @@
 // Some initial global variables
 var gl;
 
+var fullScreenEnabled = false;
+
 vertices = [];
 
 itemSize = 3;

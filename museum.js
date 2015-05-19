@@ -1,7 +1,6 @@
 // Main
 window.onload = function init()
 {
-    //document.addEventListener("mousemove", this.moveCallback, false);
     setupCanvas();
     configureWebgl();
     setupShaders();
@@ -113,7 +112,6 @@ function keyPressed(e) {
             camY -= .25;
             break;
         case 27: // esc
-            exitFullscreen();
             break;
         case 32: //space
             camY += .25;
@@ -175,7 +173,7 @@ function exitFullscreen() {
     } else if(document.webkitExitFullscreen) {
         document.webkitExitFullscreen();
     }
-    
+    fullScreenEnabled = false;
     canvas.width = INITIAL_CANVAS_WIDTH;
     canvas.height = INITIAL_CANVAS_HEIGHT;
     aspect = canvas.width / canvas.height;
@@ -186,24 +184,30 @@ function toggleFullscreen() {
 
     if (canvas.width == screen.width && canvas.height == screen.height) {
         exitFullscreen();
+        document.removeEventListener("mousemove", this.moveCallback, false);
     }
     else {
         canvas.requestPointerLock();
+        document.addEventListener("mousemove", this.moveCallback, false);
+        document.addEventListener("fullscreenchange", fullScreenChange, false);
+        document.addEventListener("mozfullscreenchange", fullScreenChange, false);
+        document.addEventListener("webkitfullscreenchange", fullScreenChange, false);
 
-        if(canvas.requestFullscreen) {
+        if(canvas.requestFullscreen)
             canvas.requestFullscreen();
-        } else if(canvas.mozRequestFullScreen) {
+        else if(canvas.mozRequestFullScreen)
             canvas.mozRequestFullScreen();
-        } else if(canvas.webkitRequestFullscreen) {
+        else if(canvas.webkitRequestFullscreen)
             canvas.webkitRequestFullscreen();
-        } else if(canvas.msRequestFullscreen) {
+        else if(canvas.msRequestFullscreen)
             canvas.msRequestFullscreen();
-        }
-        
+
+        fullScreenEnabled = true;
         canvas.width = screen.width;
         canvas.height = screen.height;
         aspect = canvas.width / canvas.height;
     }
+    gl.viewport(0, 0, canvas.width, canvas.height);
 }
 
 function moveCallback(e) {
@@ -211,6 +215,16 @@ function moveCallback(e) {
     var movementY = e.movementY || e.mozMovementY || e.webkitMovementY || 0;
     azim -= 0.1 * movementX;
     //pitch += 0.5 * movementY;
+}
+
+function fullScreenChange() {
+    if (document.fullscreenEnabled || document.mozFullScreenEnabled || document.webkitFullscreenEnabled) {
+        console.log("enter");
+    }
+    else {
+        console.log("exit");
+        exitFullscreen();
+    }
 }
 
 // Convert the given distance to changes in global X and Z coordinates based on the azimuth
