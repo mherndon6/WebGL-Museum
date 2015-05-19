@@ -62,13 +62,18 @@ function render(now) {
 
 function renderRoom(i) {
     // Draw walls
-    curColor = wallColor; // Tell frag shader to draw walls
+    curColor = rooms[i].wallColor;
     vertices = getRoomVertices(rooms[i]);   
     renderCurrentVertices();
 
     // Draw doors
-    curColor = doorColor; // Tell frag shader to draw doors
+    curColor = COLORS.BLACK;
     vertices = getDoorVertices(rooms[i]);
+    renderCurrentVertices();
+
+    // Draw floor
+    curColor = COLORS.FLOOR_COLOR;
+    vertices = getFloorVertices(rooms[i]);
     renderCurrentVertices();
 
 }
@@ -272,6 +277,6 @@ function printCamCoords() {
 }
 
 function renderAllRooms() {
-    for (var i = 0; i < rooms.length - 2; i++)
+    for (var i = 0; i < rooms.length; i++)
         renderRoom(i);
 }

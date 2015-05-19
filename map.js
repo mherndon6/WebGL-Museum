@@ -4,6 +4,7 @@ var wallHeight = 10 * globalScale;
 
 var doorWidth = 4 * globalScale;
 var doorHeight = 7 * globalScale;
+var doorDepth = 0.1;
 
 var leftWall = 0 * globalScale;
 var midLeftWall = 20 * globalScale;
@@ -21,6 +22,8 @@ var topStairWall = -85 * globalScale;
 numWalls: number of walls in room (should be 4, but 3 or >4 might work by default)
 walls: array of points defining four corners of room IN CLOCKWISE ORDER
 doors: [startPos, whichWall] specifying door locations
+lighting: specify lighting type, ambient values, light positions, etc...
+paintings: [painting, startPos, whichWall] specifying paintings and locations
 */
 
 var lobby = {
@@ -29,7 +32,11 @@ var lobby = {
             [midLeftWall, midBottomWall],
             [midRightWall, midBottomWall],
             [midRightWall, bottomWall]],
-    doors: [[(midRightWall + midLeftWall)/2 - doorWidth/2, midBottomWall]]
+    doors: [[(midRightWall + midLeftWall)/2 - doorWidth/2, midBottomWall]],
+
+    wallColor: COLORS.WHITE,
+
+    paintings: []
 };
 
 var hallway = {
@@ -42,7 +49,11 @@ var hallway = {
             [(midBottomWall + topWall)/2 - doorWidth/2, midLeftWall],
             [(midBottomWall + midTopWall)/2 - doorWidth/2, midRightWall],
             [(midTopWall + topWall)/2 - doorWidth/2, midRightWall],
-            [(midLeftWall + midRightWall)/2 + doorWidth/2, topWall]]
+            [(midLeftWall + midRightWall)/2 + doorWidth/2, topWall]],
+
+    wallColor: COLORS.WHITE,
+
+    paintings: []
 };
 
 var room1 = {
@@ -51,7 +62,11 @@ var room1 = {
             [midRightWall, midTopWall],
             [rightWall, midTopWall],
             [rightWall, midBottomWall]],
-    doors: [[(midBottomWall + midTopWall)/2 - doorWidth/2, midRightWall]]
+    doors: [[(midBottomWall + midTopWall)/2 - doorWidth/2, midRightWall]],
+
+    wallColor: COLORS.WHITE,
+
+    paintings: []
 };
 
 var room2 = {
@@ -60,7 +75,11 @@ var room2 = {
             [midRightWall, topWall],
             [rightWall, topWall],
             [rightWall, midTopWall]],
-    doors: [[(midTopWall + topWall)/2 - doorWidth/2, midRightWall]]
+    doors: [[(midTopWall + topWall)/2 - doorWidth/2, midRightWall]],
+
+    wallColor: COLORS.YELLOW,
+
+    paintings: []
 };
 
 var room3 = {
@@ -69,7 +88,11 @@ var room3 = {
             [leftWall, topWall],
             [midLeftWall, topWall],
             [midLeftWall, midBottomWall]],
-    doors: [[(midBottomWall + topWall)/2 - doorWidth/2, midLeftWall]]
+    doors: [[(midBottomWall + topWall)/2 - doorWidth/2, midLeftWall]],
+
+    wallColor: COLORS.RED,
+
+    paintings: []
 };
 
 var staircase = {
@@ -78,7 +101,11 @@ var staircase = {
             [midLeftWall, topStairWall],
             [midRightWall, topStairWall],
             [midRightWall, topWall]],
-    doors: [[(midLeftWall + midRightWall)/2 + doorWidth/2, topWall]]
+    doors: [[(midLeftWall + midRightWall)/2 + doorWidth/2, topWall]],
+
+    wallColor: COLORS.GREEN,
+
+    paintings: []
 };
 
 var shrine = {
@@ -87,28 +114,14 @@ var shrine = {
             [leftWall, midBottomWall],
             [rightWall, midBottomWall],
             [midRightWall, shrineBottomWall]],
-    doors: [[(midRightWall + midLeftWall)/2 - doorWidth/2, midBottomWall]]
+    doors: [[(midRightWall + midLeftWall)/2 - doorWidth/2, midBottomWall]],
+
+    wallColor: COLORS.WHITE,
+
+    paintings: []
 };
 
-var testRoom = {
-    numWalls: 3,
-    walls: [[midLeftWall, bottomWall],
-            [(midLeftWall + midRightWall)/2, midBottomWall],
-            [midRightWall, bottomWall]],
-    doors: []
-};
-
-var testRoom2 = {
-    numWalls: 5,
-    walls: [[midLeftWall, bottomWall],
-            [leftWall, midBottomWall],
-            [(midLeftWall + midRightWall)/2, midTopWall],
-            [rightWall, midBottomWall],
-            [midRightWall, bottomWall]],
-    doors: []
-};
-
-var rooms = [lobby, hallway, room1, room2, room3, staircase, shrine, testRoom, testRoom2];
+var rooms = [lobby, hallway, room1, room2, room3, staircase, shrine];
 
 function getRoomVertices(room) {
     var verts = [];
@@ -128,7 +141,6 @@ function getRoomVertices(room) {
         verts.push(pointOne[0], wallHeight, pointOne[1]);
     }
 
-    //todo: add floor, ceiling
     return verts;
 }
 function getDoorVertices(room) {
@@ -139,23 +151,56 @@ function getDoorVertices(room) {
         var pointTwo = doors[i][0] + doorWidth;
         //two triangles per door
         if (doors[i][1] == leftWall || doors[i][1] == midLeftWall || doors[i][1] == midRightWall || doors[i][1] == rightWall) { //door goes north-south
-            verts.push(doors[i][1], 0, pointOne);
-            verts.push(doors[i][1], 0, pointTwo);
-            verts.push(doors[i][1], doorHeight, pointOne);
+            verts.push(doors[i][1]+doorDepth, 0, pointOne);
+            verts.push(doors[i][1]+doorDepth, 0, pointTwo);
+            verts.push(doors[i][1]+doorDepth, doorHeight, pointOne);
 
-            verts.push(doors[i][1], 0, pointTwo);
-            verts.push(doors[i][1], doorHeight, pointOne);
-            verts.push(doors[i][1], doorHeight, pointTwo);
+            verts.push(doors[i][1]+doorDepth, 0, pointTwo);
+            verts.push(doors[i][1]+doorDepth, doorHeight, pointOne);
+            verts.push(doors[i][1]+doorDepth, doorHeight, pointTwo);
+
+            verts.push(doors[i][1]-doorDepth, 0, pointOne);
+            verts.push(doors[i][1]-doorDepth, 0, pointTwo);
+            verts.push(doors[i][1]-doorDepth, doorHeight, pointOne);
+
+            verts.push(doors[i][1]-doorDepth, 0, pointTwo);
+            verts.push(doors[i][1]-doorDepth, doorHeight, pointOne);
+            verts.push(doors[i][1]-doorDepth, doorHeight, pointTwo);
         }
         else { //door goes east-west
-            verts.push(pointOne, 0, doors[i][1]);
-            verts.push(pointTwo, 0, doors[i][1]);
-            verts.push(pointOne, doorHeight, doors[i][1]);
+            verts.push(pointOne, 0, doors[i][1]+doorDepth);
+            verts.push(pointTwo, 0, doors[i][1]+doorDepth);
+            verts.push(pointOne, doorHeight, doors[i][1]+doorDepth);
 
-            verts.push(pointTwo, 0, doors[i][1]);
-            verts.push(pointOne, doorHeight, doors[i][1]);
-            verts.push(pointTwo, doorHeight, doors[i][1]);
+            verts.push(pointTwo, 0, doors[i][1]+doorDepth);
+            verts.push(pointOne, doorHeight, doors[i][1]+doorDepth);
+            verts.push(pointTwo, doorHeight, doors[i][1]+doorDepth);
+
+            verts.push(pointOne, 0, doors[i][1]-doorDepth);
+            verts.push(pointTwo, 0, doors[i][1]-doorDepth);
+            verts.push(pointOne, doorHeight, doors[i][1]-doorDepth);
+
+            verts.push(pointTwo, 0, doors[i][1]-doorDepth);
+            verts.push(pointOne, doorHeight, doors[i][1]-doorDepth);
+            verts.push(pointTwo, doorHeight, doors[i][1]-doorDepth);
         }
     }
+    return verts;
+}
+
+function getFloorVertices(room) {
+    var verts = [];
+    var walls = room.walls;
+    if (walls.length != 4) return;
+
+    // two triangles per floor
+    verts.push(walls[0][0], 0, walls[0][1]);
+    verts.push(walls[1][0], 0, walls[1][1]);
+    verts.push(walls[3][0], 0, walls[3][1]);
+
+    verts.push(walls[1][0], 0, walls[1][1]);
+    verts.push(walls[2][0], 0, walls[2][1]);
+    verts.push(walls[3][0], 0, walls[3][1]);
+
     return verts;
 }

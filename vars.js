@@ -1,4 +1,8 @@
-// Some initial global variables
+// ---------------- CONSTANTS --------------- //
+INITIAL_CANVAS_WIDTH = 960;
+INITIAL_CANVAS_HEIGHT = 540;
+
+// ---------------- GLOBALS ---------------- //
 var gl;
 
 var fullScreenEnabled = false;
@@ -30,11 +34,14 @@ noRotation 	  = 0;
 noScale       = [1,1,1];
 
 var curRoom = 0;
-var wallColor = [1.0, 1.0, 1.0, 1.0]; //white
-var doorColor = [0.0, 0.0, 0.0, 1.0]; //black
-var curColor = wallColor;
 
+var COLORS = {
+	WHITE: [1.0, 1.0, 1.0, 1.0],
+	BLACK: [0.0, 0.0, 0.0, 1.0],
+	YELLOW: [1.0, 1.0, 0.0, 1.0],
+	RED: [1.0, 0.0, 0.0, 1.0],
+	GREEN: [0.0, 1.0, 0.0, 1.0],
+	BLUE: [0.0, 0.0, 1.0, 1.0],
 
-// ---------------- CONSTANTS --------------- //
-INITIAL_CANVAS_WIDTH = 960;
-INITIAL_CANVAS_HEIGHT = 540;
+	FLOOR_COLOR: [0.8, 0.8, 0.8, 1.0]
+}
