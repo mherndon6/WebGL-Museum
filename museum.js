@@ -215,7 +215,7 @@ function moveCallback(e) {
     var movementX = e.movementX || e.mozMovementX || e.webkitMovementX || 0;
     var movementY = e.movementY || e.mozMovementY || e.webkitMovementY || 0;
     azim -= 0.1 * movementX;
-    //pitch += 0.5 * movementY;
+    pitch -= 0.5 * movementY;
 }
 
 function fullScreenChange() {

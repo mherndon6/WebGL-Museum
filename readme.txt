@@ -25,10 +25,6 @@ Museum Project
 
 --------------------Ideas----------------------
 
-	Scott shrine
-		HUGE room
-		spotlights
-		Strauss - Zarathustra song
 	Mirror
 		show self as smiley face
 	Themed rooms w/ matching music
@@ -44,25 +40,65 @@ Museum Project
 	  Shrine
 
 Hallway:
+    Walls:
+    Floor:
+    Song:
 
+1 (small) Baroque:
+    Walls: white
+    Floor:
+    Song: Bach Harpsichord
+    Paintings:
+        The Night Watch - Rembrandt
 
-1 (small):
+2 (small) Landscapes:
+    Walls:
+    Floor:
+    Song:
+    Paintings:
+        Ulysses deriding Polyphemus - J.M.W. Turner
 
+3 (big) Famous:
+    Walls: white
+    Floor:
+    Song: 
+    Paintings:
+        Starry Night - Van Gogh
+        The School of Athens - Raphael
+        The Mona Lisa - Leonardo da Vinci
+        
 
-2 (small):
-
-
-3 (big):
 
 Upper Hallway:
+    Walls:
+    Floor:
+    Song:
 
 4 (small):
-
+    Walls:
+    Floor:
+    Song:
+    Paintings: 
 
 5 (small):
+    Walls:
+    Floor:
+    Song:
+    Paintings: 
 
-
-6 (big):
-
+6 (big) Dark:
+    Walls: pyramids sticking out
+    Floor: some weird pattern
+    Song: 
+    Paintings:
+        The Weeping Woman - Picasso
+        Hannibal Crossing the Alps - J.M.W. Turner
+        The Scream - Edvard Munch
+        No. 5, 1948 - Jackson Pollock
 
 Shrine:
+    Walls:
+    Floor:
+    Song: Also Sprach Zarathustra - Richard Strauss
+    Light: Spotlight
+    Painting: Scott
