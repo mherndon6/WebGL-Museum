@@ -1,6 +1,7 @@
 // Main
 window.onload = function init()
 {
+    //document.addEventListener("mousemove", this.moveCallback, false);
     setupCanvas();
     configureWebgl();
     setupShaders();
@@ -169,8 +170,6 @@ function toggleFullscreen() {
     if (canvas.width == screen.width && canvas.height == screen.height) {
         exitFullscreen();
     }
-    
-
     else {
         canvas.requestPointerLock();
 
@@ -188,6 +187,13 @@ function toggleFullscreen() {
         canvas.height = screen.height;
         aspect = canvas.width / canvas.height;
     }
+}
+
+function moveCallback(e) {
+    var movementX = e.movementX || e.mozMovementX || e.webkitMovementX || 0;
+    var movementY = e.movementY || e.mozMovementY || e.webkitMovementY || 0;
+    azim -= 0.1 * movementX;
+    //pitch += 0.5 * movementY;
 }
 
 // Convert the given distance to changes in global X and Z coordinates based on the azimuth

@@ -1,3 +1,12 @@
+/*
+Notes:
+z is acting inverted. not sure why... so I just inverted the wall positions for now ---- probably just the way i defined camera or something
+I think this is a pretty good model, just have to define the rooms based on the vars below, see: http://imgur.com/ecyLIHv
+Cycle through rendering rooms by clicking on canvas for now
+Uncomment line 4 of museum.js for horizontal mouse movement. Affects azimuth, should feel less clunky when combined with fullscreen/pointerlock
+*/
+
+
 Museum Project
 
 ----------------------1------------------------

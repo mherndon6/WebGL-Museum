@@ -1,9 +1,3 @@
-/*
-Notes:
-z is acting inverted. not sure why... so I just inverted the wall positions for now ---- probably just the way i defined camera or something
-i think this is a pretty good model, just have to define the rooms based on the vars below, see: http://imgur.com/ecyLIHv
-cycle through rendering rooms by clicking on canvas for now
-*/
 
 var wallHeight = 10;
 
@@ -15,10 +9,12 @@ var midLeftWall = 20;
 var midRightWall = 35;
 var rightWall = 55;
 
+var shrineBottomWall = 50;
 var bottomWall = 0;
 var midBottomWall = -15;
 var midTopWall = -45
 var topWall = -75;
+var topStairWall = -85;
 
 /* Room:
 numWalls: number of walls in room (should be 4, but 3 or >4 might work by default)
@@ -67,6 +63,22 @@ var room3 = {
             [midLeftWall, midBottomWall]]
 };
 
+var staircase = {
+    numWalls: 4,
+    walls: [[midLeftWall, topWall],
+            [midLeftWall, topStairWall],
+            [midRightWall, topStairWall],
+            [midRightWall, topWall]]
+};
+
+var shrine = {
+    numWalls: 4,
+    walls: [[midLeftWall, shrineBottomWall],
+            [leftWall, midBottomWall],
+            [rightWall, midBottomWall],
+            [midRightWall, shrineBottomWall]]
+};
+
 var testRoom = {
     numWalls: 3,
     walls: [[midLeftWall, bottomWall],
@@ -84,7 +96,7 @@ var testRoom2 = {
 };
 
 var curRoom = -1; //for init
-var rooms = [lobby, hallway, room1, room2, room3, testRoom, testRoom2];
+var rooms = [lobby, hallway, room1, room2, room3, staircase, shrine, testRoom, testRoom2];
 
 function getRoomVertices(room) {
     var vertices = [];
