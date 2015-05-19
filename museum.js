@@ -55,6 +55,7 @@ function render(now) {
     then = now;
 
     renderRoom(curRoom);
+    //renderAllRooms();
 
     requestAnimationFrame(render);
 };
@@ -268,4 +269,9 @@ function printMatrix(description, mat) {
 function printCamCoords() {
     console.log("x: " + camX + ", y: " + camY + ", z: " + camZ);
     console.log("azim: " + azim + ", pitch: " + pitch);
+}
+
+function renderAllRooms() {
+    for (var i = 0; i < rooms.length - 2; i++)
+        renderRoom(i);
 }
