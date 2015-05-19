@@ -43,11 +43,7 @@ function initCube() {
     gl.enableVertexAttribArray(positionLocation);
     gl.vertexAttribPointer(positionLocation, itemSize, gl.FLOAT, false, 0, 0);
 
-    // Generate map from text
-    parseMap();
-
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-    numOutlineItems = vertices.length / 3;
+    cycleRooms();
 }
 
 function render(now) {
@@ -59,12 +55,8 @@ function render(now) {
     var timeChange = now - then;
     then = now;
 
-    // Draw outlines
-    for (var i = 0; i < 8; i++) {
-        // Use the same translation, rotation, and scale for their outlines
-        applyTransforms(noTranslation, noRotation, noScale);
-        gl.drawArrays(gl.LINES, 0, numOutlineItems);    
-    }
+    applyTransforms(noTranslation, noRotation, noScale);
+    gl.drawArrays(gl.TRIANGLES, 0, numOutlineItems);    
 
     requestAnimationFrame(render);
 };
@@ -80,7 +72,7 @@ function applyTransforms(translation, rotation, scaleFactor) {
         var azimMatrix = rotate(azim, [0,1,0]);
         var pitchMatrix = rotate(pitch, [1,0,0]);
 
-        var camTransMatrix = translate(camX, camY, camZ);
+        var camTransMatrix = translate(camX, -camY, camZ);
 
         // Multiply matrices
         matrix = mult(scaleMatrix, rotationMatrix);
@@ -100,13 +92,13 @@ function keyPressed(e) {
 
     switch(e.keyCode) {
         case 16: //shift
-            camY += .25;
+            camY -= .25;
             break;
         case 27: // esc
             exitFullscreen();
             break;
         case 32: //space
-            camY -= .25;
+            camY += .25;
             break;
         case 37: //left
             azim += 2;
@@ -209,6 +201,16 @@ function transCam(axis, dist) {
         camZ += Math.cos(radians(azim))*dist;
     }
     printCamCoords();
+}
+
+function cycleRooms() {
+    curRoom++;
+    if (curRoom == rooms.length)
+        curRoom = 0;
+
+    vertices = getRoomVertices(rooms[curRoom]);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+    numOutlineItems = vertices.length / 3;
 }
 
 // ---------------- Debugging -------------------

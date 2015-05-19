@@ -1,12 +1,15 @@
 // Some initial global variables
 var gl;
 
+vertices = [];
+
 itemSize = 3;
-initCamX = 0;
-initCamY = 0;
-initCamZ = -40;
+
+initCamX = -26;
+initCamY = 25;
+initCamZ = -8;
 initAzim = 0;
-initPitch = 0;
+initPitch = -40;
 initFOV = 40;
 
 camX = initCamX;
