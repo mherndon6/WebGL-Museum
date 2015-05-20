@@ -1,4 +1,4 @@
-var globalScale = 1;
+var globalScale = 1.5;
 
 var wallHeight = 10 * globalScale;
 
@@ -20,8 +20,8 @@ var topStairWall = -85 * globalScale;
 
 /* Room:
 numWalls: number of walls in room (should be 4, but 3 or >4 might work by default)
-walls: array of points defining four corners of room IN CLOCKWISE ORDER
-doors: [startPos, whichWall] specifying door locations
+walls: array of points defining four corners of room IN CLOCKWISE ORDER FROM BOTTOMLEFT
+doors: [startPos, whichWall, room] specifying door location and room it goes to
 lighting: specify lighting type, ambient values, light positions, etc...
 paintings: [painting, startPos, whichWall] specifying paintings and locations
 */
@@ -32,7 +32,7 @@ var lobby = {
             [midLeftWall, midBottomWall],
             [midRightWall, midBottomWall],
             [midRightWall, bottomWall]],
-    doors: [[(midRightWall + midLeftWall)/2 - doorWidth/2, midBottomWall]],
+    doors: [[(midRightWall + midLeftWall)/2 - doorWidth/2, midBottomWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.WHITE,
 
@@ -45,11 +45,11 @@ var hallway = {
             [midLeftWall, topWall],
             [midRightWall, topWall],
             [midRightWall, midBottomWall]],
-    doors: [[(midRightWall + midLeftWall)/2 - doorWidth/2, midBottomWall],
-            [(midBottomWall + topWall)/2 - doorWidth/2, midLeftWall],
-            [(midBottomWall + midTopWall)/2 - doorWidth/2, midRightWall],
-            [(midTopWall + topWall)/2 - doorWidth/2, midRightWall],
-            [(midLeftWall + midRightWall)/2 + doorWidth/2, topWall]],
+    doors: [[(midRightWall + midLeftWall)/2 - doorWidth/2, midBottomWall, ROOMS.LOBBY],
+            [(midBottomWall + topWall)/2 - doorWidth/2, midLeftWall, ROOMS.ROOM3],
+            [(midBottomWall + midTopWall)/2 - doorWidth/2, midRightWall, ROOMS.ROOM1],
+            [(midTopWall + topWall)/2 - doorWidth/2, midRightWall, ROOMS.ROOM2],
+            [(midLeftWall + midRightWall)/2 + doorWidth/2, topWall, ROOMS.STAIRCASE]],
 
     wallColor: COLORS.WHITE,
 
@@ -62,7 +62,7 @@ var room1 = {
             [midRightWall, midTopWall],
             [rightWall, midTopWall],
             [rightWall, midBottomWall]],
-    doors: [[(midBottomWall + midTopWall)/2 - doorWidth/2, midRightWall]],
+    doors: [[(midBottomWall + midTopWall)/2 - doorWidth/2, midRightWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.WHITE,
 
@@ -75,7 +75,7 @@ var room2 = {
             [midRightWall, topWall],
             [rightWall, topWall],
             [rightWall, midTopWall]],
-    doors: [[(midTopWall + topWall)/2 - doorWidth/2, midRightWall]],
+    doors: [[(midTopWall + topWall)/2 - doorWidth/2, midRightWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.YELLOW,
 
@@ -88,7 +88,7 @@ var room3 = {
             [leftWall, topWall],
             [midLeftWall, topWall],
             [midLeftWall, midBottomWall]],
-    doors: [[(midBottomWall + topWall)/2 - doorWidth/2, midLeftWall]],
+    doors: [[(midBottomWall + topWall)/2 - doorWidth/2, midLeftWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.RED,
 
@@ -101,7 +101,7 @@ var staircase = {
             [midLeftWall, topStairWall],
             [midRightWall, topStairWall],
             [midRightWall, topWall]],
-    doors: [[(midLeftWall + midRightWall)/2 + doorWidth/2, topWall]],
+    doors: [[(midLeftWall + midRightWall)/2 + doorWidth/2, topWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.GREEN,
 
@@ -110,11 +110,11 @@ var staircase = {
 
 var shrine = {
     numWalls: 4,
-    walls: [[midLeftWall, shrineBottomWall],
+    walls: [[leftWall, shrineBottomWall],
             [leftWall, midBottomWall],
             [rightWall, midBottomWall],
-            [midRightWall, shrineBottomWall]],
-    doors: [[(midRightWall + midLeftWall)/2 - doorWidth/2, midBottomWall]],
+            [rightWall, shrineBottomWall]],
+    doors: [[(midRightWall + midLeftWall)/2 - doorWidth/2, midBottomWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.WHITE,
 
@@ -122,6 +122,7 @@ var shrine = {
 };
 
 var rooms = [lobby, hallway, room1, room2, room3, staircase, shrine];
+var curRoom = lobby;
 
 function getRoomVertices(room) {
     var verts = [];

@@ -1,9 +1,9 @@
 /*
 Notes:
-z is acting inverted. not sure why... so I just inverted the wall positions for now ---- probably just the way i defined camera or something
-I think this is a pretty good model, just have to define the rooms based on the vars below, see: http://imgur.com/ecyLIHv
-Cycle through rendering rooms by clicking on canvas for now
-Half-fixed fullscreen, gotta press f again to leave instead of esc. esc in fullscreen doesnt fire events probably for security
+http://imgur.com/ecyLIHv
+Cycle through rooms by clicking
+Walking through doors works, but not perfectly. Doesn't always register, sometimes have to shove your way in
+God navigation with ijkl, wasd only works when inside bounds of walls
 */
 
 
@@ -21,6 +21,8 @@ Museum Project
 ----------------------3------------------------
 
 -Wall collision
+-Walk through doors, render right rooms
+-Texture map paintings
 -Some physics
 
 --------------------Ideas----------------------

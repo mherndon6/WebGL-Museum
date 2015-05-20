@@ -54,7 +54,7 @@ function render(now) {
     var timeChange = now - then;
     then = now;
 
-    renderRoom(curRoom);
+    renderRoom(curRoomIndex);
     //renderAllRooms();
 
     requestAnimationFrame(render);
@@ -135,10 +135,10 @@ function keyPressed(e) {
             pitch -= 2;
             break;
         case 65: //a
-            transCam(0, .5);
+            attemptMove(0, .5);
             break;
         case 68: //d
-            transCam(0, -.5);
+            attemptMove(0, -.5);
             break;
         case 70: //f
             toggleFullscreen();
@@ -146,9 +146,17 @@ function keyPressed(e) {
         case 72: //h
             break;
         case 73: //i
+            transCam(1, .5);
+            break;
         case 74: //j
+            transCam(0, .5);
+            break;
         case 75: //k
+            transCam(1, -.5);
+            break;
         case 76: //l
+            transCam(0, -.5);
+            break;
         case 78: //n
         case 80: //p
             break;
@@ -161,10 +169,10 @@ function keyPressed(e) {
             pitch = initPitch;
             break;
         case 83: //s
-            transCam(1, -.5);
+            attemptMove(1, -.5);
             break;
         case 87: //w
-            transCam(1, .5);
+            attemptMove(1, .5);
             break;
         case 89: //y
     }
@@ -237,6 +245,73 @@ function fullScreenChange() {
     }
 }
 
+function attemptMove(axis, dist) {
+    var walls = curRoom.walls;
+    var doors = curRoom.doors;
+    // Assuming square room, walls defined in clockwise order from bottom-right corner
+    var leftBorder = walls[0][0];
+    var rightBorder = walls[2][0];
+    var bottomBorder = walls[0][1];
+    var topBorder = walls[2][1];
+
+    var newCamX = -camX;
+    var newCamZ = -camZ;
+    if (axis == 0) {
+        newCamX -= Math.sin(radians(azim+90))*dist;
+        newCamZ -= Math.cos(radians(azim+90))*dist;
+    }
+    else {
+        newCamX -= Math.sin(radians(azim))*dist;
+        newCamZ -= Math.cos(radians(azim))*dist;
+    }
+
+    var movingRight = false;
+    var movingUp = false;
+    var movingLeft = false;
+    var movingDown = false;
+    if (newCamX > -camX)
+        movingRight = true;
+    if (newCamZ < -camZ)
+        movingUp = true;
+    if (newCamX < -camX)
+        movingLeft = true;
+    if (newCamZ > -camZ)
+        movingDown = true;
+
+    console.log(movingRight + " " + movingUp + " " + movingLeft + " " + movingDown);
+
+    // First check if you've entered a door
+    for (var i = 0; i < doors.length; i++) {
+        var curDoor = doors[i];
+        if (doors[i][1] == leftWall || doors[i][1] == midLeftWall || doors[i][1] == midRightWall || doors[i][1] == rightWall) { // Door goes north-south
+            if (newCamZ > curDoor[0] && newCamZ < curDoor[0] + doorWidth && Math.abs(curDoor[1] - newCamX) < doorDepth) {
+                console.log("Vert door, wall placement: " + curDoor[1] + " == " + topWall + " || " + bottomWall);
+                // Check movement direction so you don't switch back and forth between rooms
+                if (curDoor[1] == rightBorder && movingRight || curDoor[1] == leftBorder && !movingRight) {
+                    curRoomIndex = curDoor[2];
+                    curRoom = rooms[curRoomIndex];
+                    movingRight? camX -= 1 : camX += 1;
+                }
+            }
+        }
+        else { // Door goes east-west
+            if (newCamX > curDoor[0] && newCamX < curDoor[0] + doorWidth && Math.abs(curDoor[1] - newCamZ) < doorDepth) {
+                console.log("Hor door, wall placement: " + curDoor[1] + " == " + topBorder + " || " + bottomBorder);
+                // Check movement direction so you don't switch back and forth between rooms
+                if (curDoor[1] == topBorder && movingUp || curDoor[1] == bottomBorder && movingDown) {
+                    curRoomIndex = curDoor[2];
+                    curRoom = rooms[curRoomIndex];
+                    movingUp? camZ += 1 : camZ -= 1;
+                }
+            }
+        }
+    }
+
+    //console.log("Bounds: Hor " + leftBorder + " to " + rightBorder + " and Vert " + topBorder + " to " + bottomBorder);
+    //console.log("Trying to go to: " + newCamX + ", " + newCamZ);
+    if (newCamX > leftBorder && newCamX < rightBorder && newCamZ < bottomBorder && newCamZ > topBorder)
+        transCam(axis, dist);
+}
 // Convert the given distance to changes in global X and Z coordinates based on the azimuth
 function transCam(axis, dist) {
     if (axis == 0) { //X axis
@@ -247,13 +322,13 @@ function transCam(axis, dist) {
         camX += Math.sin(radians(azim))*dist;
         camZ += Math.cos(radians(azim))*dist;
     }
-    printCamCoords();
 }
 
 function cycleRooms() {
-    curRoom++;
-    if (curRoom == rooms.length)
-        curRoom = 0;
+    curRoomIndex++;
+    if (curRoomIndex == rooms.length)
+        curRoomIndex = 0;
+    curRoom = rooms[curRoomIndex];
 }
 
 // ---------------- Debugging -------------------
