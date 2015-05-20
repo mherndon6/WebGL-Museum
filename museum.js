@@ -55,7 +55,7 @@ function render(now) {
     then = now;
 
     renderRoom(curRoomIndex);
-    //renderAllRooms();
+    updateMovement(timeChange);
 
     requestAnimationFrame(render);
 };
@@ -109,7 +109,26 @@ function applyTransforms(translation, rotation, scaleFactor) {
         gl.uniformMatrix4fv(matrixLocation, false, flatify(matrix));
 }
 
+function updateMovement(delta) {
+    if (wHeld) {
+        attemptMove(1, MOVEMENT_SPEED * delta);
+    }
+    if (aHeld) {
+        attemptMove(0, MOVEMENT_SPEED * delta);
+    }
+    if (sHeld) {
+        attemptMove(1, -MOVEMENT_SPEED * delta);
+    }
+    if (dHeld) {
+        attemptMove(0, - MOVEMENT_SPEED * delta);
+    }
+}
+
 // ---------------- Other Stuff -------------------
+
+document.onkeydown = keyPressed;
+document.onkeyup = keyUpHandler;
+
 function keyPressed(e) {
     console.log(e.keyCode);
 
@@ -135,10 +154,10 @@ function keyPressed(e) {
             pitch -= 2;
             break;
         case 65: //a
-            attemptMove(0, .5);
+            aHeld = true;
             break;
         case 68: //d
-            attemptMove(0, -.5);
+            dHeld = true;
             break;
         case 70: //f
             toggleFullscreen();
@@ -169,15 +188,32 @@ function keyPressed(e) {
             pitch = initPitch;
             break;
         case 83: //s
-            attemptMove(1, -.5);
+            sHeld = true;
             break;
         case 87: //w
-            attemptMove(1, .5);
+            wHeld = true;
             break;
         case 89: //y
     }
     printCamCoords();
-};
+}
+
+function keyUpHandler(e) {
+    switch (e.keyCode) {
+        case 65: //a
+            aHeld = false;
+            break;        
+        case 68: //d
+            dHeld = false;
+            break;
+        case 83: //s
+            sHeld = false;
+            break;
+        case 87: //w
+            wHeld = false;
+            break;
+    }
+}
 
 function exitFullscreen() {
     if(document.exitFullscreen) {

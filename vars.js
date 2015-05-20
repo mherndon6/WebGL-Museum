@@ -1,7 +1,7 @@
 // ---------------- CONSTANTS --------------- //
 INITIAL_CANVAS_WIDTH = 960;
 INITIAL_CANVAS_HEIGHT = 540;
-
+MOVEMENT_SPEED = 30;
 // ---------------- GLOBALS ---------------- //
 var gl;
 
@@ -24,6 +24,12 @@ camZ = initCamZ;
 azim = initAzim;
 pitch = initPitch;
 fov = initFOV;
+
+wHeld = false;
+aHeld = false;
+sHeld = false;
+dHeld = false;
+
 
 rotationSpeed = 360;
 rotVal = 0;
