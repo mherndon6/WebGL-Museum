@@ -4,7 +4,7 @@ var wallHeight = 10 * globalScale;
 
 var doorWidth = 4 * globalScale;
 var doorHeight = 7 * globalScale;
-var doorDepth = 0.1;
+var doorDepth = 0.5;
 
 var leftWall = 0 * globalScale;
 var midLeftWall = 20 * globalScale;
