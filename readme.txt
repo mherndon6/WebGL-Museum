@@ -1,29 +1,31 @@
-/*
 Notes:
-http://imgur.com/ecyLIHv
-Cycle through rooms by clicking
-Walking through doors works, but not perfectly. Doesn't always register, sometimes have to shove your way in
-God navigation with ijkl, wasd only works when inside bounds of walls
-*/
+Map: http://imgur.com/ecyLIHv
 
+To add a texture, make an object in textures.js and add an img tag in the html
+map.js functions getting messy, need to combine some of them. eg door and painting could be combined with some kind of getWallObjectVertices(heightOffGround)
 
-Museum Project
+Paintingheight is hardcoded right now, need to add to paintings
 
-----------------------1------------------------
+Worth it to make a frame texture, add it right behind every painting, instead of photoshopping them in? Might want some variety?
 
--Think of exhibits (paintings)					A
+Don't need to draw doors/paintings on both sides of every wall - just check wall since we're already checking horizontal/vertical
 
-----------------------2------------------------
+Switching to upstairs should be easy, just toggle a bool when you enter staircase room, switch the door in the hallway between lobby and shrine, and between rooms 1-3 and 4-6. If stairs, add a translation up by a floor. If elevator, add sound/shaking?
 
+--------------------TODO-----------------------
+
+-Think of exhibits (paintings)
 -Bump mapping on walls and tiles on floor
--Lights on ceiling
+-Frame pictures
+-Add ceiling
+-Light geometries on ceiling
+-Lighting
+-Front plaque
+-Painting info
+-Music
+-Sounds
+-Switch to upstairs
 
-----------------------3------------------------
-
--Wall collision
--Walk through doors, render right rooms
--Texture map paintings
--Some physics
 
 --------------------Ideas----------------------
 
@@ -31,8 +33,6 @@ Museum Project
 		show self as smiley face
 	Themed rooms w/ matching music
 		fade into idle song in hallway
-	Render only the current room
-		make doors black voids or red curtains
 
 -----------------Rooms-------------------------
 	__Stairs_

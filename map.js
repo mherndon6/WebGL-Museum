@@ -2,6 +2,7 @@ var globalScale = 1.5;
 var textureScale = .05;
 
 var wallHeight = 10 * globalScale;
+var hangingHeight = 6;
 
 var doorWidth = 4 * globalScale;
 var doorHeight = 7 * globalScale;
@@ -25,7 +26,7 @@ numWalls: number of walls in room (should be 4, but 3 or >4 might work by defaul
 walls: array of points defining four corners of room IN CLOCKWISE ORDER FROM BOTTOMLEFT
 doors: [startPos, whichWall, room] specifying door location and room it goes to
 lighting: specify lighting type, ambient values, light positions, etc...
-paintings: [painting, startPos, whichWall] specifying paintings and locations
+paintings: [startPos, whichWall, painting] specifying paintings and locations
 */
 
 var lobby = {
@@ -61,7 +62,7 @@ var hallway = {
 
     floorTexture: lobbyCarpet,
 
-    paintings: []
+    paintings: [[midLeftWall + 5, topWall, scott]]
 };
 
 var room1 = {
@@ -88,7 +89,7 @@ var room2 = {
             [rightWall, midTopWall]],
     doors: [[(midTopWall + topWall)/2 - doorWidth/2, midRightWall, ROOMS.HALLWAY]],
 
-    wallColor: COLORS.YELLOW,
+    wallColor: COLORS.WHITE,
     wallTexture: drywall,
 
     floorTexture: lobbyCarpet,
@@ -104,7 +105,7 @@ var room3 = {
             [midLeftWall, midBottomWall]],
     doors: [[(midBottomWall + topWall)/2 - doorWidth/2, midLeftWall, ROOMS.HALLWAY]],
 
-    wallColor: COLORS.RED,
+    wallColor: COLORS.WHITE,
     wallTexture: drywall,
 
     floorTexture: lobbyCarpet,
@@ -120,7 +121,7 @@ var staircase = {
             [midRightWall, topWall]],
     doors: [[(midLeftWall + midRightWall)/2 + doorWidth/2, topWall, ROOMS.HALLWAY]],
 
-    wallColor: COLORS.GREEN,
+    wallColor: COLORS.WHITE,
     wallTexture: drywall,
 
     floorTexture: lobbyCarpet,
@@ -180,6 +181,7 @@ function getRoomVertices(room, scaleDown) {
 
     return [verts, texVerts];
 }
+
 function getDoorVertices(room) {
     var verts = [];
     var texVerts = [];
@@ -273,5 +275,79 @@ function getFloorVertices(room) {
     verts.push(vec3(walls[3][0], 0, walls[3][1]));
     texVerts.push(vec2(1*roomWidth, 0));
 
+    return [verts, texVerts];
+}
+
+function getPaintingVertices(painting) {
+    // [startPoint, whichWall, paintingObject]
+    var verts = [];
+    var texVerts = [];
+    var wall = painting[1];
+    var paintingWidth = painting[2].width;
+    var paintingHeight = painting[2].height;
+
+    var pointOne = painting[0];
+    var pointTwo = painting[0] + paintingWidth;
+
+    //two triangles per painting
+    if (wall == leftWall || wall == midLeftWall || wall == midRightWall || wall == rightWall) { //goes north-south
+        verts.push(vec3(wall+visibleDoorDepth, hangingHeight, pointOne));
+        texVerts.push(vec2(0, 0));
+        verts.push(vec3(wall+visibleDoorDepth, hangingHeight, pointTwo));
+        texVerts.push(vec2(-1, 0));
+        verts.push(vec3(wall+visibleDoorDepth, hangingHeight + paintingHeight, pointOne));
+        texVerts.push(vec2(0, 1));
+
+        verts.push(vec3(wall+visibleDoorDepth, hangingHeight, pointTwo));
+        texVerts.push(vec2(-1, 0));
+        verts.push(vec3(wall+visibleDoorDepth, paintingHeight, pointOne));
+        texVerts.push(vec2(0, 1));
+        verts.push(vec3(wall+visibleDoorDepth, paintingHeight, pointTwo));
+        texVerts.push(vec2(-1, 1));
+
+        verts.push(vec3(wall-visibleDoorDepth, hangingHeight, pointOne));
+        texVerts.push(vec2(0, 0));
+        verts.push(vec3(wall-visibleDoorDepth, hangingHeight, pointTwo));
+        texVerts.push(vec2(1, 0));
+        verts.push(vec3(wall-visibleDoorDepth, hangingHeight + paintingHeight, pointOne));
+        texVerts.push(vec2(0, 1));
+
+        verts.push(vec3(wall-visibleDoorDepth, hangingHeight, pointTwo));
+        texVerts.push(vec2(1, 0));
+        verts.push(vec3(wall-visibleDoorDepth, hangingHeight + paintingHeight, pointOne));
+        texVerts.push(vec2(0, 1));
+        verts.push(vec3(wall-visibleDoorDepth, hangingHeight + paintingHeight, pointTwo));
+        texVerts.push(vec2(1, 1));
+    }
+    else { //goes east-west
+        verts.push(vec3(pointOne, hangingHeight, wall+visibleDoorDepth));
+        texVerts.push(vec2(0, 0));
+        verts.push(vec3(pointTwo, hangingHeight, wall+visibleDoorDepth));
+        texVerts.push(vec2(1, 0));
+        verts.push(vec3(pointOne, hangingHeight + paintingHeight, wall+visibleDoorDepth));
+        texVerts.push(vec2(0, 1));
+
+        verts.push(vec3(pointTwo, hangingHeight, wall+visibleDoorDepth));
+        texVerts.push(vec2(1, 0));
+        verts.push(vec3(pointOne, hangingHeight + paintingHeight, wall+visibleDoorDepth));
+        texVerts.push(vec2(0, 1));
+        verts.push(vec3(pointTwo, hangingHeight + paintingHeight, wall+visibleDoorDepth));
+        texVerts.push(vec2(1, 1));
+
+        verts.push(vec3(pointOne, hangingHeight, wall-visibleDoorDepth));
+        texVerts.push(vec2(0, 0));
+        verts.push(vec3(pointTwo, hangingHeight, wall-visibleDoorDepth));
+        texVerts.push(vec2(-1, 0));
+        verts.push(vec3(pointOne, hangingHeight + paintingHeight, wall-visibleDoorDepth));
+        texVerts.push(vec2(0, 1));
+
+        verts.push(vec3(pointTwo, hangingHeight, wall-visibleDoorDepth));
+        texVerts.push(vec2(-1, 0));
+        verts.push(vec3(pointOne, hangingHeight + paintingHeight, wall-visibleDoorDepth));
+        texVerts.push(vec2(0, 1));
+        verts.push(vec3(pointTwo, hangingHeight + paintingHeight, wall-visibleDoorDepth));
+        texVerts.push(vec2(-1, 1));
+        
+    }
     return [verts, texVerts];
 }

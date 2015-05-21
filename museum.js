@@ -66,18 +66,19 @@ function render(now) {
 
 function renderRoom(i) {
     var room = rooms[i];
+    var verts;
 
     // Draw walls
     curColor = room.wallColor;
-    var verts = getRoomVertices(room, room.wallTexture.scale);
-    vertices = verts[0];   
+    verts = getRoomVertices(room, room.wallTexture.scale);
+    vertices = verts[0];
     texVertices = verts[1];
     configureTexture(room.wallTexture);
     renderCurrentVertices(true);
 
     // Draw doors
     curColor = COLORS.BLACK;
-    var verts = getDoorVertices(room);
+    verts = getDoorVertices(room);
     vertices = verts[0];
     texVertices = verts[1];
     configureTexture(door);
@@ -85,14 +86,22 @@ function renderRoom(i) {
 
     // Draw floor
     curColor = COLORS.FLOOR_COLOR;
-    var verts = getFloorVertices(room);
+    verts = getFloorVertices(room);
     vertices = verts[0];
     texVertices = verts[1];
     configureTexture(room.floorTexture);
     renderCurrentVertices(true);
 
     // Draw paintings
-    
+    var paintings = room.paintings;
+    for (var i = 0; i < paintings.length; i++) {
+        curColor = COLORS.GREEN;
+        verts = getPaintingVertices(paintings[i]);
+        vertices = verts[0];
+        texVertices = verts[1];
+        configureTexture(paintings[i][2]);
+        renderCurrentVertices(true);
+    }
 }
 
 function renderCurrentVertices(drawTexture) {

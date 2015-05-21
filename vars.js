@@ -12,8 +12,8 @@ texVertices = [];
 
 itemSize = 3;
 
-initCamX = -40;
-initCamY = 10;
+initCamX = -42;
+initCamY = 8;
 initCamZ = 10;
 initAzim = 0;
 initPitch = -10;
