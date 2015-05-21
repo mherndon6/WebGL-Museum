@@ -65,39 +65,29 @@ function render(now) {
 };
 
 function renderRoom(i) {
-    var room = rooms[i];
-
+    
     // Draw walls
-    curColor = room.wallColor;
-    var verts = getRoomVertices(room, room.wallTexture.scale);
-    vertices = verts[0];   
-    texVertices = verts[1];
-    configureTexture(room.wallTexture);
-    renderCurrentVertices(true);
-
+    curColor = rooms[i].wallColor;
+    vertices = getRoomVertices(rooms[i]);   
+    renderCurrentVertices(false);
+/*
     // Draw doors
     curColor = COLORS.BLACK;
-    var verts = getDoorVertices(room);
-    vertices = verts[0];
-    texVertices = verts[1];
-    configureTexture(door);
-    renderCurrentVertices(true);
+    vertices = getDoorVertices(rooms[i]);
+    renderCurrentVertices(false);
 
     // Draw floor
     curColor = COLORS.FLOOR_COLOR;
-    var verts = getFloorVertices(room);
+    var verts = getFloorVertices(rooms[i]);
     vertices = verts[0];
     texVertices = verts[1];
-    configureTexture(room.floorTexture);
+    configureTexture(rooms[i].floorTexture);
     renderCurrentVertices(true);
-
-    // Draw paintings
-    
+    */
 }
 
 function renderCurrentVertices(drawTexture) {
     gl.bindBuffer(gl.ARRAY_BUFFER, null);
-    gl.disableVertexAttribArray(vTexCoord);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(flatten(vertices)), gl.STATIC_DRAW);
@@ -109,6 +99,8 @@ function renderCurrentVertices(drawTexture) {
         gl.bindBuffer(gl.ARRAY_BUFFER, tBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(flatten(texVertices)), gl.STATIC_DRAW);
     }
+    else
+        gl.disableVertexAttribArray(vTexCoord);
 
     gl.uniform4fv(colorLocation, curColor);
     applyTransforms(noTranslation, noRotation, noScale);
@@ -142,22 +134,18 @@ function applyTransforms(translation, rotation, scaleFactor) {
 }
 
 function updateMovement(delta) {
-    if (wHeld)
+    if (wHeld) {
         attemptMove(1, MOVEMENT_SPEED * delta);
-    if (aHeld)
+    }
+    if (aHeld) {
         attemptMove(0, MOVEMENT_SPEED * delta);
-    if (sHeld)
+    }
+    if (sHeld) {
         attemptMove(1, -MOVEMENT_SPEED * delta);
-    if (dHeld)
+    }
+    if (dHeld) {
         attemptMove(0, -MOVEMENT_SPEED * delta);
-    if (rightHeld)
-        azim -= 2;
-    if (leftHeld)
-        azim += 2;
-    if (shiftHeld)
-        camY -= .25;
-    if (spaceHeld)
-        camY += .25;
+    }
 }
 
 // ---------------- Other Stuff -------------------
@@ -170,21 +158,21 @@ function keyPressed(e) {
 
     switch(e.keyCode) {
         case 16: //shift
-            shiftHeld = true;
+            camY -= .25;
             break;
         case 27: // esc
             break;
         case 32: //space
-            spaceHeld = true;
+            camY += .25;
             break;
         case 37: //left
-            leftHeld = true;
+            azim += 2;
             break;
         case 38: //up
             pitch += 2;
             break;
         case 39: //right
-            rightHeld = true;
+            azim -= 2;
             break;
         case 40: //down
             pitch -= 2;
@@ -238,12 +226,6 @@ function keyPressed(e) {
 
 function keyUpHandler(e) {
     switch (e.keyCode) {
-        case 37: //left
-            leftHeld = false;
-            break;
-        case 39: //right
-            rightHeld = false;
-            break;
         case 65: //a
             aHeld = false;
             break;        
@@ -255,12 +237,6 @@ function keyUpHandler(e) {
             break;
         case 87: //w
             wHeld = false;
-            break;
-        case 16: //shift
-            shiftHeld = false;
-            break;
-        case 32: //space
-            spaceHeld = false;
             break;
     }
 }

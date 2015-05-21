@@ -8,10 +8,15 @@
 		<script id="vertex-shader" type="x-shader/x-vertex">
 
 			attribute vec4 vPosition;
+			attribute vec2 vTexCoord;
+
+			varying vec2 fTexCoord;
+
 			uniform mat4 matrix;
 
 			void main() {
 			  // Apply translation, rotation, perspective to the position
+			  fTexCoord = vTexCoord;
 			  gl_Position = matrix * vPosition;
 			}
 
@@ -20,10 +25,18 @@
 		<script id="fragment-shader" type="x-shader/x-fragment">
 
 			precision mediump float;
+
+			uniform bool isTextured;
+			uniform sampler2D texture;
+			varying vec2 fTexCoord;
+
 			uniform vec4 vColor;
 
 			void main() {
-				gl_FragColor = vColor;
+				if (isTextured)
+					gl_FragColor = vec4(1,1,1,1) * texture2D(texture, fTexCoord);
+				else
+					gl_FragColor = vColor;
 			}
 
 		</script>
@@ -32,13 +45,18 @@
 		<script type="text/javascript" src="initShaders.js"></script>
 		<script type="text/javascript" src="MV.js"></script>
 		<script type="text/javascript" src="vars.js"></script>
-		<script type="text/javascript" src="paintings/paintings.js"></script>
+		<script type="text/javascript" src="res/textures.js"></script>
 		<script type="text/javascript" src="map.js"></script>
 		<script type="text/javascript" src="museum.js"></script>
 
 	</head>
 
-	    <canvas id="gl-canvas" width="960" height="540" onmousedown="cycleRooms()">
+	    <canvas id="gl-canvas" width="960" height="540">
 	        Your browser doesn't support the HTML5 canvas element
-            </canvas>
+        </canvas>
+
+        <img id='carpet1.png' src='res/carpet1.png' hidden/>
+        <img id='drywall.jpg' src='res/drywall.jpg' hidden/>
+        <img id='door.jpg' src='res/door.jpg' hidden/>
+
 </html>

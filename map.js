@@ -1,10 +1,12 @@
 var globalScale = 1.5;
+var textureScale = .05;
 
 var wallHeight = 10 * globalScale;
 
 var doorWidth = 4 * globalScale;
 var doorHeight = 7 * globalScale;
 var doorDepth = 0.5;
+var visibleDoorDepth = 0.1;
 
 var leftWall = 0 * globalScale;
 var midLeftWall = 20 * globalScale;
@@ -35,6 +37,9 @@ var lobby = {
     doors: [[(midRightWall + midLeftWall)/2 - doorWidth/2, midBottomWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.WHITE,
+    wallTexture: drywall,
+
+    floorTexture: lobbyCarpet,
 
     paintings: []
 };
@@ -52,6 +57,9 @@ var hallway = {
             [(midLeftWall + midRightWall)/2 + doorWidth/2, topWall, ROOMS.STAIRCASE]],
 
     wallColor: COLORS.WHITE,
+    wallTexture: drywall,
+
+    floorTexture: lobbyCarpet,
 
     paintings: []
 };
@@ -65,6 +73,9 @@ var room1 = {
     doors: [[(midBottomWall + midTopWall)/2 - doorWidth/2, midRightWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.WHITE,
+    wallTexture: drywall,
+
+    floorTexture: lobbyCarpet,
 
     paintings: []
 };
@@ -78,6 +89,9 @@ var room2 = {
     doors: [[(midTopWall + topWall)/2 - doorWidth/2, midRightWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.YELLOW,
+    wallTexture: drywall,
+
+    floorTexture: lobbyCarpet,
 
     paintings: []
 };
@@ -91,6 +105,9 @@ var room3 = {
     doors: [[(midBottomWall + topWall)/2 - doorWidth/2, midLeftWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.RED,
+    wallTexture: drywall,
+
+    floorTexture: lobbyCarpet,
 
     paintings: []
 };
@@ -104,6 +121,9 @@ var staircase = {
     doors: [[(midLeftWall + midRightWall)/2 + doorWidth/2, topWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.GREEN,
+    wallTexture: drywall,
+
+    floorTexture: lobbyCarpet,
 
     paintings: []
 };
@@ -117,6 +137,9 @@ var shrine = {
     doors: [[(midRightWall + midLeftWall)/2 - doorWidth/2, midBottomWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.WHITE,
+    wallTexture: drywall,
+
+    floorTexture: lobbyCarpet,
 
     paintings: []
 };
@@ -124,84 +147,131 @@ var shrine = {
 var rooms = [lobby, hallway, room1, room2, room3, staircase, shrine];
 var curRoom = lobby;
 
-function getRoomVertices(room) {
+function getRoomVertices(room, scaleDown) {
     var verts = [];
+    var texVerts = [];
     var walls = room.walls;
+
     for (var i = 0; i < room.numWalls; i++) {
+
         //two triangles per wall
         var pointOne = walls[i];
         var pointTwo = walls[0];
         if (i < room.numWalls-1) pointTwo = walls[i+1];
+        var wallWidth = Math.abs((pointTwo[0] - pointOne[0])) * textureScale / scaleDown;
+        if (i == 0 || i == 2) //vertical walls
+            wallWidth = Math.abs((pointTwo[1] - pointOne[1])) * textureScale / scaleDown;
+        var heightFactor = wallHeight * textureScale / scaleDown;
 
-        verts.push(pointOne[0], 0, pointOne[1]);
-        verts.push(pointOne[0], wallHeight, pointOne[1]);
-        verts.push(pointTwo[0], 0, pointTwo[1]);
+        verts.push(vec3(pointOne[0], 0, pointOne[1]));
+        texVerts.push(vec2(0, 0));
+        verts.push(vec3(pointOne[0], wallHeight, pointOne[1]));
+        texVerts.push(vec2(0, 1*heightFactor));
+        verts.push(vec3(pointTwo[0], 0, pointTwo[1]));
+        texVerts.push(vec2(1*wallWidth, 0));
 
-        verts.push(pointTwo[0], 0, pointTwo[1]);
-        verts.push(pointTwo[0], wallHeight, pointTwo[1]);
-        verts.push(pointOne[0], wallHeight, pointOne[1]);
+        verts.push(vec3(pointTwo[0], 0, pointTwo[1]));
+        texVerts.push(vec2(1*wallWidth, 0));
+        verts.push(vec3(pointTwo[0], wallHeight, pointTwo[1]));
+        texVerts.push(vec2(1*wallWidth, 1*heightFactor));
+        verts.push(vec3(pointOne[0], wallHeight, pointOne[1]));
+        texVerts.push(vec2(0, 1*heightFactor));
     }
 
-    return verts;
+    return [verts, texVerts];
 }
 function getDoorVertices(room) {
     var verts = [];
+    var texVerts = [];
     var doors = room.doors;
     for (var i = 0; i < doors.length; i++) {
         var pointOne = doors[i][0];
         var pointTwo = doors[i][0] + doorWidth;
         //two triangles per door
         if (doors[i][1] == leftWall || doors[i][1] == midLeftWall || doors[i][1] == midRightWall || doors[i][1] == rightWall) { //door goes north-south
-            verts.push(doors[i][1]+doorDepth, 0, pointOne);
-            verts.push(doors[i][1]+doorDepth, 0, pointTwo);
-            verts.push(doors[i][1]+doorDepth, doorHeight, pointOne);
+            verts.push(vec3(doors[i][1]+visibleDoorDepth, 0, pointOne));
+            texVerts.push(vec2(0, 0));
+            verts.push(vec3(doors[i][1]+visibleDoorDepth, 0, pointTwo));
+            texVerts.push(vec2(-1, 0));
+            verts.push(vec3(doors[i][1]+visibleDoorDepth, doorHeight, pointOne));
+            texVerts.push(vec2(0, 1));
 
-            verts.push(doors[i][1]+doorDepth, 0, pointTwo);
-            verts.push(doors[i][1]+doorDepth, doorHeight, pointOne);
-            verts.push(doors[i][1]+doorDepth, doorHeight, pointTwo);
+            verts.push(vec3(doors[i][1]+visibleDoorDepth, 0, pointTwo));
+            texVerts.push(vec2(-1, 0));
+            verts.push(vec3(doors[i][1]+visibleDoorDepth, doorHeight, pointOne));
+            texVerts.push(vec2(0, 1));
+            verts.push(vec3(doors[i][1]+visibleDoorDepth, doorHeight, pointTwo));
+            texVerts.push(vec2(-1, 1));
 
-            verts.push(doors[i][1]-doorDepth, 0, pointOne);
-            verts.push(doors[i][1]-doorDepth, 0, pointTwo);
-            verts.push(doors[i][1]-doorDepth, doorHeight, pointOne);
+            verts.push(vec3(doors[i][1]-visibleDoorDepth, 0, pointOne));
+            texVerts.push(vec2(0, 0));
+            verts.push(vec3(doors[i][1]-visibleDoorDepth, 0, pointTwo));
+            texVerts.push(vec2(1, 0));
+            verts.push(vec3(doors[i][1]-visibleDoorDepth, doorHeight, pointOne));
+            texVerts.push(vec2(0, 1));
 
-            verts.push(doors[i][1]-doorDepth, 0, pointTwo);
-            verts.push(doors[i][1]-doorDepth, doorHeight, pointOne);
-            verts.push(doors[i][1]-doorDepth, doorHeight, pointTwo);
+            verts.push(vec3(doors[i][1]-visibleDoorDepth, 0, pointTwo));
+            texVerts.push(vec2(1, 0));
+            verts.push(vec3(doors[i][1]-visibleDoorDepth, doorHeight, pointOne));
+            texVerts.push(vec2(0, 1));
+            verts.push(vec3(doors[i][1]-visibleDoorDepth, doorHeight, pointTwo));
+            texVerts.push(vec2(1, 1));
         }
         else { //door goes east-west
-            verts.push(pointOne, 0, doors[i][1]+doorDepth);
-            verts.push(pointTwo, 0, doors[i][1]+doorDepth);
-            verts.push(pointOne, doorHeight, doors[i][1]+doorDepth);
+            verts.push(vec3(pointOne, 0, doors[i][1]+visibleDoorDepth));
+            texVerts.push(vec2(0, 0));
+            verts.push(vec3(pointTwo, 0, doors[i][1]+visibleDoorDepth));
+            texVerts.push(vec2(1, 0));
+            verts.push(vec3(pointOne, doorHeight, doors[i][1]+visibleDoorDepth));
+            texVerts.push(vec2(0, 1));
 
-            verts.push(pointTwo, 0, doors[i][1]+doorDepth);
-            verts.push(pointOne, doorHeight, doors[i][1]+doorDepth);
-            verts.push(pointTwo, doorHeight, doors[i][1]+doorDepth);
+            verts.push(vec3(pointTwo, 0, doors[i][1]+visibleDoorDepth));
+            texVerts.push(vec2(1, 0));
+            verts.push(vec3(pointOne, doorHeight, doors[i][1]+visibleDoorDepth));
+            texVerts.push(vec2(0, 1));
+            verts.push(vec3(pointTwo, doorHeight, doors[i][1]+visibleDoorDepth));
+            texVerts.push(vec2(1, 1));
 
-            verts.push(pointOne, 0, doors[i][1]-doorDepth);
-            verts.push(pointTwo, 0, doors[i][1]-doorDepth);
-            verts.push(pointOne, doorHeight, doors[i][1]-doorDepth);
+            verts.push(vec3(pointOne, 0, doors[i][1]-visibleDoorDepth));
+            texVerts.push(vec2(0, 0));
+            verts.push(vec3(pointTwo, 0, doors[i][1]-visibleDoorDepth));
+            texVerts.push(vec2(-1, 0));
+            verts.push(vec3(pointOne, doorHeight, doors[i][1]-visibleDoorDepth));
+            texVerts.push(vec2(0, 1));
 
-            verts.push(pointTwo, 0, doors[i][1]-doorDepth);
-            verts.push(pointOne, doorHeight, doors[i][1]-doorDepth);
-            verts.push(pointTwo, doorHeight, doors[i][1]-doorDepth);
+            verts.push(vec3(pointTwo, 0, doors[i][1]-visibleDoorDepth));
+            texVerts.push(vec2(-1, 0));
+            verts.push(vec3(pointOne, doorHeight, doors[i][1]-visibleDoorDepth));
+            texVerts.push(vec2(0, 1));
+            verts.push(vec3(pointTwo, doorHeight, doors[i][1]-visibleDoorDepth));
+            texVerts.push(vec2(-1, 1));
         }
     }
-    return verts;
+    return [verts, texVerts];
 }
 
 function getFloorVertices(room) {
     var verts = [];
+    var texVerts = [];
     var walls = room.walls;
+    var roomWidth = (walls[2][0] - walls[0][0]) * textureScale;
+    var roomHeight = (walls[2][1] - walls[0][1]) * textureScale;
     if (walls.length != 4) return;
 
     // two triangles per floor
-    verts.push(walls[0][0], 0, walls[0][1]);
-    verts.push(walls[1][0], 0, walls[1][1]);
-    verts.push(walls[3][0], 0, walls[3][1]);
+    verts.push(vec3(walls[0][0], 0, walls[0][1]));
+    texVerts.push(vec2(0, 0));
+    verts.push(vec3(walls[1][0], 0, walls[1][1]));
+    texVerts.push(vec2(0, 1*roomHeight));
+    verts.push(vec3(walls[3][0], 0, walls[3][1]));
+    texVerts.push(vec2(1*roomWidth, 0));
 
-    verts.push(walls[1][0], 0, walls[1][1]);
-    verts.push(walls[2][0], 0, walls[2][1]);
-    verts.push(walls[3][0], 0, walls[3][1]);
+    verts.push(vec3(walls[1][0], 0, walls[1][1]));
+    texVerts.push(vec2(0, 1*roomHeight));
+    verts.push(vec3(walls[2][0], 0, walls[2][1]));
+    texVerts.push(vec2(1*roomWidth, 1*roomHeight));
+    verts.push(vec3(walls[3][0], 0, walls[3][1]));
+    texVerts.push(vec2(1*roomWidth, 0));
 
-    return verts;
+    return [verts, texVerts];
 }

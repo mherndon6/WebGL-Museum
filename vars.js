@@ -8,14 +8,15 @@ var gl;
 var fullScreenEnabled = false;
 
 vertices = [];
+texVertices = [];
 
 itemSize = 3;
 
 initCamX = -40;
-initCamY = 25;
-initCamZ = -8;
+initCamY = 10;
+initCamZ = 10;
 initAzim = 0;
-initPitch = -40;
+initPitch = -10;
 initFOV = 40;
 
 camX = initCamX;
@@ -29,7 +30,10 @@ wHeld = false;
 aHeld = false;
 sHeld = false;
 dHeld = false;
-
+leftHeld = false;
+rightHeld = false;
+shiftHeld = false;
+spaceHeld = false;
 
 rotationSpeed = 360;
 rotVal = 0;

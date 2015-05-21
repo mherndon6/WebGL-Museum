@@ -29,7 +29,7 @@ function setupShaders() {
     program = initShaders(gl, "vertex-shader", "fragment-shader");
     gl.useProgram(program);
 
-    // Data locations
+    // Vertex data locations
     positionLocation = gl.getAttribLocation(program, "vPosition");
     matrixLocation = gl.getUniformLocation(program, "matrix");
     colorLocation = gl.getUniformLocation(program, "vColor");
@@ -37,13 +37,13 @@ function setupShaders() {
     vTexCoord = gl.getAttribLocation(program, "vTexCoord");
 
     // Set up buffer for vertices
-    vBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
-    gl.vertexAttribPointer(positionLocation, itemSize, gl.FLOAT, false, 0, 0);
+    var cubeVerticesBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, cubeVerticesBuffer);
     gl.enableVertexAttribArray(positionLocation);
+    gl.vertexAttribPointer(positionLocation, itemSize, gl.FLOAT, false, 0, 0);
 
     tBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, tBuffer);
+    gl.bindBuffer(gl.ARRAY_BUFFER, cubeVerticesBuffer);
     gl.vertexAttribPointer(vTexCoord, 2, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(vTexCoord);
 
@@ -65,55 +65,27 @@ function render(now) {
 };
 
 function renderRoom(i) {
-    var room = rooms[i];
-
     // Draw walls
-    curColor = room.wallColor;
-    var verts = getRoomVertices(room, room.wallTexture.scale);
-    vertices = verts[0];   
-    texVertices = verts[1];
-    configureTexture(room.wallTexture);
-    renderCurrentVertices(true);
+    curColor = rooms[i].wallColor;
+    vertices = getRoomVertices(rooms[i]);   
+    renderCurrentVertices();
 
     // Draw doors
     curColor = COLORS.BLACK;
-    var verts = getDoorVertices(room);
-    vertices = verts[0];
-    texVertices = verts[1];
-    configureTexture(door);
-    renderCurrentVertices(true);
+    vertices = getDoorVertices(rooms[i]);
+    renderCurrentVertices();
 
     // Draw floor
     curColor = COLORS.FLOOR_COLOR;
-    var verts = getFloorVertices(room);
-    vertices = verts[0];
-    texVertices = verts[1];
-    configureTexture(room.floorTexture);
-    renderCurrentVertices(true);
+    vertices = getFloorVertices(rooms[i]);
+    renderCurrentVertices();
 
-    // Draw paintings
-    
 }
-
-function renderCurrentVertices(drawTexture) {
-    gl.bindBuffer(gl.ARRAY_BUFFER, null);
-    gl.disableVertexAttribArray(vTexCoord);
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(flatten(vertices)), gl.STATIC_DRAW);
-    gl.uniform1i(gl.getUniformLocation(program, "isTextured"), false);
-
-    if (drawTexture) {
-        gl.enableVertexAttribArray(vTexCoord);
-        gl.uniform1i(gl.getUniformLocation(program, "isTextured"), true);
-        gl.bindBuffer(gl.ARRAY_BUFFER, tBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(flatten(texVertices)), gl.STATIC_DRAW);
-    }
-
+function renderCurrentVertices() {
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
     gl.uniform4fv(colorLocation, curColor);
     applyTransforms(noTranslation, noRotation, noScale);
-
-    gl.drawArrays(gl.TRIANGLES, 0, vertices.length);
+    gl.drawArrays(gl.TRIANGLES, 0, vertices.length/3);
 }
 
 function applyTransforms(translation, rotation, scaleFactor) {
@@ -142,22 +114,18 @@ function applyTransforms(translation, rotation, scaleFactor) {
 }
 
 function updateMovement(delta) {
-    if (wHeld)
+    if (wHeld) {
         attemptMove(1, MOVEMENT_SPEED * delta);
-    if (aHeld)
+    }
+    if (aHeld) {
         attemptMove(0, MOVEMENT_SPEED * delta);
-    if (sHeld)
+    }
+    if (sHeld) {
         attemptMove(1, -MOVEMENT_SPEED * delta);
-    if (dHeld)
-        attemptMove(0, -MOVEMENT_SPEED * delta);
-    if (rightHeld)
-        azim -= 2;
-    if (leftHeld)
-        azim += 2;
-    if (shiftHeld)
-        camY -= .25;
-    if (spaceHeld)
-        camY += .25;
+    }
+    if (dHeld) {
+        attemptMove(0, - MOVEMENT_SPEED * delta);
+    }
 }
 
 // ---------------- Other Stuff -------------------
@@ -166,34 +134,31 @@ document.onkeydown = keyPressed;
 document.onkeyup = keyUpHandler;
 
 function keyPressed(e) {
-    //console.log(e.keyCode);
+    console.log(e.keyCode);
 
     switch(e.keyCode) {
         case 16: //shift
-            shiftHeld = true;
+            camY -= .25;
             break;
         case 27: // esc
             break;
         case 32: //space
-            spaceHeld = true;
+            camY += .25;
             break;
         case 37: //left
-            leftHeld = true;
+            azim += 2;
             break;
         case 38: //up
             pitch += 2;
             break;
         case 39: //right
-            rightHeld = true;
+            azim -= 2;
             break;
         case 40: //down
             pitch -= 2;
             break;
         case 65: //a
             aHeld = true;
-            break;
-        case 67: //c
-            printCamCoords();
             break;
         case 68: //d
             dHeld = true;
@@ -234,16 +199,11 @@ function keyPressed(e) {
             break;
         case 89: //y
     }
+    printCamCoords();
 }
 
 function keyUpHandler(e) {
     switch (e.keyCode) {
-        case 37: //left
-            leftHeld = false;
-            break;
-        case 39: //right
-            rightHeld = false;
-            break;
         case 65: //a
             aHeld = false;
             break;        
@@ -255,12 +215,6 @@ function keyUpHandler(e) {
             break;
         case 87: //w
             wHeld = false;
-            break;
-        case 16: //shift
-            shiftHeld = false;
-            break;
-        case 32: //space
-            spaceHeld = false;
             break;
     }
 }
@@ -289,7 +243,10 @@ function toggleFullscreen() {
     else {
         canvas.requestPointerLock();
         document.addEventListener("mousemove", this.moveCallback, false);
-        
+        document.addEventListener("fullscreenchange", fullScreenChange, false);
+        document.addEventListener("mozfullscreenchange", fullScreenChange, false);
+        document.addEventListener("webkitfullscreenchange", fullScreenChange, false);
+
         if(canvas.requestFullscreen)
             canvas.requestFullscreen();
         else if(canvas.mozRequestFullScreen)
@@ -316,6 +273,16 @@ function moveCallback(e) {
         pitch = 45;
     if (pitch < -45)
         pitch = -45;
+}
+
+function fullScreenChange() {
+    if (document.fullscreenEnabled || document.mozFullScreenEnabled || document.webkitFullscreenEnabled) {
+        console.log("enter");
+    }
+    else {
+        console.log("exit");
+        exitFullscreen();
+    }
 }
 
 function attemptMove(axis, dist) {
@@ -351,12 +318,14 @@ function attemptMove(axis, dist) {
     if (newCamZ > -camZ)
         movingDown = true;
 
+    console.log(movingRight + " " + movingUp + " " + movingLeft + " " + movingDown);
+
     // First check if you've entered a door
     for (var i = 0; i < doors.length; i++) {
         var curDoor = doors[i];
         if (doors[i][1] == leftWall || doors[i][1] == midLeftWall || doors[i][1] == midRightWall || doors[i][1] == rightWall) { // Door goes north-south
             if (newCamZ > curDoor[0] && newCamZ < curDoor[0] + doorWidth && Math.abs(curDoor[1] - newCamX) < doorDepth) {
-                //console.log("Vert door, wall placement: " + curDoor[1] + " == " + topWall + " || " + bottomWall);
+                console.log("Vert door, wall placement: " + curDoor[1] + " == " + topWall + " || " + bottomWall);
                 // Check movement direction so you don't switch back and forth between rooms
                 if (curDoor[1] == rightBorder && movingRight || curDoor[1] == leftBorder && !movingRight) {
                     curRoomIndex = curDoor[2];
@@ -367,7 +336,7 @@ function attemptMove(axis, dist) {
         }
         else { // Door goes east-west
             if (newCamX > curDoor[0] && newCamX < curDoor[0] + doorWidth && Math.abs(curDoor[1] - newCamZ) < doorDepth) {
-                //console.log("Hor door, wall placement: " + curDoor[1] + " == " + topBorder + " || " + bottomBorder);
+                console.log("Hor door, wall placement: " + curDoor[1] + " == " + topBorder + " || " + bottomBorder);
                 // Check movement direction so you don't switch back and forth between rooms
                 if (curDoor[1] == topBorder && movingUp || curDoor[1] == bottomBorder && movingDown) {
                     curRoomIndex = curDoor[2];
@@ -380,11 +349,8 @@ function attemptMove(axis, dist) {
 
     //console.log("Bounds: Hor " + leftBorder + " to " + rightBorder + " and Vert " + topBorder + " to " + bottomBorder);
     //console.log("Trying to go to: " + newCamX + ", " + newCamZ);
-    if (newCamX > leftBorder && newCamX < rightBorder && newCamZ < bottomBorder && newCamZ > topBorder) // Move freely
+    if (newCamX > leftBorder && newCamX < rightBorder && newCamZ < bottomBorder && newCamZ > topBorder)
         transCam(axis, dist);
-    else { // Move against the wall
-        // TODO
-    }
 }
 // Convert the given distance to changes in global X and Z coordinates based on the azimuth
 function transCam(axis, dist) {
@@ -403,20 +369,6 @@ function cycleRooms() {
     if (curRoomIndex == rooms.length)
         curRoomIndex = 0;
     curRoom = rooms[curRoomIndex];
-}
-
-// From book, added options for the two different cubes to use nearest neighbor or tri-linear mipmapping
-function configureTexture(tex) {
-    image = document.getElementById(tex.src);
-    texture = gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
-    gl.generateMipmap(gl.TEXTURE_2D);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST_MIPMAP_LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-
-    gl.uniform1i(gl.getUniformLocation(program, "texture"), 0);
 }
 
 // ---------------- Debugging -------------------
