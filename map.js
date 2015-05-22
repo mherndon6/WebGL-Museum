@@ -2,7 +2,6 @@ var globalScale = 1.5;
 var textureScale = .05;
 
 var wallHeight = 10 * globalScale;
-var hangingHeight = 6;
 
 var doorWidth = 4 * globalScale;
 var doorHeight = 7 * globalScale;
@@ -62,7 +61,7 @@ var hallway = {
 
     floorTexture: lobbyCarpet,
 
-    paintings: [[midLeftWall + 5, topWall, scott]]
+    paintings: [[midLeftWall + 5, topWall, monaLisa]]
 };
 
 var room1 = {
@@ -111,6 +110,20 @@ var room3 = {
     floorTexture: lobbyCarpet,
 
     paintings: []
+};
+
+var room4 = {
+    walls: room1.walls,
+
+};
+
+var room5 = {
+    walls: room2.walls,
+
+};
+
+var room6 = {
+    walls: room3.walls,
 };
 
 var staircase = {
@@ -285,6 +298,7 @@ function getPaintingVertices(painting) {
     var wall = painting[1];
     var paintingWidth = painting[2].width;
     var paintingHeight = painting[2].height;
+    var hangingHeight = painting[2].hangingHeight;
 
     var pointOne = painting[0];
     var pointTwo = painting[0] + paintingWidth;

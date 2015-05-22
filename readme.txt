@@ -2,15 +2,12 @@ Notes:
 Map: http://imgur.com/ecyLIHv
 
 To add a texture, make an object in textures.js and add an img tag in the html
+
 map.js functions getting messy, need to combine some of them. eg door and painting could be combined with some kind of getWallObjectVertices(heightOffGround)
 
-Paintingheight is hardcoded right now, need to add to paintings
+Worth it to make a frame texture, add it right behind every painting, instead of photoshopping them in? Might want some variety? Currently testing Mona Lisa with photoshopped version.
 
-Worth it to make a frame texture, add it right behind every painting, instead of photoshopping them in? Might want some variety?
-
-Don't need to draw doors/paintings on both sides of every wall - just check wall since we're already checking horizontal/vertical
-
-Switching to upstairs should be easy, just toggle a bool when you enter staircase room, switch the door in the hallway between lobby and shrine, and between rooms 1-3 and 4-6. If stairs, add a translation up by a floor. If elevator, add sound/shaking?
+Way to avoid drawing doors & paintings on both sides of wall? Cuts rendering in half
 
 --------------------TODO-----------------------
 
@@ -21,11 +18,10 @@ Switching to upstairs should be easy, just toggle a bool when you enter staircas
 -Light geometries on ceiling
 -Lighting
 -Front plaque
--Painting info
+-Painting info (?)
 -Music
 -Sounds
--Switch to upstairs
-
+-Taking stairs changes lobby to shrine room - after making rooms 4-6 need to change those too. Add to toggleFloor()
 
 --------------------Ideas----------------------
 

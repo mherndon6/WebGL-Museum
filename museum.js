@@ -156,6 +156,163 @@ function applyTransforms(translation, rotation, scaleFactor) {
         gl.uniformMatrix4fv(matrixLocation, false, flatify(matrix));
 }
 
+function attemptMove(axis, dist) {
+    var walls = curRoom.walls;
+    var doors = curRoom.doors;
+    // Assuming square room, walls defined in clockwise order from bottom-right corner
+    var leftBorder = walls[0][0];
+    var rightBorder = walls[2][0];
+    var bottomBorder = walls[0][1];
+    var topBorder = walls[2][1];
+
+    var newCamX = -camX;
+    var newCamZ = -camZ;
+    if (axis == 0) {
+        newCamX -= Math.sin(radians(azim+90))*dist;
+        newCamZ -= Math.cos(radians(azim+90))*dist;
+    }
+    else {
+        newCamX -= Math.sin(radians(azim))*dist;
+        newCamZ -= Math.cos(radians(azim))*dist;
+    }
+
+    var movingRight = false;
+    var movingUp = false;
+    var movingLeft = false;
+    var movingDown = false;
+    if (newCamX > -camX)
+        movingRight = true;
+    if (newCamZ < -camZ)
+        movingUp = true;
+    if (newCamX < -camX)
+        movingLeft = true;
+    if (newCamZ > -camZ)
+        movingDown = true;
+
+    // First check if you've entered a door
+    for (var i = 0; i < doors.length; i++) {
+        var curDoor = doors[i];
+        if (doors[i][1] == leftWall || doors[i][1] == midLeftWall || doors[i][1] == midRightWall || doors[i][1] == rightWall) { // Door goes north-south
+            if (newCamZ > curDoor[0] && newCamZ < curDoor[0] + doorWidth && Math.abs(curDoor[1] - newCamX) < doorDepth) {
+                //console.log("Vert door, wall placement: " + curDoor[1] + " == " + topWall + " || " + bottomWall);
+                // Check movement direction so you don't switch back and forth between rooms
+                if (curDoor[1] == rightBorder && movingRight || curDoor[1] == leftBorder && !movingRight) {
+                    curRoomIndex = curDoor[2];
+                    curRoom = rooms[curRoomIndex];
+                    movingRight? camX -= 1 : camX += 1;
+                    // Toggle floor
+                    if (curRoomIndex == 5)
+                        toggleFloor();
+                }
+            }
+        }
+        else { // Door goes east-west
+            if (newCamX > curDoor[0] && newCamX < curDoor[0] + doorWidth && 
+                Math.abs(curDoor[1] - newCamZ) < doorDepth) {
+                //console.log("Hor door, wall placement: " + curDoor[1] + " == " + topBorder + " || " + bottomBorder);
+                // Check movement direction so you don't switch back and forth between rooms
+                if (curDoor[1] == topBorder && movingUp || curDoor[1] == bottomBorder && movingDown) {
+                    curRoomIndex = curDoor[2];
+                    curRoom = rooms[curRoomIndex];
+                    movingUp? camZ += 1 : camZ -= 1;
+                    if (curRoomIndex == 5)
+                        toggleFloor();
+                }
+            }
+        }
+    }
+
+    //console.log("Bounds: Hor " + leftBorder + " to " + rightBorder + " and Vert " + topBorder + " to " + bottomBorder);
+    //console.log("Trying to go to: " + newCamX + ", " + newCamZ);
+    if (newCamX > leftBorder + WALL_GAP && newCamX < rightBorder - WALL_GAP && 
+        newCamZ < bottomBorder - WALL_GAP && newCamZ > topBorder + WALL_GAP) // Move freely
+        transCam(axis, dist);
+    else { // Move against the wall at an angle
+        //console.log('azim ' + azim);
+
+        var azimOffset = 0;
+        if (aHeld || dHeld) {
+            azimOffset = 90;
+        }
+        
+        if (newCamX < leftBorder + WALL_GAP ||
+            newCamX > rightBorder - WALL_GAP) { // left and right walls
+
+            newCamZ = - camZ - Math.cos(radians(azim + azimOffset)) * dist;            
+            if (newCamZ < bottomBorder - WALL_GAP && 
+                newCamZ > topBorder + WALL_GAP) {
+                //console.log('angle moving against left wall..');
+                camZ = - newCamZ;
+            }
+        }
+
+        else if (newCamZ < topBorder + WALL_GAP ||
+            newCamZ > bottomBorder - WALL_GAP) { // top and bottom walls
+            //console.log('pushing against top/bottom wall');
+
+            newCamX = - camX + Math.cos(radians(azim + 90 + azimOffset)) * dist;            
+            if (newCamX < rightBorder - WALL_GAP && 
+                newCamX > leftBorder + WALL_GAP) {
+                camX = - newCamX;
+            }
+        }
+    }
+}
+
+// Convert the given distance to changes in global X and Z coordinates based on the azimuth
+function transCam(axis, dist) {
+    if (axis == 0) { //X axis
+        camX += Math.sin(radians(azim+90))*dist;
+        camZ += Math.cos(radians(azim+90))*dist;
+    }
+    else if (axis == 1) { //Z axis
+        camX += Math.sin(radians(azim))*dist;
+        camZ += Math.cos(radians(azim))*dist;
+    }
+}
+
+function cycleRooms() {
+    curRoomIndex++;
+    if (curRoomIndex == rooms.length)
+        curRoomIndex = 0;
+    curRoom = rooms[curRoomIndex];
+}
+
+function toggleFloor() {
+    if (hallway.doors[0][2] == ROOMS.LOBBY)
+        hallway.doors[0][2] = ROOMS.SHRINE;
+    else
+        hallway.doors[0][2] = ROOMS.LOBBY;
+}
+
+// From book, added options for the two different cubes to use nearest neighbor or tri-linear mipmapping
+function configureTexture(tex) {
+    image = document.getElementById(tex.src);
+    texture = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
+    gl.generateMipmap(gl.TEXTURE_2D);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST_MIPMAP_LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+
+    gl.uniform1i(gl.getUniformLocation(program, "texture"), 0);
+}
+
+function moveCallback(e) {
+    var movementX = e.movementX || e.mozMovementX || e.webkitMovementX || 0;
+    var movementY = e.movementY || e.mozMovementY || e.webkitMovementY || 0;
+    azim -= 0.2 * movementX;
+    if (azim < -360 || azim > 360) {
+        azim = 0;
+    }
+    pitch -= 0.3 * movementY;
+    if (pitch > 75)
+        pitch = 75;
+    if (pitch < -75)
+        pitch = -75;
+}
+
 function updateMovement(delta) {
     if (wHeld)
         attemptMove(1, MOVEMENT_SPEED * delta);
@@ -174,8 +331,6 @@ function updateMovement(delta) {
     if (spaceHeld)
         camY += .25;
 }
-
-// ---------------- Other Stuff -------------------
 
 document.onkeydown = keyPressed;
 document.onkeyup = keyUpHandler;
@@ -320,150 +475,6 @@ function toggleFullscreen() {
         aspect = canvas.width / canvas.height;
     }
     gl.viewport(0, 0, canvas.width, canvas.height);
-}
-
-function moveCallback(e) {
-    var movementX = e.movementX || e.mozMovementX || e.webkitMovementX || 0;
-    var movementY = e.movementY || e.mozMovementY || e.webkitMovementY || 0;
-    azim -= 0.2 * movementX;
-    if (azim < -360 || azim > 360) {
-        azim = 0;
-    }
-    pitch -= 0.3 * movementY;
-    if (pitch > 75)
-        pitch = 75;
-    if (pitch < -75)
-        pitch = -75;
-}
-
-function attemptMove(axis, dist) {
-    var walls = curRoom.walls;
-    var doors = curRoom.doors;
-    // Assuming square room, walls defined in clockwise order from bottom-right corner
-    var leftBorder = walls[0][0];
-    var rightBorder = walls[2][0];
-    var bottomBorder = walls[0][1];
-    var topBorder = walls[2][1];
-
-    var newCamX = -camX;
-    var newCamZ = -camZ;
-    if (axis == 0) {
-        newCamX -= Math.sin(radians(azim+90))*dist;
-        newCamZ -= Math.cos(radians(azim+90))*dist;
-    }
-    else {
-        newCamX -= Math.sin(radians(azim))*dist;
-        newCamZ -= Math.cos(radians(azim))*dist;
-    }
-
-    var movingRight = false;
-    var movingUp = false;
-    var movingLeft = false;
-    var movingDown = false;
-    if (newCamX > -camX)
-        movingRight = true;
-    if (newCamZ < -camZ)
-        movingUp = true;
-    if (newCamX < -camX)
-        movingLeft = true;
-    if (newCamZ > -camZ)
-        movingDown = true;
-
-    // First check if you've entered a door
-    for (var i = 0; i < doors.length; i++) {
-        var curDoor = doors[i];
-        if (doors[i][1] == leftWall || doors[i][1] == midLeftWall || doors[i][1] == midRightWall || doors[i][1] == rightWall) { // Door goes north-south
-            if (newCamZ > curDoor[0] && newCamZ < curDoor[0] + doorWidth && Math.abs(curDoor[1] - newCamX) < doorDepth) {
-                //console.log("Vert door, wall placement: " + curDoor[1] + " == " + topWall + " || " + bottomWall);
-                // Check movement direction so you don't switch back and forth between rooms
-                if (curDoor[1] == rightBorder && movingRight || curDoor[1] == leftBorder && !movingRight) {
-                    curRoomIndex = curDoor[2];
-                    curRoom = rooms[curRoomIndex];
-                    movingRight? camX -= 1 : camX += 1;
-                }
-            }
-        }
-        else { // Door goes east-west
-            if (newCamX > curDoor[0] && newCamX < curDoor[0] + doorWidth && 
-                Math.abs(curDoor[1] - newCamZ) < doorDepth) {
-                //console.log("Hor door, wall placement: " + curDoor[1] + " == " + topBorder + " || " + bottomBorder);
-                // Check movement direction so you don't switch back and forth between rooms
-                if (curDoor[1] == topBorder && movingUp || curDoor[1] == bottomBorder && movingDown) {
-                    curRoomIndex = curDoor[2];
-                    curRoom = rooms[curRoomIndex];
-                    movingUp? camZ += 1 : camZ -= 1;
-                }
-            }
-        }
-    }
-
-    //console.log("Bounds: Hor " + leftBorder + " to " + rightBorder + " and Vert " + topBorder + " to " + bottomBorder);
-    //console.log("Trying to go to: " + newCamX + ", " + newCamZ);
-    if (newCamX > leftBorder + WALL_GAP && newCamX < rightBorder - WALL_GAP && 
-        newCamZ < bottomBorder - WALL_GAP && newCamZ > topBorder + WALL_GAP) // Move freely
-        transCam(axis, dist);
-    else { // Move against the wall at an angle
-        console.log('azim ' + azim);
-
-        var azimOffset = 0;
-        if (aHeld || dHeld) {
-            azimOffset = 90;
-        }
-        
-        if (newCamX < leftBorder + WALL_GAP ||
-            newCamX > rightBorder - WALL_GAP) { // left and right walls
-
-            newCamZ = - camZ - Math.cos(radians(azim + azimOffset)) * dist;            
-            if (newCamZ < bottomBorder - WALL_GAP && 
-                newCamZ > topBorder + WALL_GAP) {
-                console.log('angle moving against left wall..');
-                camZ = - newCamZ;
-            }
-        }
-
-        else if (newCamZ < topBorder + WALL_GAP ||
-            newCamZ > bottomBorder - WALL_GAP) { // top and bottom walls
-            console.log('pushing against top/bottom wall');
-
-            newCamX = - camX + Math.cos(radians(azim + 90 + azimOffset)) * dist;            
-            if (newCamX < rightBorder - WALL_GAP && 
-                newCamX > leftBorder + WALL_GAP) {
-                camX = - newCamX;
-            }
-        }
-    }
-}
-// Convert the given distance to changes in global X and Z coordinates based on the azimuth
-function transCam(axis, dist) {
-    if (axis == 0) { //X axis
-        camX += Math.sin(radians(azim+90))*dist;
-        camZ += Math.cos(radians(azim+90))*dist;
-    }
-    else if (axis == 1) { //Z axis
-        camX += Math.sin(radians(azim))*dist;
-        camZ += Math.cos(radians(azim))*dist;
-    }
-}
-
-function cycleRooms() {
-    curRoomIndex++;
-    if (curRoomIndex == rooms.length)
-        curRoomIndex = 0;
-    curRoom = rooms[curRoomIndex];
-}
-
-// From book, added options for the two different cubes to use nearest neighbor or tri-linear mipmapping
-function configureTexture(tex) {
-    image = document.getElementById(tex.src);
-    texture = gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
-    gl.generateMipmap(gl.TEXTURE_2D);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST_MIPMAP_LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-
-    gl.uniform1i(gl.getUniformLocation(program, "texture"), 0);
 }
 
 // ---------------- Debugging -------------------
