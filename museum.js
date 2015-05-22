@@ -326,11 +326,14 @@ function moveCallback(e) {
     var movementX = e.movementX || e.mozMovementX || e.webkitMovementX || 0;
     var movementY = e.movementY || e.mozMovementY || e.webkitMovementY || 0;
     azim -= 0.2 * movementX;
+    if (azim < -360 || azim > 360) {
+        azim = 0;
+    }
     pitch -= 0.3 * movementY;
-    if (pitch > 45)
-        pitch = 45;
-    if (pitch < -45)
-        pitch = -45;
+    if (pitch > 75)
+        pitch = 75;
+    if (pitch < -75)
+        pitch = -75;
 }
 
 function attemptMove(axis, dist) {
@@ -381,7 +384,8 @@ function attemptMove(axis, dist) {
             }
         }
         else { // Door goes east-west
-            if (newCamX > curDoor[0] && newCamX < curDoor[0] + doorWidth && Math.abs(curDoor[1] - newCamZ) < doorDepth) {
+            if (newCamX > curDoor[0] && newCamX < curDoor[0] + doorWidth && 
+                Math.abs(curDoor[1] - newCamZ) < doorDepth) {
                 //console.log("Hor door, wall placement: " + curDoor[1] + " == " + topBorder + " || " + bottomBorder);
                 // Check movement direction so you don't switch back and forth between rooms
                 if (curDoor[1] == topBorder && movingUp || curDoor[1] == bottomBorder && movingDown) {
@@ -398,8 +402,35 @@ function attemptMove(axis, dist) {
     if (newCamX > leftBorder + WALL_GAP && newCamX < rightBorder - WALL_GAP && 
         newCamZ < bottomBorder - WALL_GAP && newCamZ > topBorder + WALL_GAP) // Move freely
         transCam(axis, dist);
-    else { // Move against the wall
-        // TODO
+    else { // Move against the wall at an angle
+        console.log('azim ' + azim);
+
+        var azimOffset = 0;
+        if (aHeld || dHeld) {
+            azimOffset = 90;
+        }
+        
+        if (newCamX < leftBorder + WALL_GAP ||
+            newCamX > rightBorder - WALL_GAP) { // left and right walls
+
+            newCamZ = - camZ - Math.cos(radians(azim + azimOffset)) * dist;            
+            if (newCamZ < bottomBorder - WALL_GAP && 
+                newCamZ > topBorder + WALL_GAP) {
+                console.log('angle moving against left wall..');
+                camZ = - newCamZ;
+            }
+        }
+
+        else if (newCamZ < topBorder + WALL_GAP ||
+            newCamZ > bottomBorder - WALL_GAP) { // top and bottom walls
+            console.log('pushing against top/bottom wall');
+
+            newCamX = - camX + Math.cos(radians(azim + 90 + azimOffset)) * dist;            
+            if (newCamX < rightBorder - WALL_GAP && 
+                newCamX > leftBorder + WALL_GAP) {
+                camX = - newCamX;
+            }
+        }
     }
 }
 // Convert the given distance to changes in global X and Z coordinates based on the azimuth
