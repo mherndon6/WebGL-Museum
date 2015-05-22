@@ -2,6 +2,8 @@
 INITIAL_CANVAS_WIDTH = 960;
 INITIAL_CANVAS_HEIGHT = 540;
 MOVEMENT_SPEED = 30;
+WALL_GAP = 0.4
+
 // ---------------- GLOBALS ---------------- //
 var gl;
 

@@ -10,6 +10,12 @@ window.onload = function init()
 function setupCanvas() {
     // Set up canvas, context, etc.
     canvas = document.getElementById("gl-canvas");
+
+    // Multi-browser support for pointer locking
+    canvas.requestPointerLock = canvas.requestPointerLock ||
+                                canvas.mozRequestPointerLock ||
+                                canvas.webkitRequestPointerLock;
+
     aspect = canvas.width / canvas.height;
     gl = WebGLUtils.setupWebGL(canvas);
     if (!gl)
@@ -389,7 +395,8 @@ function attemptMove(axis, dist) {
 
     //console.log("Bounds: Hor " + leftBorder + " to " + rightBorder + " and Vert " + topBorder + " to " + bottomBorder);
     //console.log("Trying to go to: " + newCamX + ", " + newCamZ);
-    if (newCamX > leftBorder && newCamX < rightBorder && newCamZ < bottomBorder && newCamZ > topBorder) // Move freely
+    if (newCamX > leftBorder + WALL_GAP && newCamX < rightBorder - WALL_GAP && 
+        newCamZ < bottomBorder - WALL_GAP && newCamZ > topBorder + WALL_GAP) // Move freely
         transCam(axis, dist);
     else { // Move against the wall
         // TODO
