@@ -12,6 +12,8 @@ var fullScreenEnabled = false;
 var vertices = [];
 var texVertices = [];
 
+var muted = false;
+
 var itemSize = 3;
 
 var initCamX = -42;

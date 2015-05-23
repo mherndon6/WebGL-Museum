@@ -2,7 +2,7 @@ var globalScale = 1.5;
 var textureScale = .05;
 
 var groundHeight = 0;
-var lightHeight = 9 * globalScale;
+var lightHeight = 9.5 * globalScale;
 var wallHeight = 10 * globalScale;
 
 var lightWidth = 3;
@@ -243,14 +243,41 @@ function getLightVertices(room) {
     var lightX = (leftBorder + rightBorder)/2 - lightWidth/2;
     var lightZ = (bottomBorder + topBorder)/2 - lightWidth/2;
 
-    // just a square for now
+    // just a box for now
     verts.push(vec3(lightX, lightHeight, lightZ));
     verts.push(vec3(lightX, lightHeight, lightZ + lightWidth));
     verts.push(vec3(lightX + lightWidth, lightHeight, lightZ));
-
     verts.push(vec3(lightX, lightHeight, lightZ + lightWidth));
     verts.push(vec3(lightX + lightWidth, lightHeight, lightZ));
     verts.push(vec3(lightX + lightWidth, lightHeight, lightZ + lightWidth));
+
+    verts.push(vec3(lightX, lightHeight, lightZ));
+    verts.push(vec3(lightX, wallHeight, lightZ));
+    verts.push(vec3(lightX + lightWidth, lightHeight, lightZ));
+    verts.push(vec3(lightX + lightWidth, wallHeight, lightZ));
+    verts.push(vec3(lightX, wallHeight, lightZ));
+    verts.push(vec3(lightX + lightWidth, lightHeight, lightZ));
+
+    verts.push(vec3(lightX, lightHeight, lightZ + lightWidth));
+    verts.push(vec3(lightX, wallHeight, lightZ + lightWidth));
+    verts.push(vec3(lightX + lightWidth, lightHeight, lightZ + lightWidth));
+    verts.push(vec3(lightX + lightWidth, wallHeight, lightZ + lightWidth));
+    verts.push(vec3(lightX, wallHeight, lightZ + lightWidth));
+    verts.push(vec3(lightX + lightWidth, lightHeight, lightZ + lightWidth));
+
+    verts.push(vec3(lightX, lightHeight, lightZ));
+    verts.push(vec3(lightX, lightHeight, lightZ + lightWidth));
+    verts.push(vec3(lightX, wallHeight, lightZ + lightWidth));
+    verts.push(vec3(lightX, lightHeight, lightZ));
+    verts.push(vec3(lightX, wallHeight, lightZ));
+    verts.push(vec3(lightX, wallHeight, lightZ + lightWidth));
+
+    verts.push(vec3(lightX + lightWidth, lightHeight, lightZ));
+    verts.push(vec3(lightX + lightWidth, lightHeight, lightZ + lightWidth));
+    verts.push(vec3(lightX + lightWidth, wallHeight, lightZ + lightWidth));
+    verts.push(vec3(lightX + lightWidth, lightHeight, lightZ));
+    verts.push(vec3(lightX + lightWidth, wallHeight, lightZ));
+    verts.push(vec3(lightX + lightWidth, wallHeight, lightZ + lightWidth));
 
     return verts;
 }

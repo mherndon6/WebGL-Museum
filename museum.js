@@ -216,6 +216,8 @@ function attemptMove(axis, dist) {
                     curRoomIndex = curDoor[2];
                     curRoom = rooms[curRoomIndex];
                     movingRight? camX -= 1 : camX += 1;
+                    if (!muted)
+                        document.getElementById('door.wav').play();
                     // Toggle floor
                     if (curRoomIndex == 5)
                         toggleFloor();
@@ -231,6 +233,9 @@ function attemptMove(axis, dist) {
                     curRoomIndex = curDoor[2];
                     curRoom = rooms[curRoomIndex];
                     movingUp? camZ += 1 : camZ -= 1;
+                    if (!muted)
+                        document.getElementById('door.wav').play();
+                    // Toggle floor
                     if (curRoomIndex == 5)
                         toggleFloor();
                 }
@@ -402,6 +407,9 @@ function keyPressed(e) {
         case 76: //l
             lHeld = true;
             break;
+        case 77: //m
+            muted = !muted;
+            break;
         case 78: //n
         case 80: //p
             break;
@@ -467,7 +475,7 @@ function restart() {
     azim = initAzim;
     pitch = initPitch;
     curRoomIndex = 0;
-    curRoom = 0;
+    curRoom = rooms[0];
     if (hallway.doors[0][2] == ROOMS.LOBBY)
         hallway.doors[0][2] = ROOMS.SHRINE;
 }

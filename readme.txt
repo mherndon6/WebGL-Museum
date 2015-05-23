@@ -5,6 +5,8 @@ To add a texture, make an object in textures.js and add an img tag in the html
 
 Make sure to run chrome with option --allow-file-access-from-files
 
+Trying to add single source lighting to each room - need to add a normal buffer & calculate normals for each of the get__Vertices() functions, return a 3-item list with [vertices, texVertices, normVertices]. Calculating normals should be simple.
+
 --------------------TODO-----------------------
 
 -Think of exhibits (paintings)
