@@ -2,8 +2,10 @@ var globalScale = 1.5;
 var textureScale = .05;
 
 var groundHeight = 0;
+var lightHeight = 9 * globalScale;
 var wallHeight = 10 * globalScale;
 
+var lightWidth = 3;
 var doorWidth = 4 * globalScale;
 var doorHeight = 7 * globalScale;
 var doorDepth = 0.5;
@@ -209,25 +211,48 @@ function getFloorVertices(room, height, scaleDown) {
     var texVerts = [];
     var walls = room.walls;
     var roomWidth = (walls[2][0] - walls[0][0]) * textureScale / scaleDown;
-    var roomHeight = (walls[2][1] - walls[0][1]) * textureScale / scaleDown;
+    var roomLength = (walls[2][1] - walls[0][1]) * textureScale / scaleDown;
     if (walls.length != 4) return;
 
     // two triangles per floor
     verts.push(vec3(walls[0][0], height, walls[0][1]));
     texVerts.push(vec2(0, 0));
     verts.push(vec3(walls[1][0], height, walls[1][1]));
-    texVerts.push(vec2(0, 1*roomHeight));
+    texVerts.push(vec2(0, 1*roomLength));
     verts.push(vec3(walls[3][0], height, walls[3][1]));
     texVerts.push(vec2(1*roomWidth, 0));
 
     verts.push(vec3(walls[1][0], height, walls[1][1]));
-    texVerts.push(vec2(0, 1*roomHeight));
+    texVerts.push(vec2(0, 1*roomLength));
     verts.push(vec3(walls[2][0], height, walls[2][1]));
-    texVerts.push(vec2(1*roomWidth, 1*roomHeight));
+    texVerts.push(vec2(1*roomWidth, 1*roomLength));
     verts.push(vec3(walls[3][0], height, walls[3][1]));
     texVerts.push(vec2(1*roomWidth, 0));
 
     return [verts, texVerts];
+}
+
+function getLightVertices(room) {
+    var verts = [];
+    var walls = room.walls;
+    var leftBorder = walls[0][0];
+    var rightBorder = walls[2][0];
+    var bottomBorder = walls[0][1];
+    var topBorder = walls[2][1];
+
+    var lightX = (leftBorder + rightBorder)/2 - lightWidth/2;
+    var lightZ = (bottomBorder + topBorder)/2 - lightWidth/2;
+
+    // just a square for now
+    verts.push(vec3(lightX, lightHeight, lightZ));
+    verts.push(vec3(lightX, lightHeight, lightZ + lightWidth));
+    verts.push(vec3(lightX + lightWidth, lightHeight, lightZ));
+
+    verts.push(vec3(lightX, lightHeight, lightZ + lightWidth));
+    verts.push(vec3(lightX + lightWidth, lightHeight, lightZ));
+    verts.push(vec3(lightX + lightWidth, lightHeight, lightZ + lightWidth));
+
+    return verts;
 }
 
 function getWallObjectVertices(objects, room, type) {

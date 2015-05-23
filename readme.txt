@@ -3,8 +3,6 @@ Map: http://imgur.com/ecyLIHv
 
 To add a texture, make an object in textures.js and add an img tag in the html
 
-Worth it to make a frame texture, add it right behind every painting, instead of photoshopping them in? Might want some variety? Currently testing Mona Lisa with photoshopped version.
-
 Make sure to run chrome with option --allow-file-access-from-files
 
 --------------------TODO-----------------------

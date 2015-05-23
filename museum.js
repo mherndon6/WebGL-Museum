@@ -119,6 +119,11 @@ function renderRoom(i) {
         configureTexture(paintings[i][2]);
         renderCurrentVertices(TEXTURES.DRAW_TEXTURE);
     }
+
+    // Draw light fixture
+    curColor = COLORS.YELLOW;
+    vertices = getLightVertices(room);
+    renderCurrentVertices(TEXTURES.NO_TEXTURE);
 }
 
 function renderCurrentVertices(drawTexture) {
@@ -326,6 +331,14 @@ function updateMovement(delta) {
         attemptMove(1, -MOVEMENT_SPEED * delta);
     if (dHeld)
         attemptMove(0, -MOVEMENT_SPEED * delta);
+    if (iHeld)
+        transCam(1, MOVEMENT_SPEED * delta);
+    if (jHeld)
+        transCam(0, MOVEMENT_SPEED * delta);
+    if (kHeld)
+        transCam(1, -MOVEMENT_SPEED * delta);
+    if (lHeld)
+        transCam(0, -MOVEMENT_SPEED * delta);
     if (rightHeld)
         azim -= 2;
     if (leftHeld)
@@ -378,27 +391,22 @@ function keyPressed(e) {
         case 72: //h
             break;
         case 73: //i
-            transCam(1, .5);
+            iHeld = true;
             break;
         case 74: //j
-            transCam(0, .5);
+            jHeld = true;
             break;
         case 75: //k
-            transCam(1, -.5);
+            kHeld = true;
             break;
         case 76: //l
-            transCam(0, -.5);
+            lHeld = true;
             break;
         case 78: //n
         case 80: //p
             break;
         case 82: //r
-            fov = initFOV;
-            camX = initCamX;
-            camY = initCamY;
-            camZ = initCamZ;
-            azim = initAzim;
-            pitch = initPitch;
+            restart();
             break;
         case 83: //s
             sHeld = true;
@@ -424,6 +432,18 @@ function keyUpHandler(e) {
         case 68: //d
             dHeld = false;
             break;
+        case 73: //i
+            iHeld = false;
+            break;
+        case 74: //j
+            jHeld = false;
+            break;
+        case 75: //k
+            kHeld = false;
+            break;
+        case 76: //l
+            lHeld = false;
+            break;
         case 83: //s
             sHeld = false;
             break;
@@ -437,6 +457,19 @@ function keyUpHandler(e) {
             spaceHeld = false;
             break;
     }
+}
+
+function restart() {
+    fov = initFOV;
+    camX = initCamX;
+    camY = initCamY;
+    camZ = initCamZ;
+    azim = initAzim;
+    pitch = initPitch;
+    curRoomIndex = 0;
+    curRoom = 0;
+    if (hallway.doors[0][2] == ROOMS.LOBBY)
+        hallway.doors[0][2] = ROOMS.SHRINE;
 }
 
 function exitFullscreen() {
