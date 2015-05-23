@@ -3,11 +3,9 @@ Map: http://imgur.com/ecyLIHv
 
 To add a texture, make an object in textures.js and add an img tag in the html
 
-map.js functions getting messy, need to combine some of them. eg door and painting could be combined with some kind of getWallObjectVertices(heightOffGround)
-
 Worth it to make a frame texture, add it right behind every painting, instead of photoshopping them in? Might want some variety? Currently testing Mona Lisa with photoshopped version.
 
-Way to avoid drawing doors & paintings on both sides of wall? Cuts rendering in half
+Make sure to run chrome with option --allow-file-access-from-files
 
 --------------------TODO-----------------------
 
@@ -21,7 +19,7 @@ Way to avoid drawing doors & paintings on both sides of wall? Cuts rendering in 
 -Painting info (?)
 -Music
 -Sounds
--Taking stairs changes lobby to shrine room - after making rooms 4-6 need to change those too. Add to toggleFloor()
+-Taking stairs now changes lobby to shrine room - need to make rooms 4-6, add to toggleFloor()
 
 --------------------Ideas----------------------
 
@@ -65,7 +63,6 @@ Hallway:
         The School of Athens - Raphael
         The Mona Lisa - Leonardo da Vinci
         
-
 
 Upper Hallway:
     Walls:

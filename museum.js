@@ -79,16 +79,20 @@ function renderRoom(i) {
     verts = getRoomVertices(room, room.wallTexture.scale);
     vertices = verts[0];
     texVertices = verts[1];
-    configureTexture(room.wallTexture);
-    renderCurrentVertices(true);
+    if (room.wallTexture.src == TEXTURES.NO_TEXTURE)
+        renderCurrentVertices(TEXTURES.NO_TEXTURE);
+    else {
+        configureTexture(room.wallTexture);
+        renderCurrentVertices(TEXTURES.DRAW_TEXTURE);
+    }
 
     // Draw doors
     curColor = COLORS.BLACK;
-    verts = getDoorVertices(room);
+    verts = getWallObjectVertices(room.doors, room, WALL_OBJECT.DOORS);
     vertices = verts[0];
     texVertices = verts[1];
     configureTexture(door);
-    renderCurrentVertices(true);
+    renderCurrentVertices(TEXTURES.DRAW_TEXTURE);
 
     // Draw floor
     curColor = COLORS.FLOOR_COLOR;
@@ -96,17 +100,17 @@ function renderRoom(i) {
     vertices = verts[0];
     texVertices = verts[1];
     configureTexture(room.floorTexture);
-    renderCurrentVertices(true);
+    renderCurrentVertices(TEXTURES.DRAW_TEXTURE);
 
     // Draw paintings
-    var paintings = room.paintings;
+    curColor = COLORS.GREEN;
+    paintings = room.paintings;
     for (var i = 0; i < paintings.length; i++) {
-        curColor = COLORS.GREEN;
-        verts = getPaintingVertices(paintings[i]);
+        verts = getWallObjectVertices([paintings[i]], room, WALL_OBJECT.PAINTINGS);
         vertices = verts[0];
         texVertices = verts[1];
         configureTexture(paintings[i][2]);
-        renderCurrentVertices(true);
+        renderCurrentVertices(TEXTURES.DRAW_TEXTURE);
     }
 }
 
@@ -222,18 +226,14 @@ function attemptMove(axis, dist) {
         }
     }
 
-    //console.log("Bounds: Hor " + leftBorder + " to " + rightBorder + " and Vert " + topBorder + " to " + bottomBorder);
-    //console.log("Trying to go to: " + newCamX + ", " + newCamZ);
     if (newCamX > leftBorder + WALL_GAP && newCamX < rightBorder - WALL_GAP && 
         newCamZ < bottomBorder - WALL_GAP && newCamZ > topBorder + WALL_GAP) // Move freely
         transCam(axis, dist);
     else { // Move against the wall at an angle
-        //console.log('azim ' + azim);
 
         var azimOffset = 0;
-        if (aHeld || dHeld) {
+        if (aHeld || dHeld)
             azimOffset = 90;
-        }
         
         if (newCamX < leftBorder + WALL_GAP ||
             newCamX > rightBorder - WALL_GAP) { // left and right walls
@@ -241,15 +241,12 @@ function attemptMove(axis, dist) {
             newCamZ = - camZ - Math.cos(radians(azim + azimOffset)) * dist;            
             if (newCamZ < bottomBorder - WALL_GAP && 
                 newCamZ > topBorder + WALL_GAP) {
-                //console.log('angle moving against left wall..');
                 camZ = - newCamZ;
             }
         }
 
         else if (newCamZ < topBorder + WALL_GAP ||
             newCamZ > bottomBorder - WALL_GAP) { // top and bottom walls
-            //console.log('pushing against top/bottom wall');
-
             newCamX = - camX + Math.cos(radians(azim + 90 + azimOffset)) * dist;            
             if (newCamX < rightBorder - WALL_GAP && 
                 newCamX > leftBorder + WALL_GAP) {

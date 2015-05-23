@@ -14,7 +14,7 @@ var midRightWall = 35 * globalScale;
 var rightWall = 55 * globalScale;
 
 var shrineBottomWall = 50 * globalScale;
-var bottomWall = 0 * globalScale;
+var bottomWall = -1 * globalScale;
 var midBottomWall = -15 * globalScale;
 var midTopWall = -45 * globalScale;
 var topWall = -75 * globalScale;
@@ -61,7 +61,7 @@ var hallway = {
 
     floorTexture: lobbyCarpet,
 
-    paintings: [[midLeftWall + 5, topWall, monaLisa]]
+    paintings: [[midLeftWall + 5, topWall, scott]]
 };
 
 var room1 = {
@@ -105,11 +105,13 @@ var room3 = {
     doors: [[(midBottomWall + topWall)/2 - doorWidth/2, midLeftWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.WHITE,
-    wallTexture: drywall,
+    wallTexture: none,
 
     floorTexture: lobbyCarpet,
 
-    paintings: []
+    paintings: [[midTopWall, leftWall, starryNight],
+                [(leftWall + midLeftWall)/2, topWall, monaLisa],
+                [(leftWall + midLeftWall)/2, midBottomWall, monaLisa]]
 };
 
 var room4 = {
@@ -191,75 +193,101 @@ function getRoomVertices(room, scaleDown) {
         verts.push(vec3(pointOne[0], wallHeight, pointOne[1]));
         texVerts.push(vec2(0, 1*heightFactor));
     }
-
     return [verts, texVerts];
 }
 
-function getDoorVertices(room) {
+function getWallObjectVertices(objects, room, type) {
     var verts = [];
     var texVerts = [];
-    var doors = room.doors;
-    for (var i = 0; i < doors.length; i++) {
-        var pointOne = doors[i][0];
-        var pointTwo = doors[i][0] + doorWidth;
+    var objectHeight = doorHeight;
+    var objectWidth = doorWidth;
+    var hangingHeight = 0;
+
+    var walls = room.walls;
+    for (var i = 0; i < objects.length; i++) {
+        var curObject = objects[i];
+
+        if (type == WALL_OBJECT.PAINTINGS) {
+            objectWidth = curObject[2].width;
+            objectHeight = curObject[2].height;
+            hangingHeight = curObject[2].hangingHeight;
+        }
+
+        var pointOne = curObject[0];
+        var pointTwo = curObject[0] + objectWidth;
+
         //two triangles per door
-        if (doors[i][1] == leftWall || doors[i][1] == midLeftWall || doors[i][1] == midRightWall || doors[i][1] == rightWall) { //door goes north-south
-            verts.push(vec3(doors[i][1]+visibleDoorDepth, 0, pointOne));
-            texVerts.push(vec2(0, 0));
-            verts.push(vec3(doors[i][1]+visibleDoorDepth, 0, pointTwo));
-            texVerts.push(vec2(-1, 0));
-            verts.push(vec3(doors[i][1]+visibleDoorDepth, doorHeight, pointOne));
-            texVerts.push(vec2(0, 1));
+        if (curObject[1] == leftWall || curObject[1] == midLeftWall || curObject[1] == midRightWall || curObject[1] == rightWall) { //door goes north-south
+            if (curObject[1] == walls[0][0]) { //on left wall
+                var curDepth = curObject[1] + visibleDoorDepth;
 
-            verts.push(vec3(doors[i][1]+visibleDoorDepth, 0, pointTwo));
-            texVerts.push(vec2(-1, 0));
-            verts.push(vec3(doors[i][1]+visibleDoorDepth, doorHeight, pointOne));
-            texVerts.push(vec2(0, 1));
-            verts.push(vec3(doors[i][1]+visibleDoorDepth, doorHeight, pointTwo));
-            texVerts.push(vec2(-1, 1));
+                verts.push(vec3(curDepth, hangingHeight, pointOne));
+                texVerts.push(vec2(0, 0));
+                verts.push(vec3(curDepth, hangingHeight, pointTwo));
+                texVerts.push(vec2(-1, 0));
+                verts.push(vec3(curDepth, hangingHeight + objectHeight, pointOne));
+                texVerts.push(vec2(0, 1));
 
-            verts.push(vec3(doors[i][1]-visibleDoorDepth, 0, pointOne));
-            texVerts.push(vec2(0, 0));
-            verts.push(vec3(doors[i][1]-visibleDoorDepth, 0, pointTwo));
-            texVerts.push(vec2(1, 0));
-            verts.push(vec3(doors[i][1]-visibleDoorDepth, doorHeight, pointOne));
-            texVerts.push(vec2(0, 1));
+                verts.push(vec3(curDepth, hangingHeight, pointTwo));
+                texVerts.push(vec2(-1, 0));
+                verts.push(vec3(curDepth, hangingHeight + objectHeight, pointOne));
+                texVerts.push(vec2(0, 1));
+                verts.push(vec3(curDepth, hangingHeight + objectHeight, pointTwo));
+                texVerts.push(vec2(-1, 1));
+            }
+            else { //on right wall
+                var curDepth = curObject[1] - visibleDoorDepth;
 
-            verts.push(vec3(doors[i][1]-visibleDoorDepth, 0, pointTwo));
-            texVerts.push(vec2(1, 0));
-            verts.push(vec3(doors[i][1]-visibleDoorDepth, doorHeight, pointOne));
-            texVerts.push(vec2(0, 1));
-            verts.push(vec3(doors[i][1]-visibleDoorDepth, doorHeight, pointTwo));
-            texVerts.push(vec2(1, 1));
+                verts.push(vec3(curDepth, hangingHeight, pointOne));
+                texVerts.push(vec2(0, 0));
+                verts.push(vec3(curDepth, hangingHeight, pointTwo));
+                texVerts.push(vec2(1, 0));
+                verts.push(vec3(curDepth, hangingHeight + objectHeight, pointOne));
+                texVerts.push(vec2(0, 1));
+
+                verts.push(vec3(curDepth, hangingHeight, pointTwo));
+                texVerts.push(vec2(1, 0));
+                verts.push(vec3(curDepth, hangingHeight + objectHeight, pointOne));
+                texVerts.push(vec2(0, 1));
+                verts.push(vec3(curDepth, hangingHeight + objectHeight, pointTwo));
+                texVerts.push(vec2(1, 1));
+            }
         }
         else { //door goes east-west
-            verts.push(vec3(pointOne, 0, doors[i][1]+visibleDoorDepth));
-            texVerts.push(vec2(0, 0));
-            verts.push(vec3(pointTwo, 0, doors[i][1]+visibleDoorDepth));
-            texVerts.push(vec2(1, 0));
-            verts.push(vec3(pointOne, doorHeight, doors[i][1]+visibleDoorDepth));
-            texVerts.push(vec2(0, 1));
+            if (curObject[1] != walls[0][1]) { //on bottom wall
+                var curDepth = curObject[1] + visibleDoorDepth;
 
-            verts.push(vec3(pointTwo, 0, doors[i][1]+visibleDoorDepth));
-            texVerts.push(vec2(1, 0));
-            verts.push(vec3(pointOne, doorHeight, doors[i][1]+visibleDoorDepth));
-            texVerts.push(vec2(0, 1));
-            verts.push(vec3(pointTwo, doorHeight, doors[i][1]+visibleDoorDepth));
-            texVerts.push(vec2(1, 1));
+                verts.push(vec3(pointOne, hangingHeight, curDepth));
+                texVerts.push(vec2(0, 0));
+                verts.push(vec3(pointTwo, hangingHeight, curDepth));
+                texVerts.push(vec2(1, 0));
+                verts.push(vec3(pointOne, hangingHeight + objectHeight, curDepth));
+                texVerts.push(vec2(0, 1));
 
-            verts.push(vec3(pointOne, 0, doors[i][1]-visibleDoorDepth));
-            texVerts.push(vec2(0, 0));
-            verts.push(vec3(pointTwo, 0, doors[i][1]-visibleDoorDepth));
-            texVerts.push(vec2(-1, 0));
-            verts.push(vec3(pointOne, doorHeight, doors[i][1]-visibleDoorDepth));
-            texVerts.push(vec2(0, 1));
+                verts.push(vec3(pointTwo, hangingHeight, curDepth));
+                texVerts.push(vec2(1, 0));
+                verts.push(vec3(pointOne, hangingHeight + objectHeight, curDepth));
+                texVerts.push(vec2(0, 1));
+                verts.push(vec3(pointTwo, hangingHeight + objectHeight, curDepth));
+                texVerts.push(vec2(1, 1));
+            }
+            else { //on top wall
+                var curDepth = curObject[1] - visibleDoorDepth;
 
-            verts.push(vec3(pointTwo, 0, doors[i][1]-visibleDoorDepth));
-            texVerts.push(vec2(-1, 0));
-            verts.push(vec3(pointOne, doorHeight, doors[i][1]-visibleDoorDepth));
-            texVerts.push(vec2(0, 1));
-            verts.push(vec3(pointTwo, doorHeight, doors[i][1]-visibleDoorDepth));
-            texVerts.push(vec2(-1, 1));
+                verts.push(vec3(pointOne, hangingHeight, curDepth));
+                texVerts.push(vec2(0, 0));
+                verts.push(vec3(pointTwo, hangingHeight, curDepth));
+                texVerts.push(vec2(-1, 0));
+                verts.push(vec3(pointOne, hangingHeight + objectHeight, curDepth));
+                texVerts.push(vec2(0, 1));
+
+                verts.push(vec3(pointTwo, hangingHeight, curDepth));
+                texVerts.push(vec2(-1, 0));
+                verts.push(vec3(pointOne, hangingHeight + objectHeight, curDepth));
+                texVerts.push(vec2(0, 1));
+                verts.push(vec3(pointTwo, hangingHeight + objectHeight, curDepth));
+                texVerts.push(vec2(-1, 1));
+            }
         }
     }
     return [verts, texVerts];

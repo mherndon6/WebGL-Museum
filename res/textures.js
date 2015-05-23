@@ -24,9 +24,26 @@ var monaLisa = {
 	hangingHeight: 6
 };
 
+var starryNight = {
+	src: "starry-night.png",
+	width: 7,
+	height: 5,
+	hangingHeight: 5
+}
+
 var scott = {
 	src: "scott.png",
 	width: 5,
 	height: 5,
-	hangingHeight: 6
+	hangingHeight: 6,
 };
+
+// ----------------- OTHER ----------------- //
+var none = {
+	src: false
+}
+
+var TEXTURES = {
+	DRAW_TEXTURE: true,
+	NO_TEXTURE: false
+}
