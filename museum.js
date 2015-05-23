@@ -94,14 +94,21 @@ function renderRoom(i) {
     configureTexture(door);
     renderCurrentVertices(TEXTURES.DRAW_TEXTURE);
 
-    // Draw floor
+    // Draw floor & ceiling
     curColor = COLORS.FLOOR_COLOR;
-    verts = getFloorVertices(room);
+    verts = getFloorVertices(room, groundHeight, room.floorTexture.scale);
     vertices = verts[0];
     texVertices = verts[1];
     configureTexture(room.floorTexture);
     renderCurrentVertices(TEXTURES.DRAW_TEXTURE);
-
+    if (renderCeiling) {
+        verts = getFloorVertices(room, wallHeight, room.ceilingTexture.scale);
+        vertices = verts[0];
+        texVertices = verts[1];
+        configureTexture(room.ceilingTexture);
+        renderCurrentVertices(TEXTURES.DRAW_TEXTURE);
+    }
+    
     // Draw paintings
     curColor = COLORS.GREEN;
     paintings = room.paintings;

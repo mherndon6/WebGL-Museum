@@ -5,6 +5,11 @@ var lobbyCarpet = {
 	scale: 1
 };
 
+var lobbyCeiling = {
+	src: "ceiling1.png",
+	scale: .2
+}
+
 var drywall = {
 	src: "drywall.jpg",
 	scale: .5

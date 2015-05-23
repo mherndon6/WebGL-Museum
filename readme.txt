@@ -12,7 +12,6 @@ Make sure to run chrome with option --allow-file-access-from-files
 -Think of exhibits (paintings)
 -Bump mapping on walls and tiles on floor
 -Frame pictures
--Add ceiling
 -Light geometries on ceiling
 -Lighting
 -Front plaque

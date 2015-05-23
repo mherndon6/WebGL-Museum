@@ -9,43 +9,44 @@ var gl;
 
 var fullScreenEnabled = false;
 
-vertices = [];
-texVertices = [];
+var vertices = [];
+var texVertices = [];
 
-itemSize = 3;
+var itemSize = 3;
 
-initCamX = -42;
-initCamY = 8;
-initCamZ = 10;
-initAzim = 0;
-initPitch = -10;
-initFOV = 40;
+var initCamX = -42;
+var initCamY = 8;
+var initCamZ = 10;
+var initAzim = 0;
+var initPitch = -10;
+var initFOV = 40;
 
-camX = initCamX;
-camY = initCamY;
-camZ = initCamZ;
-azim = initAzim;
-pitch = initPitch;
-fov = initFOV;
+var camX = initCamX;
+var camY = initCamY;
+var camZ = initCamZ;
+var azim = initAzim;
+var pitch = initPitch;
+var fov = initFOV;
 
-wHeld = false;
-aHeld = false;
-sHeld = false;
-dHeld = false;
-leftHeld = false;
-rightHeld = false;
-shiftHeld = false;
-spaceHeld = false;
+var wHeld = false;
+var aHeld = false;
+var sHeld = false;
+var dHeld = false;
+var leftHeld = false;
+var rightHeld = false;
+var shiftHeld = false;
+var spaceHeld = false;
 
-rotationSpeed = 360;
-rotVal = 0;
-then = 0;
+var rotationSpeed = 360;
+var rotVal = 0;
+var then = 0;
 
-noTranslation = [0,0,0];
-noRotation 	  = 0;
-noScale       = [1,1,1];
+var noTranslation = [0,0,0];
+var noRotation 	  = 0;
+var noScale       = [1,1,1];
 
 var curRoomIndex = 0;
+var renderCeiling = true;
 
 var COLORS = {
 	WHITE: [1.0, 1.0, 1.0, 1.0],
