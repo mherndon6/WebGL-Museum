@@ -22,7 +22,7 @@ var initCamY = 8;
 var initCamZ = 10;
 var initAzim = 0;
 var initPitch = -10;
-var initFOV = 40;
+var initFOV = 30;
 
 var camX = initCamX;
 var camY = initCamY;

@@ -180,9 +180,8 @@ var room6 = {
     ceilingTexture: lobbyCarpet,
 
     paintings: [[(leftWall + midLeftWall)/2, midBottomWall, weepingWoman],
-                [(midBottomWall + midTopWall)/2, leftWall, snowStorm],
-                [midTopWall, leftWall, scream],
-                [(midTopWall + topWall)/2, leftWall, numberFive],
+                [(midBottomWall + midTopWall)/2 - 10, leftWall, snowStorm],
+                [(midTopWall + topWall)/2 + 10, leftWall, scream],
                 [(leftWall + midLeftWall)/2, topWall, pompeii]]
 };
 
