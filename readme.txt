@@ -39,12 +39,14 @@ Hallway:
     Floor:
     Song:
 
-1 (small) Baroque:
+1 (small) Neoclassical:
     Walls: white
     Floor:
     Song: Bach Harpsichord
     Paintings:
-        The Night Watch - Rembrandt
+        Oath of the Horatii - Jacques-Louis David
+        Napoleon I on his Imperial Throne - Ingres
+        The Death of General Wolfe - Benjamin West
 
 2 (small) Landscapes:
     Walls:
@@ -52,6 +54,8 @@ Hallway:
     Song:
     Paintings:
         Ulysses deriding Polyphemus - J.M.W. Turner
+        XP theme
+        Moonlit landscape - Rembrandt
 
 3 (big) Famous:
     Walls: white
@@ -59,8 +63,8 @@ Hallway:
     Song: 
     Paintings:
         Starry Night - Van Gogh
-        The School of Athens - Raphael
         The Mona Lisa - Leonardo da Vinci
+        Ecce Mono - Elias Garcia Martinez
         
 
 Upper Hallway:
@@ -74,11 +78,12 @@ Upper Hallway:
     Song:
     Paintings: 
 
-5 (small):
+5 (small) Light:
     Walls:
     Floor:
     Song:
-    Paintings: 
+    Paintings:
+        
 
 6 (big) Dark:
     Walls: pyramids sticking out
@@ -86,9 +91,10 @@ Upper Hallway:
     Song: 
     Paintings:
         The Weeping Woman - Picasso
-        Hannibal Crossing the Alps - J.M.W. Turner
+        Snow Storm - J.M.W. Turner
         The Scream - Edvard Munch
         No. 5, 1948 - Jackson Pollock
+        The Last Day of Pompeii - Karl Briullov
 
 Shrine:
     Walls:
