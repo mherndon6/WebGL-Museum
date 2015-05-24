@@ -126,8 +126,8 @@ var room3 = {
     floorTexture: lobbyCarpet,
     ceilingTexture: lobbyCeiling,
 
-    paintings: [[(leftWall + midLeftWall)/2, midBottomWall, monaLisa],
-                [(midBottomWall + midTopWall)/2, leftWall, monaLisa],
+    paintings: [[(leftWall + midLeftWall)/2, midBottomWall, sundayAfternoon],
+                [(midBottomWall + midTopWall)/2, leftWall, pearlEarring],
                 [midTopWall, leftWall, starryNight],
                 [(midTopWall + topWall)/2, leftWall, monaLisa],
                 [(leftWall + midLeftWall)/2, topWall, ecceHomo]]
