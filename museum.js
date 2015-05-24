@@ -293,10 +293,19 @@ function cycleRooms() {
 }
 
 function toggleFloor() {
-    if (hallway.doors[0][2] == ROOMS.LOBBY)
+    if (hallway.doors[0][2] == ROOMS.LOBBY) { // floor 1
         hallway.doors[0][2] = ROOMS.SHRINE;
-    else
+        hallway.doors[1][2] = ROOMS.ROOM6;
+        hallway.doors[2][2] = ROOMS.ROOM4;
+        hallway.doors[3][2] = ROOMS.ROOM5;
+    }
+    else { // floor 2
         hallway.doors[0][2] = ROOMS.LOBBY;
+        hallway.doors[1][2] = ROOMS.ROOM3;
+        hallway.doors[2][2] = ROOMS.ROOM1;
+        hallway.doors[3][2] = ROOMS.ROOM2;
+    }
+
 }
 
 // From book, added options for the two different cubes to use nearest neighbor or tri-linear mipmapping

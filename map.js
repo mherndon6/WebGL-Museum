@@ -127,17 +127,51 @@ var room3 = {
 };
 
 var room4 = {
+    numWalls: room1.numWalls,
     walls: room1.walls,
+    doors: room1.doors,
 
+    wallColor: COLORS.GREEN,
+    wallTexture: drywall,
+
+    floorTexture: lobbyCarpet,
+    ceilingTexture: lobbyCeiling,
+
+    paintings: [[(rightWall + midRightWall)/2, midTopWall, starryNight],
+                [(midBottomWall + midTopWall)/2, rightWall, starryNight],
+                [(rightWall + midRightWall)/2, midBottomWall, starryNight]]
 };
 
 var room5 = {
+    numWalls: room2.numWalls,
     walls: room2.walls,
+    doors: room2.doors,
+    
+    wallColor: COLORS.WHITE,
+    wallTexture: drywall,
 
+    floorTexture: drywall,
+    ceilingTexture: lobbyCeiling,
+
+    paintings: [[(rightWall + midRightWall)/2, topWall, monaLisa],
+                [(topWall + midTopWall)/2, rightWall, starryNight],
+                [(rightWall + midRightWall)/2, midTopWall, monaLisa]]
 };
 
 var room6 = {
+    numWalls: room3.numWalls,
     walls: room3.walls,
+    doors: room3.doors,
+
+    wallColor: COLORS.WHITE,
+    wallTexture: drywall,
+
+    floorTexture: drywall,
+    ceilingTexture: lobbyCarpet,
+
+    paintings: [[(leftWall + midLeftWall)/2, midBottomWall, monaLisa],
+                [midTopWall, leftWall, starryNight],
+                [(leftWall + midLeftWall)/2, topWall, monaLisa]]
 };
 
 var staircase = {
@@ -174,7 +208,8 @@ var shrine = {
     paintings: []
 };
 
-var rooms = [lobby, hallway, room1, room2, room3, staircase, shrine];
+var rooms = [lobby, hallway, room1, room2, room3, staircase, 
+             room4, room5, room6, shrine];
 var curRoom = lobby;
 
 function getRoomVertices(room, scaleDown) {

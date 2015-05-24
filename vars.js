@@ -1,7 +1,7 @@
 // ---------------- CONSTANTS --------------- //
 INITIAL_CANVAS_WIDTH = 960;
 INITIAL_CANVAS_HEIGHT = 540;
-MOVEMENT_SPEED = 15;
+MOVEMENT_SPEED = 35; //TODO 15
 WALL_GAP = 0.4
 
 // ---------------- GLOBALS ---------------- //
@@ -71,7 +71,10 @@ var ROOMS = {
 	ROOM2: 3,
 	ROOM3: 4,
 	STAIRCASE: 5,
-	SHRINE: 6
+        ROOM4: 6,
+        ROOM5: 7,
+        ROOM6: 8,
+	SHRINE: 9
 };
 var WALL_OBJECT = {
 	DOORS: 0,
