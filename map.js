@@ -37,7 +37,7 @@ var lobby = {
             [midLeftWall, midBottomWall],
             [midRightWall, midBottomWall],
             [midRightWall, bottomWall]],
-    doors: [[(midRightWall + midLeftWall)/2 - doorWidth/2, midBottomWall, ROOMS.HALLWAY]],
+    doors: [[(midRightWall + midLeftWall)/2, midBottomWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.WHITE,
     wallTexture: drywall,
@@ -54,10 +54,10 @@ var hallway = {
             [midLeftWall, topWall],
             [midRightWall, topWall],
             [midRightWall, midBottomWall]],
-    doors: [[(midRightWall + midLeftWall)/2 - doorWidth/2, midBottomWall, ROOMS.LOBBY],
-            [(midBottomWall + topWall)/2 - doorWidth/2, midLeftWall, ROOMS.ROOM3],
-            [(midBottomWall + midTopWall)/2 - doorWidth/2, midRightWall, ROOMS.ROOM1],
-            [(midTopWall + topWall)/2 - doorWidth/2, midRightWall, ROOMS.ROOM2],
+    doors: [[(midRightWall + midLeftWall)/2, midBottomWall, ROOMS.LOBBY],
+            [(midBottomWall + topWall)/2, midLeftWall, ROOMS.ROOM3],
+            [(midBottomWall + midTopWall)/2, midRightWall, ROOMS.ROOM1],
+            [(midTopWall + topWall)/2, midRightWall, ROOMS.ROOM2],
             [(midLeftWall + midRightWall)/2 + doorWidth/2, topWall, ROOMS.STAIRCASE]],
 
     wallColor: COLORS.WHITE,
@@ -66,7 +66,7 @@ var hallway = {
     floorTexture: lobbyCarpet,
     ceilingTexture: lobbyCeiling,
 
-    paintings: [[midLeftWall + 5, topWall, scott]]
+    paintings: [[midLeftWall, topWall, scott]]
 };
 
 var room1 = {
@@ -75,7 +75,7 @@ var room1 = {
             [midRightWall, midTopWall],
             [rightWall, midTopWall],
             [rightWall, midBottomWall]],
-    doors: [[(midBottomWall + midTopWall)/2 - doorWidth/2, midRightWall, ROOMS.HALLWAY]],
+    doors: [[(midBottomWall + midTopWall)/2, midRightWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.WHITE,
     wallTexture: drywall,
@@ -83,7 +83,9 @@ var room1 = {
     floorTexture: lobbyCarpet,
     ceilingTexture: lobbyCeiling,
 
-    paintings: []
+    paintings: [[(rightWall + midRightWall)/2, midTopWall, monaLisa],
+                [(midBottomWall + midTopWall)/2, rightWall, starryNight],
+                [(rightWall + midRightWall)/2, midBottomWall, monaLisa]]
 };
 
 var room2 = {
@@ -92,7 +94,7 @@ var room2 = {
             [midRightWall, topWall],
             [rightWall, topWall],
             [rightWall, midTopWall]],
-    doors: [[(midTopWall + topWall)/2 - doorWidth/2, midRightWall, ROOMS.HALLWAY]],
+    doors: [[(midTopWall + topWall)/2, midRightWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.WHITE,
     wallTexture: drywall,
@@ -100,7 +102,9 @@ var room2 = {
     floorTexture: lobbyCarpet,
     ceilingTexture: lobbyCeiling,
 
-    paintings: []
+    paintings: [[(rightWall + midRightWall)/2, topWall, monaLisa],
+                [(topWall + midTopWall)/2, rightWall, starryNight],
+                [(rightWall + midRightWall)/2, midTopWall, monaLisa]]
 };
 
 var room3 = {
@@ -109,7 +113,7 @@ var room3 = {
             [leftWall, topWall],
             [midLeftWall, topWall],
             [midLeftWall, midBottomWall]],
-    doors: [[(midBottomWall + topWall)/2 - doorWidth/2, midLeftWall, ROOMS.HALLWAY]],
+    doors: [[(midBottomWall + topWall)/2, midLeftWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.WHITE,
     wallTexture: none,
@@ -117,9 +121,9 @@ var room3 = {
     floorTexture: lobbyCarpet,
     ceilingTexture: lobbyCeiling,
 
-    paintings: [[midTopWall, leftWall, starryNight],
-                [(leftWall + midLeftWall)/2, topWall, monaLisa],
-                [(leftWall + midLeftWall)/2, midBottomWall, monaLisa]]
+    paintings: [[(leftWall + midLeftWall)/2, midBottomWall, monaLisa],
+                [midTopWall, leftWall, starryNight],
+                [(leftWall + midLeftWall)/2, topWall, monaLisa]]
 };
 
 var room4 = {
@@ -159,7 +163,7 @@ var shrine = {
             [leftWall, midBottomWall],
             [rightWall, midBottomWall],
             [rightWall, shrineBottomWall]],
-    doors: [[(midRightWall + midLeftWall)/2 - doorWidth/2, midBottomWall, ROOMS.HALLWAY]],
+    doors: [[(midRightWall + midLeftWall)/2, midBottomWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.WHITE,
     wallTexture: drywall,
@@ -299,8 +303,8 @@ function getWallObjectVertices(objects, room, type) {
             hangingHeight = curObject[2].hangingHeight;
         }
 
-        var pointOne = curObject[0];
-        var pointTwo = curObject[0] + objectWidth;
+        var pointOne = curObject[0] - objectWidth/2;
+        var pointTwo = curObject[0] + objectWidth/2;
 
         //two triangles per door
         if (curObject[1] == leftWall || curObject[1] == midLeftWall || curObject[1] == midRightWall || curObject[1] == rightWall) { //door goes north-south

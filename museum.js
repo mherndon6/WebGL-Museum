@@ -209,7 +209,7 @@ function attemptMove(axis, dist) {
     for (var i = 0; i < doors.length; i++) {
         var curDoor = doors[i];
         if (doors[i][1] == leftWall || doors[i][1] == midLeftWall || doors[i][1] == midRightWall || doors[i][1] == rightWall) { // Door goes north-south
-            if (newCamZ > curDoor[0] && newCamZ < curDoor[0] + doorWidth && Math.abs(curDoor[1] - newCamX) < doorDepth) {
+            if (newCamZ > curDoor[0] - doorWidth/2 && newCamZ < curDoor[0] + doorWidth/2 && Math.abs(curDoor[1] - newCamX) < doorDepth) {
                 //console.log("Vert door, wall placement: " + curDoor[1] + " == " + topWall + " || " + bottomWall);
                 // Check movement direction so you don't switch back and forth between rooms
                 if (curDoor[1] == rightBorder && movingRight || curDoor[1] == leftBorder && !movingRight) {
@@ -225,7 +225,7 @@ function attemptMove(axis, dist) {
             }
         }
         else { // Door goes east-west
-            if (newCamX > curDoor[0] && newCamX < curDoor[0] + doorWidth && 
+            if (newCamX > curDoor[0]  - doorWidth/2 && newCamX < curDoor[0] + doorWidth/2 && 
                 Math.abs(curDoor[1] - newCamZ) < doorDepth) {
                 //console.log("Hor door, wall placement: " + curDoor[1] + " == " + topBorder + " || " + bottomBorder);
                 // Check movement direction so you don't switch back and forth between rooms
