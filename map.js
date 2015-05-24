@@ -2,8 +2,8 @@ var globalScale = 1.5;
 var textureScale = .05;
 
 var groundHeight = 0;
-var lightHeight = 9.5 * globalScale;
 var wallHeight = 10 * globalScale;
+var lightHeight = wallHeight - 1;
 
 var lightWidth = 3;
 var doorWidth = 4 * globalScale;
@@ -37,6 +37,7 @@ var lobby = {
             [midLeftWall, midBottomWall],
             [midRightWall, midBottomWall],
             [midRightWall, bottomWall]],
+    wallHeight: 10,
     doors: [[(midRightWall + midLeftWall)/2, midBottomWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.WHITE,
@@ -54,6 +55,7 @@ var hallway = {
             [midLeftWall, topWall],
             [midRightWall, topWall],
             [midRightWall, midBottomWall]],
+    wallHeight: 10,
     doors: [[(midRightWall + midLeftWall)/2, midBottomWall, ROOMS.LOBBY],
             [(midBottomWall + topWall)/2, midLeftWall, ROOMS.ROOM3],
             [(midBottomWall + midTopWall)/2, midRightWall, ROOMS.ROOM1],
@@ -66,7 +68,7 @@ var hallway = {
     floorTexture: lobbyCarpet,
     ceilingTexture: lobbyCeiling,
 
-    paintings: [[midLeftWall, topWall, scott]]
+    paintings: []
 };
 
 var room1 = {
@@ -75,6 +77,7 @@ var room1 = {
             [midRightWall, midTopWall],
             [rightWall, midTopWall],
             [rightWall, midBottomWall]],
+    wallHeight: 15,
     doors: [[(midBottomWall + midTopWall)/2, midRightWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.WHITE,
@@ -83,9 +86,9 @@ var room1 = {
     floorTexture: lobbyCarpet,
     ceilingTexture: lobbyCeiling,
 
-    paintings: [[(rightWall + midRightWall)/2, midTopWall, monaLisa],
-                [(midBottomWall + midTopWall)/2, rightWall, starryNight],
-                [(rightWall + midRightWall)/2, midBottomWall, monaLisa]]
+    paintings: [[(rightWall + midRightWall)/2, midTopWall, horatii],
+                [(midBottomWall + midTopWall)/2, rightWall, napoleon],
+                [(rightWall + midRightWall)/2, midBottomWall, wolfe]]
 };
 
 var room2 = {
@@ -94,6 +97,7 @@ var room2 = {
             [midRightWall, topWall],
             [rightWall, topWall],
             [rightWall, midTopWall]],
+    wallHeight: 10,
     doors: [[(midTopWall + topWall)/2, midRightWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.WHITE,
@@ -102,9 +106,9 @@ var room2 = {
     floorTexture: lobbyCarpet,
     ceilingTexture: lobbyCeiling,
 
-    paintings: [[(rightWall + midRightWall)/2, topWall, monaLisa],
-                [(topWall + midTopWall)/2, rightWall, starryNight],
-                [(rightWall + midRightWall)/2, midTopWall, monaLisa]]
+    paintings: [[(rightWall + midRightWall)/2, topWall, ulysses],
+                [(topWall + midTopWall)/2, rightWall, moonlitLandscape],
+                [(rightWall + midRightWall)/2, midTopWall, xp]]
 };
 
 var room3 = {
@@ -113,6 +117,7 @@ var room3 = {
             [leftWall, topWall],
             [midLeftWall, topWall],
             [midLeftWall, midBottomWall]],
+    wallHeight: 10,
     doors: [[(midBottomWall + topWall)/2, midLeftWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.WHITE,
@@ -122,13 +127,16 @@ var room3 = {
     ceilingTexture: lobbyCeiling,
 
     paintings: [[(leftWall + midLeftWall)/2, midBottomWall, monaLisa],
+                [(midBottomWall + midTopWall)/2, leftWall, monaLisa],
                 [midTopWall, leftWall, starryNight],
-                [(leftWall + midLeftWall)/2, topWall, monaLisa]]
+                [(midTopWall + topWall)/2, leftWall, monaLisa],
+                [(leftWall + midLeftWall)/2, topWall, ecceHomo]]
 };
 
 var room4 = {
     numWalls: room1.numWalls,
     walls: room1.walls,
+    wallHeight: room1.wallHeight,
     doors: room1.doors,
 
     wallColor: COLORS.GREEN,
@@ -145,6 +153,7 @@ var room4 = {
 var room5 = {
     numWalls: room2.numWalls,
     walls: room2.walls,
+    wallHeight: room2.wallHeight,
     doors: room2.doors,
     
     wallColor: COLORS.WHITE,
@@ -161,6 +170,7 @@ var room5 = {
 var room6 = {
     numWalls: room3.numWalls,
     walls: room3.walls,
+    wallHeight: 25,
     doors: room3.doors,
 
     wallColor: COLORS.WHITE,
@@ -169,9 +179,11 @@ var room6 = {
     floorTexture: drywall,
     ceilingTexture: lobbyCarpet,
 
-    paintings: [[(leftWall + midLeftWall)/2, midBottomWall, monaLisa],
-                [midTopWall, leftWall, starryNight],
-                [(leftWall + midLeftWall)/2, topWall, monaLisa]]
+    paintings: [[(leftWall + midLeftWall)/2, midBottomWall, weepingWoman],
+                [(midBottomWall + midTopWall)/2, leftWall, snowStorm],
+                [midTopWall, leftWall, scream],
+                [(midTopWall + topWall)/2, leftWall, numberFive],
+                [(leftWall + midLeftWall)/2, topWall, pompeii]]
 };
 
 var staircase = {
@@ -180,6 +192,7 @@ var staircase = {
             [midLeftWall, topStairWall],
             [midRightWall, topStairWall],
             [midRightWall, topWall]],
+    wallHeight: 10,
     doors: [[(midLeftWall + midRightWall)/2 + doorWidth/2, topWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.WHITE,
@@ -197,6 +210,7 @@ var shrine = {
             [leftWall, midBottomWall],
             [rightWall, midBottomWall],
             [rightWall, shrineBottomWall]],
+    wallHeight: 50,
     doors: [[(midRightWall + midLeftWall)/2, midBottomWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.WHITE,
@@ -333,8 +347,8 @@ function getWallObjectVertices(objects, room, type) {
         var curObject = objects[i];
 
         if (type == WALL_OBJECT.PAINTINGS) {
-            objectWidth = curObject[2].width;
-            objectHeight = curObject[2].height;
+            objectWidth = curObject[2].width * INCHES_SCALE;
+            objectHeight = curObject[2].height * INCHES_SCALE;
             hangingHeight = curObject[2].hangingHeight;
         }
 
