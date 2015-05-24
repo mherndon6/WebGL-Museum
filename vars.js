@@ -2,7 +2,8 @@
 INITIAL_CANVAS_WIDTH = 960;
 INITIAL_CANVAS_HEIGHT = 540;
 MOVEMENT_SPEED = 35; //TODO 15
-WALL_GAP = 0.4
+WALL_GAP = 0.4;
+INCHES_SCALE = 0.15;
 
 // ---------------- GLOBALS ---------------- //
 var gl;
@@ -21,7 +22,7 @@ var initCamY = 8;
 var initCamZ = 10;
 var initAzim = 0;
 var initPitch = -10;
-var initFOV = 40;
+var initFOV = 30;
 
 var camX = initCamX;
 var camY = initCamY;

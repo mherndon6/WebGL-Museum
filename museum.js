@@ -215,6 +215,8 @@ function attemptMove(axis, dist) {
                 if (curDoor[1] == rightBorder && movingRight || curDoor[1] == leftBorder && !movingRight) {
                     curRoomIndex = curDoor[2];
                     curRoom = rooms[curRoomIndex];
+                    wallHeight = curRoom.wallHeight * globalScale;
+                    lightHeight = wallHeight - 1;
                     movingRight? camX -= 1 : camX += 1;
                     if (!muted)
                         document.getElementById('door.wav').play();
@@ -232,6 +234,8 @@ function attemptMove(axis, dist) {
                 if (curDoor[1] == topBorder && movingUp || curDoor[1] == bottomBorder && movingDown) {
                     curRoomIndex = curDoor[2];
                     curRoom = rooms[curRoomIndex];
+                    wallHeight = curRoom.wallHeight * globalScale;
+                    lightHeight = wallHeight - 1;
                     movingUp? camZ += 1 : camZ -= 1;
                     if (!muted)
                         document.getElementById('door.wav').play();
@@ -290,6 +294,8 @@ function cycleRooms() {
     if (curRoomIndex == rooms.length)
         curRoomIndex = 0;
     curRoom = rooms[curRoomIndex];
+    wallHeight = curRoom.wallHeight * globalScale;
+    lightHeight = wallHeight - 1;
 }
 
 function toggleFloor() {
@@ -485,6 +491,8 @@ function restart() {
     pitch = initPitch;
     curRoomIndex = 0;
     curRoom = rooms[0];
+    wallHeight = curRoom.wallHeight * globalScale;
+    lightHeight = wallHeight - 1;
     if (hallway.doors[0][2] == ROOMS.LOBBY)
         hallway.doors[0][2] = ROOMS.SHRINE;
 }
