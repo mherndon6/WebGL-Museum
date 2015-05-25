@@ -17,7 +17,36 @@ var muted = false;
 
 var itemSize = 3;
 
-var initCamX = -42;
+/* Previously in map.js */
+var globalScale = 1.5;
+var textureScale = .05;
+
+var groundHeight = 0;
+var wallHeight = 10 * globalScale;
+var lightHeight = wallHeight - 1;
+
+var lightWidth = 3;
+var doorWidth = 4 * globalScale;
+var doorHeight = 7 * globalScale;
+var doorDepth = 0.5;
+var visibleDoorDepth = 0.1;
+
+var leftWall = 0 * globalScale;
+var midLeftWall = 30 * globalScale;
+var midRightWall = 50 * globalScale;
+var rightWall = 75 * globalScale;
+
+var shrineBottomWall = 4500 * globalScale;
+var bottomWall = -1 * globalScale;
+var midBottomWall = -15 * globalScale;
+var midTopWall = -45 * globalScale;
+var topWall = -75 * globalScale;
+var topStairWall = -85 * globalScale;
+/* end previously in map.js */
+
+
+
+var initCamX = -60;
 var initCamY = 8;
 var initCamZ = 10;
 var initAzim = 0;

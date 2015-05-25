@@ -175,12 +175,27 @@ var pompeii = {
     hangingHeight: 5
 };
 
+// stairs
+var floor1 = {
+    src: "floor1.png",
+    width: 40,
+    height: 40,
+    hangingHeight: 4
+}
+
+var floor2 = {
+    src: "floor2.png",
+    width: 40,
+    height: 40,
+    hangingHeight: 4
+}
+
 // shrine
 var scott = {
     src: "scott.png",
-    width: 5,
-    height: 5,
-    hangingHeight: 6,
+    width: 50000,
+    height: 50000,
+    hangingHeight: 1000,
 };
 
 // ----------------- OTHER ----------------- //

@@ -258,9 +258,6 @@ function attemptMove(axis, dist) {
                     movingRight? camX -= 1 : camX += 1;
                     if (!muted)
                         document.getElementById('door.wav').play();
-                    // Toggle floor
-                    if (curRoomIndex == 5)
-                        toggleFloor();
                 }
             }
         }
@@ -277,9 +274,6 @@ function attemptMove(axis, dist) {
                     movingUp? camZ += 1 : camZ -= 1;
                     if (!muted)
                         document.getElementById('door.wav').play();
-                    // Toggle floor
-                    if (curRoomIndex == 5)
-                        toggleFloor();
                 }
             }
         }
@@ -337,13 +331,19 @@ function cycleRooms() {
 }
 
 function toggleFloor() {
-    if (hallway.doors[0][2] == ROOMS.LOBBY) { // floor 1
+/*TODO Uncomment    if (curRoomIndex != ROOMS.STAIRCASE) {
+        return;
+    }
+*/
+    if (hallway.doors[0][2] == ROOMS.LOBBY) { // floor 1 -> floor 2
+        staircase.paintings[0][2] = floor2;
         hallway.doors[0][2] = ROOMS.SHRINE;
         hallway.doors[1][2] = ROOMS.ROOM6;
         hallway.doors[2][2] = ROOMS.ROOM4;
         hallway.doors[3][2] = ROOMS.ROOM5;
     }
-    else { // floor 2
+    else { // floor 2 -> floor 1
+        staircase.paintings[0][2] = floor1;
         hallway.doors[0][2] = ROOMS.LOBBY;
         hallway.doors[1][2] = ROOMS.ROOM3;
         hallway.doors[2][2] = ROOMS.ROOM1;
@@ -471,6 +471,9 @@ function keyPressed(e) {
             break;
         case 83: //s
             sHeld = true;
+            break;
+        case 84: //t
+            toggleFloor();
             break;
         case 87: //w
             wHeld = true;

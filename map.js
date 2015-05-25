@@ -1,28 +1,3 @@
-var globalScale = 1.5;
-var textureScale = .05;
-
-var groundHeight = 0;
-var wallHeight = 10 * globalScale;
-var lightHeight = wallHeight - 1;
-
-var lightWidth = 3;
-var doorWidth = 4 * globalScale;
-var doorHeight = 7 * globalScale;
-var doorDepth = 0.5;
-var visibleDoorDepth = 0.1;
-
-var leftWall = 0 * globalScale;
-var midLeftWall = 20 * globalScale;
-var midRightWall = 35 * globalScale;
-var rightWall = 55 * globalScale;
-
-var shrineBottomWall = 50 * globalScale;
-var bottomWall = -1 * globalScale;
-var midBottomWall = -15 * globalScale;
-var midTopWall = -45 * globalScale;
-var topWall = -75 * globalScale;
-var topStairWall = -85 * globalScale;
-
 /* Room:
 numWalls: number of walls in room (should be 4, but 3 or >4 might work by default)
 walls: array of points defining four corners of room IN CLOCKWISE ORDER FROM BOTTOMLEFT
@@ -223,16 +198,16 @@ var staircase = {
 
     lighting: testLight,
 
-    paintings: []
+    paintings: [[(midLeftWall + midRightWall)/2, topStairWall, floor1]]
 };
 
 var shrine = {
     numWalls: 4,
-    walls: [[leftWall, shrineBottomWall],
-            [leftWall, midBottomWall],
-            [rightWall, midBottomWall],
-            [rightWall, shrineBottomWall]],
-    wallHeight: 50,
+    walls: [[leftWall - 50000, shrineBottomWall],
+            [leftWall - 50000, midBottomWall],
+            [rightWall + 50000, midBottomWall],
+            [rightWall + 50000, shrineBottomWall]],
+    wallHeight: 7500,
     doors: [[(midRightWall + midLeftWall)/2, midBottomWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.WHITE,
@@ -243,7 +218,7 @@ var shrine = {
 
     lighting: testLight,
 
-    paintings: []
+    paintings: [[(midLeftWall + midRightWall)/2, shrineBottomWall - 250, scott]]
 };
 
 var rooms = [lobby, hallway, room1, room2, room3, staircase, 
