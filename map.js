@@ -48,7 +48,7 @@ var lobby = {
     doors: [[(midRightWall + midLeftWall)/2, midBottomWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.WHITE,
-    wallTexture: none,
+    wallTexture: drywall,
 
     floorTexture: lobbyCarpet,
     ceilingTexture: lobbyCeiling,
@@ -76,7 +76,7 @@ var hallway = {
 
     floorTexture: lobbyCarpet,
     ceilingTexture: lobbyCeiling,
-    
+
     lighting: testLight,
 
     paintings: []
@@ -143,8 +143,8 @@ var room3 = {
 
     lighting: testLight,
 
-    paintings: [[(leftWall + midLeftWall)/2, midBottomWall, monaLisa],
-                [(midBottomWall + midTopWall)/2, leftWall, monaLisa],
+    paintings: [[(leftWall + midLeftWall)/2, midBottomWall, sundayAfternoon],
+                [(midBottomWall + midTopWall)/2, leftWall, pearlEarring],
                 [midTopWall, leftWall, starryNight],
                 [(midTopWall + topWall)/2, leftWall, monaLisa],
                 [(leftWall + midLeftWall)/2, topWall, ecceHomo]]
@@ -203,9 +203,8 @@ var room6 = {
     lighting: testLight,
 
     paintings: [[(leftWall + midLeftWall)/2, midBottomWall, weepingWoman],
-                [(midBottomWall + midTopWall)/2, leftWall, snowStorm],
-                [midTopWall, leftWall, scream],
-                [(midTopWall + topWall)/2, leftWall, numberFive],
+                [(midBottomWall + midTopWall)/2 - 10, leftWall, snowStorm],
+                [(midTopWall + topWall)/2 + 10, leftWall, scream],
                 [(leftWall + midLeftWall)/2, topWall, pompeii]]
 };
 
