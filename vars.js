@@ -39,9 +39,9 @@ var rightWall = 75 * globalScale;
 
 var shrineBottomWall = 4500 * globalScale;
 var bottomWall = -1 * globalScale;
-var midBottomWall = -15 * globalScale;
+var midBottomWall = -20 * globalScale;
 var midTopWall = -45 * globalScale;
-var topWall = -75 * globalScale;
+var topWall = -70 * globalScale;
 var topStairWall = -85 * globalScale;
 
 

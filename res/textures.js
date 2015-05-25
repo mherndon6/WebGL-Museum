@@ -15,10 +15,20 @@ var woodFloor = {
 	scale: .5
 };
 
+var creepyFloor = {
+	src: "creepy-floor.png",
+	scale: .25
+};
+
+var blueCarpet = {
+	src: "blue-carpet.png",
+	scale: .25
+};
+
 var lobbyCeiling = {
 	src: "ceiling1.png",
 	scale: .2
-}
+};
 
 var drywall = {
 	src: "drywall.jpg",
@@ -28,10 +38,25 @@ var drywall = {
 var marble = {
 	src: "marble.png",
 	scale: .5
-}
+};
 
 var wood = {
 	src: "wood.png",
+	scale: .5
+};
+
+var floral = {
+	src: "floral.png",
+	scale: .5
+};
+
+var stainedWood = {
+	src: "stained-wood.png",
+	scale: .5
+};
+
+var elevatorWall = {
+	src: "elevator-wall.png",
 	scale: .5
 };
 
@@ -76,14 +101,14 @@ var moonlitLandscape = {
     src: "moonlit-landscape.png",
     width: 52,
     height: 35,
-    hangingHeight: 6
+    hangingHeight: 5
 };
 
 var xp = {
     src: "xp-theme.png",
     width: 55,
     height: 42,
-    hangingHeight: 5
+    hangingHeight: 4.5
 };
 
 // room3
@@ -178,7 +203,7 @@ var snowStorm = {
     src: "snow-storm.png",
     width: 93.5,
     height: 57.5,
-    hangingHeight: 5
+    hangingHeight: 7
 };
 
 var scream = {
