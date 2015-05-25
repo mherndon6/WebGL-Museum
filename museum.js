@@ -75,11 +75,24 @@ function render(now) {
 
     renderRoom(curRoomIndex);
     updateMovement(timeChange);
+
+    // Fade previous song out
+    if (prevSong) {
+        var newVol = prevSong.volume - timeChange * 0.14;
+        if (newVol <= 0) { 
+            prevSong.pause(); 
+            prevSong = null; 
+        }
+        else { prevSong.volume = newVol; }        
+    }
+
+    // Fade current song in
     if (curRoom.song) {
         var newVol = curRoom.song.volume + timeChange * 0.10;
-        if (newVol > 1) { curRoom.song.volume = 1.0;}
-        else { curRoom.song.volume = newVol;}
+        if (newVol > 1) { curRoom.song.volume = 1.0; }
+        else { curRoom.song.volume = newVol; }
     }
+
     requestAnimationFrame(render);
 };
 
@@ -264,8 +277,7 @@ function attemptMove(axis, dist) {
                 // Check movement direction so you don't switch back and forth between rooms
                 if (curDoor[1] == rightBorder && movingRight || curDoor[1] == leftBorder && !movingRight) {
                     if (curRoom.song) {
-                        curRoom.song.volume = 0.0;
-                        curRoom.song.pause();
+                        prevSong = curRoom.song;
                     }
                     curRoomIndex = curDoor[2];
                     curRoom = rooms[curRoomIndex];
@@ -291,8 +303,7 @@ function attemptMove(axis, dist) {
                 // Check movement direction so you don't switch back and forth between rooms
                 if (curDoor[1] == topBorder && movingUp || curDoor[1] == bottomBorder && movingDown) {
                     if (curRoom.song) {
-                        curRoom.song.volume = 0.0;
-                        curRoom.song.pause();
+                        prevSong = curRoom.song;
                     }
                     curRoomIndex = curDoor[2];
                     curRoom = rooms[curRoomIndex];
