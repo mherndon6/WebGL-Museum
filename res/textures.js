@@ -10,6 +10,11 @@ var marbleTile = {
 	scale: .5
 };
 
+var woodFloor = {
+	src: "wood-floor.png",
+	scale: .5
+};
+
 var lobbyCeiling = {
 	src: "ceiling1.png",
 	scale: .2
@@ -24,6 +29,11 @@ var marble = {
 	src: "marble.png",
 	scale: .5
 }
+
+var wood = {
+	src: "wood.png",
+	scale: .5
+};
 
 var door = {
 	src: "door.jpg",
@@ -117,7 +127,7 @@ var sunset = {
     src: "sunset.png",
     width: 44.75,
     height: 27,
-    hangingHeight: 5.5
+    hangingHeight: 7
 };
 
 var hetSteen = {

@@ -88,10 +88,10 @@ var room2 = {
     doors: [[(midTopWall + topWall)/2, midRightWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.WHITE,
-    wallTexture: drywall,
+    wallTexture: wood,
 
-    floorTexture: lobbyCarpet,
-    ceilingTexture: lobbyCeiling,
+    floorTexture: woodFloor,
+    ceilingTexture: wood,
 
     lighting: testLight,
 
@@ -131,10 +131,10 @@ var room4 = {
     doors: room1.doors,
 
     wallColor: COLORS.GREEN,
-    wallTexture: drywall,
+    wallTexture: wood,
 
-    floorTexture: lobbyCarpet,
-    ceilingTexture: lobbyCeiling,
+    floorTexture: woodFloor,
+    ceilingTexture: wood,
 
     lighting: testLight,
     paintings: [[(rightWall + midRightWall)/2, midTopWall, sunset],
