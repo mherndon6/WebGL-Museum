@@ -111,10 +111,10 @@ var room3 = {
     doors: [[(midBottomWall + topWall)/2, midLeftWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.WHITE,
-    wallTexture: drywall,
+    wallTexture: marble,
 
-    floorTexture: lobbyCarpet,
-    ceilingTexture: lobbyCeiling,
+    floorTexture: marbleTile,
+    ceilingTexture: marble,
 
     lighting: testLight,
 

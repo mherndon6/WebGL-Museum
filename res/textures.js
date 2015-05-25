@@ -5,6 +5,11 @@ var lobbyCarpet = {
 	scale: 1
 };
 
+var marbleTile = {
+	src: "marble-tile.png",
+	scale: .5
+};
+
 var lobbyCeiling = {
 	src: "ceiling1.png",
 	scale: .2
@@ -14,6 +19,11 @@ var drywall = {
 	src: "drywall.jpg",
 	scale: .5
 };
+
+var marble = {
+	src: "marble.png",
+	scale: .5
+}
 
 var door = {
 	src: "door.jpg",
