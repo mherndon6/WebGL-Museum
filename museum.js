@@ -496,6 +496,10 @@ function keyPressed(e) {
             break;
         case 77: //m
             muted = !muted;
+            if (curRoom.song.paused)
+                curRoom.song.play();
+            else
+                curRoom.song.pause();
             break;
         case 78: //n
         case 80: //p

@@ -89,10 +89,9 @@ var room2 = {
     doors: [[(midTopWall + topWall)/2, midRightWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.WHITE,
-    wallTexture: wood,
-
-    floorTexture: woodFloor,
-    ceilingTexture: wood,
+    wallTexture: floral,
+    floorTexture: blueCarpet,
+    ceilingTexture: floral,
 
     lighting: testLight,
 
@@ -113,7 +112,6 @@ var room3 = {
 
     wallColor: COLORS.WHITE,
     wallTexture: marble,
-
     floorTexture: marbleTile,
     ceilingTexture: marble,
 
@@ -135,7 +133,6 @@ var room4 = {
 
     wallColor: COLORS.GREEN,
     wallTexture: wood,
-
     floorTexture: woodFloor,
     ceilingTexture: wood,
 
@@ -155,7 +152,6 @@ var room5 = {
     
     wallColor: COLORS.WHITE,
     wallTexture: drywall,
-
     floorTexture: drywall,
     ceilingTexture: lobbyCeiling,
 
@@ -174,17 +170,16 @@ var room6 = {
     doors: room3.doors,
 
     wallColor: COLORS.WHITE,
-    wallTexture: drywall,
-
-    floorTexture: drywall,
-    ceilingTexture: lobbyCarpet,
+    wallTexture: stainedWood,
+    floorTexture: creepyFloor,
+    ceilingTexture: stainedWood,
 
     lighting: testLight,
 
     song: new Audio("res/room6.mp3"),
     paintings: [[(leftWall + midLeftWall)/2, midBottomWall, weepingWoman],
-                [(midBottomWall + midTopWall)/2 - 10, leftWall, snowStorm],
-                [(midTopWall + topWall)/2 + 10, leftWall, scream],
+                [(midBottomWall + midTopWall)/2, leftWall, snowStorm],
+                [(midTopWall + topWall)/2, leftWall, scream],
                 [(leftWall + midLeftWall)/2, topWall, pompeii]]
 };
 
@@ -198,10 +193,9 @@ var staircase = {
     doors: [[(midLeftWall + midRightWall)/2 + doorWidth/2, topWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.WHITE,
-    wallTexture: drywall,
-
+    wallTexture: elevatorWall,
     floorTexture: lobbyCarpet,
-    ceilingTexture: lobbyCeiling,
+    ceilingTexture: elevatorWall,
 
     lighting: testLight,
 
