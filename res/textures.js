@@ -55,9 +55,14 @@ var stainedWood = {
 	scale: .5
 };
 
+var greenMarble = {
+	src: "green-marble.png",
+	scale: .5
+};
+
 var elevatorWall = {
 	src: "elevator-wall.png",
-	scale: .5
+	scale: .25
 };
 
 var door = {
