@@ -74,6 +74,7 @@ var room1 = {
 
     lighting: testLight,
 
+    song: new Audio("res/room1.mp3"),
     paintings: [[(rightWall + midRightWall)/2, midTopWall, horatii],
                 [(midBottomWall + midTopWall)/2, rightWall, napoleon],
                 [(rightWall + midRightWall)/2, midBottomWall, wolfe]]
@@ -96,6 +97,7 @@ var room2 = {
 
     lighting: testLight,
 
+    song: new Audio("res/room2.mp3"),
     paintings: [[(rightWall + midRightWall)/2, topWall, ulysses],
                 [(topWall + midTopWall)/2, rightWall, moonlitLandscape],
                 [(rightWall + midRightWall)/2, midTopWall, xp]]
@@ -118,6 +120,7 @@ var room3 = {
 
     lighting: testLight,
 
+    song: new Audio("res/room3.mp3"),
     paintings: [[(leftWall + midLeftWall)/2, midBottomWall, sundayAfternoon],
                 [(midBottomWall + midTopWall)/2, leftWall, pearlEarring],
                 [midTopWall, leftWall, starryNight],
@@ -138,6 +141,8 @@ var room4 = {
     ceilingTexture: lobbyCeiling,
 
     lighting: testLight,
+
+    song: new Audio("res/room4.mp3"),
     paintings: [[(rightWall + midRightWall)/2, midTopWall, sunset],
                 [(midBottomWall + midTopWall)/2, rightWall, hetSteen],
                 [(rightWall + midRightWall)/2, midBottomWall, sleighRide]]
@@ -156,6 +161,8 @@ var room5 = {
     ceilingTexture: lobbyCeiling,
 
     lighting: testLight,
+
+    song: new Audio("res/room5.mp3"),
     paintings: [[(rightWall + midRightWall)/2, topWall, nocturne],
                 [(topWall + midTopWall)/2, rightWall, phaeton],
                 [(rightWall + midRightWall)/2, midTopWall, impressionSunrise]]
@@ -175,6 +182,7 @@ var room6 = {
 
     lighting: testLight,
 
+    song: new Audio("res/room6.mp3"),
     paintings: [[(leftWall + midLeftWall)/2, midBottomWall, weepingWoman],
                 [(midBottomWall + midTopWall)/2 - 10, leftWall, snowStorm],
                 [(midTopWall + topWall)/2 + 10, leftWall, scream],

@@ -30,6 +30,7 @@ var doorWidth = 4 * globalScale;
 var doorHeight = 7 * globalScale;
 var doorDepth = 0.5;
 var visibleDoorDepth = 0.1;
+var doorSound = new Audio("res/door.wav");
 
 var leftWall = 0 * globalScale;
 var midLeftWall = 30 * globalScale;
