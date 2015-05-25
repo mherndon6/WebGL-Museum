@@ -175,19 +175,27 @@ var pompeii = {
     hangingHeight: 5
 };
 
+// hallway
+var elevatorSign = {
+	src: "elevator.png",
+	width: 40,
+	height: 14,
+	hangingHeight: doorHeight + 1
+}
+
 // stairs
 var floor1 = {
     src: "floor1.png",
     width: 40,
-    height: 40,
-    hangingHeight: 4
+    height: 14,
+    hangingHeight: 8
 }
 
 var floor2 = {
     src: "floor2.png",
     width: 40,
-    height: 40,
-    hangingHeight: 4
+    height: 14,
+    hangingHeight: 8
 }
 
 // shrine

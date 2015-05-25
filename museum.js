@@ -4,6 +4,7 @@ window.onload = function init()
     setupCanvas();
     configureWebgl();
     setupShaders();
+    restart();
     requestAnimationFrame(render);
 };
 
@@ -113,14 +114,14 @@ function renderRoom() {
     normals = verts[1];
     texVertices = verts[2];
     configureTexture(room.floorTexture);
-    renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.DRAW_LIGHT);
+    renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.NO_LIGHT);
     if (renderCeiling) {
         verts = getFloorVertices(room, wallHeight, room.ceilingTexture.scale);
         vertices = verts[0];
         normals = verts[1]
         texVertices = verts[2];
         configureTexture(room.ceilingTexture);
-        renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.DRAW_LIGHT);
+        renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.NO_LIGHT);
     }
     
     // Draw paintings
@@ -196,8 +197,15 @@ function applyTransforms(translation, rotation, scaleFactor) {
 function setLighting() {
     var room = rooms[curRoomIndex];
     var walls = room.walls;
+    var leftBorder = walls[0][0];
+    var rightBorder = walls[2][0];
+    var bottomBorder = walls[0][1];
+    var topBorder = walls[2][1];
 
-    var lightPosition = vec4(0, 0, 0, 1.0);
+    var lightX = (leftBorder + rightBorder)/2;
+    var lightZ = (bottomBorder + topBorder)/2;
+    // Lights are in center of room, at lightHeight
+    var lightPosition = vec4(lightX, room.wallHeight - 1, lightZ, 1.0);
 
     ambientProduct = room.lighting.ambient;
     diffuseProduct = room.lighting.diffuse;
@@ -534,8 +542,7 @@ function restart() {
     curRoom = rooms[0];
     wallHeight = curRoom.wallHeight * globalScale;
     lightHeight = wallHeight - 1;
-    if (hallway.doors[0][2] == ROOMS.LOBBY)
-        hallway.doors[0][2] = ROOMS.SHRINE;
+    hallway.doors[0][2] = ROOMS.LOBBY;
 }
 
 function exitFullscreen() {

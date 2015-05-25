@@ -17,7 +17,7 @@ var muted = false;
 
 var itemSize = 3;
 
-/* Previously in map.js */
+// Map variables
 var globalScale = 1.5;
 var textureScale = .05;
 
@@ -42,10 +42,9 @@ var midBottomWall = -15 * globalScale;
 var midTopWall = -45 * globalScale;
 var topWall = -75 * globalScale;
 var topStairWall = -85 * globalScale;
-/* end previously in map.js */
 
 
-
+// Museum variables
 var initCamX = -60;
 var initCamY = 8;
 var initCamZ = 10;
@@ -86,6 +85,7 @@ var renderCeiling = true;
 
 var COLORS = {
 	WHITE: [1.0, 1.0, 1.0, 1.0],
+	LIGHT_GREY: [0.8, 0.8, 0.8, 0.8],
 	BLACK: [0.0, 0.0, 0.0, 1.0],
 	YELLOW: [1.0, 1.0, 0.0, 1.0],
 	RED: [1.0, 0.0, 0.0, 1.0],

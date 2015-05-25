@@ -24,12 +24,7 @@
 			    // pos is vertex position
 			    vec3 pos = -vPosition.xyz;
 			    // vector from vertex position to light source
-			    vec3 vL;
-			    // check for directional light
-			    if (lightPosition.w == 0.0) 
-			    	vL = normalize(lightPosition.xyz);
-			    else
-			    	vL = normalize(lightPosition.xyz - pos);
+			    vec3 vL = normalize(lightPosition.xyz - pos);
 			    // Because the eye point the is at the origin
 			    // the vector from the vertex position to the eye is
 			    vec3 vE = -normalize(pos);
@@ -69,10 +64,12 @@
 			uniform vec4 vColor;
 
 			void main() {
-				if (isTextured)
-					gl_FragColor = vec4(1,1,1,1) * texture2D(texture, fTexCoord);
+				if (isTextured && isLit)
+					gl_FragColor = lightColor + texture2D(texture, fTexCoord);
+				else if (isTextured)
+					gl_FragColor = texture2D(texture, fTexCoord);
 				else if (isLit)
-					gl_FragColor = lightColor;
+					gl_FragColor = vColor + lightColor;
 				else
 					gl_FragColor = vColor;
 			}
@@ -98,6 +95,7 @@
         <img id='drywall.jpg' src='res/drywall.jpg' hidden/>
         <img id='door.jpg' src='res/door.jpg' hidden/>
         <img id='scott.png' src='res/scott.png' hidden/>
+        <img id='elevator.png' src='res/elevator.png' hidden/>
         <img id='floor1.png' src='res/floor1.png' hidden/>
         <img id='floor2.png' src='res/floor2.png' hidden/>
         

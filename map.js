@@ -7,9 +7,9 @@ paintings: [startPos, whichWall, painting] specifying paintings and locations
 */
 
 var testLight = {
-    ambient: vec4(1.0, 0.0, 0.0),
-    diffuse: vec4(1.0, 0.0, 0.0),
-    specular: vec4(1.0, 0.0, 0.0),
+    ambient: vec4(0.2, 0.2, 0.0),
+    diffuse: vec4(0.2, 0.2, 0.0),
+    specular: vec4(0.2, 0.2, 0.0),
     shininess: 1
 };
 
@@ -22,8 +22,8 @@ var lobby = {
     wallHeight: 10,
     doors: [[(midRightWall + midLeftWall)/2, midBottomWall, ROOMS.HALLWAY]],
 
-    wallColor: COLORS.WHITE,
-    wallTexture: drywall,
+    wallColor: COLORS.BLACK,
+    wallTexture: none,
 
     floorTexture: lobbyCarpet,
     ceilingTexture: lobbyCeiling,
@@ -54,7 +54,7 @@ var hallway = {
 
     lighting: testLight,
 
-    paintings: []
+    paintings: [[(midLeftWall + midRightWall)/2 + doorWidth/2, topWall, elevatorSign]]
 };
 
 var room1 = {
@@ -111,7 +111,7 @@ var room3 = {
     doors: [[(midBottomWall + topWall)/2, midLeftWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.WHITE,
-    wallTexture: none,
+    wallTexture: drywall,
 
     floorTexture: lobbyCarpet,
     ceilingTexture: lobbyCeiling,
@@ -256,7 +256,7 @@ function getRoomVertices(room, scaleDown) {
         verts.push(vec3(pointOne[0], wallHeight, pointOne[1]));
         texVerts.push(vec2(0, 1*heightFactor));
 
-        var normal = vec3(0, 0, 1);
+        var normal = vec3(0, 0, -1);
         if (i == 0 || i == 2) //vertical walls
             normal = vec3(1, 0, 0);
         norms.push(normal, normal, normal, normal, normal, normal);
