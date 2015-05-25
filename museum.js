@@ -259,13 +259,21 @@ function attemptMove(axis, dist) {
                 //console.log("Vert door, wall placement: " + curDoor[1] + " == " + topWall + " || " + bottomWall);
                 // Check movement direction so you don't switch back and forth between rooms
                 if (curDoor[1] == rightBorder && movingRight || curDoor[1] == leftBorder && !movingRight) {
+                    if (curRoom.song) {
+                        curRoom.song.pause();
+                    }
                     curRoomIndex = curDoor[2];
                     curRoom = rooms[curRoomIndex];
                     wallHeight = curRoom.wallHeight * globalScale;
                     lightHeight = wallHeight - 1;
                     movingRight? camX -= 1 : camX += 1;
-                    if (!muted)
-                        document.getElementById('door.wav').play();
+                    if (!muted) {
+                        doorSound.play();
+                        if (curRoom.song) {
+                            curRoom.song.load();
+                            curRoom.song.play();
+                        }
+                    }
                 }
             }
         }
@@ -280,8 +288,9 @@ function attemptMove(axis, dist) {
                     wallHeight = curRoom.wallHeight * globalScale;
                     lightHeight = wallHeight - 1;
                     movingUp? camZ += 1 : camZ -= 1;
-                    if (!muted)
-                        document.getElementById('door.wav').play();
+                    if (!muted) {
+                        doorSound.play();
+                    }
                 }
             }
         }
