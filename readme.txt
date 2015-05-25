@@ -40,8 +40,8 @@ Hallway:
     Song:
 
 1 (small) Neoclassical:
-    Walls: white
-    Floor:
+    Walls: marble
+    Floor: marble tile
     Song: Bach Harpsichord
     Paintings:
         Oath of the Horatii - Jacques-Louis David
@@ -58,10 +58,10 @@ Hallway:
         Moonlit landscape - Rembrandt van Rijn
 
 3 (big) Famous:
-    Walls: white
-    Floor:
+    Walls: marble
+    Floor: marble tile
     Song: 
-    Paintings:
+    Paintings: 
         A Sunday Afternoon on the Island of La Grande Jatte - Georges-Pierre Seurat
         Girl with a Pearl Earring - Johannes Vermeer
         Starry Night - Van Gogh

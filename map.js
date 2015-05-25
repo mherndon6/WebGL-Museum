@@ -67,10 +67,9 @@ var room1 = {
     doors: [[(midBottomWall + midTopWall)/2, midRightWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.WHITE,
-    wallTexture: drywall,
-
-    floorTexture: lobbyCarpet,
-    ceilingTexture: lobbyCeiling,
+    wallTexture: marble,
+    floorTexture: marbleTile,
+    ceilingTexture: marble,
 
     lighting: testLight,
 
@@ -123,9 +122,9 @@ var room3 = {
     song: new Audio("res/room3.mp3"),
     paintings: [[(leftWall + midLeftWall)/2, midBottomWall, sundayAfternoon],
                 [(midBottomWall + midTopWall)/2, leftWall, pearlEarring],
-                [midTopWall, leftWall, starryNight],
+                [midTopWall, leftWall, ecceHomo],
                 [(midTopWall + topWall)/2, leftWall, monaLisa],
-                [(leftWall + midLeftWall)/2, topWall, ecceHomo]]
+                [(leftWall + midLeftWall)/2, topWall, starryNight]]
 };
 
 var room4 = {
