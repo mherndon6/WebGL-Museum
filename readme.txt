@@ -45,7 +45,7 @@ Hallway:
     Song: Bach Harpsichord
     Paintings:
         Oath of the Horatii - Jacques-Louis David
-        Napoleon I on his Imperial Throne - Ingres
+        Napoleon I on his Imperial Throne - Jean-Auguste-Dominique Ingres
         The Death of General Wolfe - Benjamin West
 
 2 (small) Landscapes:
@@ -54,17 +54,19 @@ Hallway:
     Song:
     Paintings:
         Ulysses deriding Polyphemus - J.M.W. Turner
-        XP theme
-        Moonlit landscape - Rembrandt
+        XP wallpaper - Charles O'Rear
+        Moonlit landscape - Rembrandt van Rijn
 
 3 (big) Famous:
     Walls: white
     Floor:
     Song: 
     Paintings:
+        A Sunday Afternoon on the Island of La Grande Jatte - Georges-Pierre Seurat
+        Girl with a Pearl Earring - Johannes Vermeer
         Starry Night - Van Gogh
         The Mona Lisa - Leonardo da Vinci
-        Ecce Mono - Elias Garcia Martinez
+        Ecce Homo - Elias Garcia Martinez
         
 
 Upper Hallway:
@@ -90,10 +92,9 @@ Upper Hallway:
     Floor: some weird pattern
     Song: 
     Paintings:
-        The Weeping Woman - Picasso
+        The Weeping Woman - Pablo Picasso
         Snow Storm - J.M.W. Turner
         The Scream - Edvard Munch
-        No. 5, 1948 - Jackson Pollock
         The Last Day of Pompeii - Karl Briullov
 
 Shrine:

@@ -67,6 +67,20 @@ var xp = {
 };
 
 // room3
+var sundayAfternoon = {
+    src: "sunday-afternoon.png",
+    width: 121.25,
+    height: 81.7,
+    hangingHeight: 2
+};
+
+var pearlEarring = {
+    src: "pearl-earring.png",
+    width: 15,
+    height: 17.5,
+    hangingHeight: 6.8
+};
+
 var monaLisa = {
     src: "mona-lisa.png",
     width: 21,
@@ -111,13 +125,6 @@ var scream = {
     src: "the-scream.png",
     width: 74,
     height: 91,
-    hangingHeight: 5
-};
-
-var numberFive = {
-    src: "number-5.png",
-    width: 48,
-    height: 96,
     hangingHeight: 5
 };
 
