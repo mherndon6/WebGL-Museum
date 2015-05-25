@@ -145,9 +145,9 @@ var room4 = {
     floorTexture: lobbyCarpet,
     ceilingTexture: lobbyCeiling,
 
-    paintings: [[(rightWall + midRightWall)/2, midTopWall, starryNight],
-                [(midBottomWall + midTopWall)/2, rightWall, starryNight],
-                [(rightWall + midRightWall)/2, midBottomWall, starryNight]]
+    paintings: [[(rightWall + midRightWall)/2, midTopWall, sunset],
+                [(midBottomWall + midTopWall)/2, rightWall, hetSteen],
+                [(rightWall + midRightWall)/2, midBottomWall, sleighRide]]
 };
 
 var room5 = {
@@ -162,9 +162,9 @@ var room5 = {
     floorTexture: drywall,
     ceilingTexture: lobbyCeiling,
 
-    paintings: [[(rightWall + midRightWall)/2, topWall, monaLisa],
-                [(topWall + midTopWall)/2, rightWall, starryNight],
-                [(rightWall + midRightWall)/2, midTopWall, monaLisa]]
+    paintings: [[(rightWall + midRightWall)/2, topWall, nocturne],
+                [(topWall + midTopWall)/2, rightWall, phaeton],
+                [(rightWall + midRightWall)/2, midTopWall, impressionSunrise]]
 };
 
 var room6 = {

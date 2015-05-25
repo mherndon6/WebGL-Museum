@@ -74,18 +74,23 @@ Upper Hallway:
     Floor:
     Song:
 
-4 (small):
+4 (small) Landscapes:
     Walls:
     Floor:
     Song:
-    Paintings: 
+    Paintings:
+        A View of Het Steen in the Early Morning - Peter Paul Rubens
+        Sunset over a Forest Lake - Peder Monsted
+        Sleigh Ride on a Sunny Winter Day - Peder Monsted
 
 5 (small) Light:
     Walls:
     Floor:
     Song:
     Paintings:
-        
+        The Fall of Phaeton - Peter Paul Rubens
+        Nocturne: Blue and Gold – Old Battersea Bridge - James Whistler
+        Impression, Sunrise - Claude Monet
 
 6 (big) Dark:
     Walls: pyramids sticking out

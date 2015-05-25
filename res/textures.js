@@ -103,8 +103,48 @@ var ecceHomo = {
 };
 
 // room4
+var sunset = {
+    src: "sunset.png",
+    width: 44.75,
+    height: 27,
+    hangingHeight: 5.5
+};
+
+var hetSteen = {
+    src: "het-steen.png",
+    width: 90.2,
+    height: 51.7,
+    hangingHeight: 5
+};
+
+var sleighRide = {
+    src: "sleigh-ride.png",
+    width: 25.5,
+    height: 37.4,
+    hangingHeight: 5.5
+};
 
 // room5
+var nocturne = {
+    src: "nocturne.png",
+    width: 20.1,
+    height: 26.9,
+    hangingHeight: 5.2
+};
+
+var phaeton = {
+    src: "phaeton.png",
+    width: 51.7,
+    height: 38.7,
+    hangingHeight: 5
+};
+
+var impressionSunrise = {
+    src: "impression-sunrise.png",
+    width: 24.8,
+    height: 18.9,
+    hangingHeight: 5.5
+};
 
 // room6
 var weepingWoman = {
