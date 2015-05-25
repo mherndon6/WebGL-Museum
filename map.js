@@ -199,6 +199,7 @@ var staircase = {
 
     lighting: testLight,
 
+    song: new Audio("res/elevator.mp3"),
     paintings: [[(midLeftWall + midRightWall)/2, topStairWall, floor1]]
 };
 

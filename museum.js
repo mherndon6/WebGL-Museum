@@ -283,6 +283,9 @@ function attemptMove(axis, dist) {
                 //console.log("Hor door, wall placement: " + curDoor[1] + " == " + topBorder + " || " + bottomBorder);
                 // Check movement direction so you don't switch back and forth between rooms
                 if (curDoor[1] == topBorder && movingUp || curDoor[1] == bottomBorder && movingDown) {
+                    if (curRoom.song) {
+                        curRoom.song.pause();
+                    }
                     curRoomIndex = curDoor[2];
                     curRoom = rooms[curRoomIndex];
                     wallHeight = curRoom.wallHeight * globalScale;
@@ -290,6 +293,10 @@ function attemptMove(axis, dist) {
                     movingUp? camZ += 1 : camZ -= 1;
                     if (!muted) {
                         doorSound.play();
+                        if (curRoom.song) {
+                            curRoom.song.load();
+                            curRoom.song.play();
+                        }
                     }
                 }
             }
