@@ -8,16 +8,49 @@
 		<script id="vertex-shader" type="x-shader/x-vertex">
 
 			attribute vec4 vPosition;
+			attribute vec4 vNormal;
 			attribute vec2 vTexCoord;
 
+			varying vec4 lightColor;
 			varying vec2 fTexCoord;
 
+			uniform vec4 vAmbientProduct, vDiffuseProduct, vSpecularProduct;
+			uniform vec4 lightPosition;
+			uniform float vShininess;
 			uniform mat4 matrix;
 
 			void main() {
-			  // Apply translation, rotation, perspective to the position
-			  fTexCoord = vTexCoord;
-			  gl_Position = matrix * vPosition;
+				// Calculate Gauraud vars, pass to fragment shader
+			    // pos is vertex position
+			    vec3 pos = -vPosition.xyz;
+			    // vector from vertex position to light source
+			    vec3 vL;
+			    // check for directional light
+			    if (lightPosition.w == 0.0) 
+			    	vL = normalize(lightPosition.xyz);
+			    else
+			    	vL = normalize(lightPosition.xyz - pos);
+			    // Because the eye point the is at the origin
+			    // the vector from the vertex position to the eye is
+			    vec3 vE = -normalize(pos);
+			    // halfway vector
+			    vec3 vH = normalize(vL + vE);
+			    // Transform vertex normal into eye coordinates
+			    vec3 vN = normalize(vNormal.xyz);
+			    // Compute terms in the illumination equation
+			    vec4 ambient = vAmbientProduct;
+			    float Kd = max(dot(vL, vN), 0.0);
+			    vec4  diffuse = Kd * vDiffuseProduct;
+			    float Ks = pow(max(dot(vN, vH), 0.0), vShininess);
+			    vec4  specular = Ks * vSpecularProduct;
+			    if(dot(vL, vN) < 0.0)
+					specular = vec4(0.0, 0.0, 0.0, 1.0);
+			    lightColor = ambient + diffuse + specular;
+				lightColor.a = 1.0;
+
+				// Apply translation, rotation, perspective to the position
+				fTexCoord = vTexCoord;
+				gl_Position = matrix * vPosition;
 			}
 
 		</script>
@@ -26,8 +59,11 @@
 
 			precision mediump float;
 
+			uniform bool isLit;
 			uniform bool isTextured;
 			uniform sampler2D texture;
+
+			varying vec4 lightColor;
 			varying vec2 fTexCoord;
 
 			uniform vec4 vColor;
@@ -35,6 +71,8 @@
 			void main() {
 				if (isTextured)
 					gl_FragColor = vec4(1,1,1,1) * texture2D(texture, fTexCoord);
+				else if (isLit)
+					gl_FragColor = lightColor;
 				else
 					gl_FragColor = vColor;
 			}

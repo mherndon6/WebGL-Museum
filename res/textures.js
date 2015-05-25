@@ -186,9 +186,4 @@ var scott = {
 // ----------------- OTHER ----------------- //
 var none = {
 	src: false
-}
-
-var TEXTURES = {
-	DRAW_TEXTURE: true,
-	NO_TEXTURE: false
-}
+};

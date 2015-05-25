@@ -80,4 +80,10 @@ var ROOMS = {
 var WALL_OBJECT = {
 	DOORS: 0,
 	PAINTINGS: 1
-}
+};
+var SETTINGS = {
+	DRAW_TEXTURE: true,
+	NO_TEXTURE: false,
+	DRAW_LIGHT: true,
+	NO_LIGHT: false
+};
