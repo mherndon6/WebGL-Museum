@@ -37,6 +37,7 @@ function setupShaders() {
 
     // Data locations
     positionLocation = gl.getAttribLocation(program, "vPosition");
+    normalLocation = gl.getAttribLocation(program, "vNormal");
     matrixLocation = gl.getUniformLocation(program, "matrix");
     colorLocation = gl.getUniformLocation(program, "vColor");
     fragTypeLocation = gl.getUniformLocation(program, "fragType");
@@ -48,6 +49,13 @@ function setupShaders() {
     gl.vertexAttribPointer(positionLocation, itemSize, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(positionLocation);
 
+    // Set up buffer for normals
+    nBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, nBuffer);
+    gl.vertexAttribPointer(normalLocation, itemSize, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(normalLocation);
+
+    // Set up buffer for texture vertices
     tBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, tBuffer);
     gl.vertexAttribPointer(vTexCoord, 2, gl.FLOAT, false, 0, 0);
@@ -70,43 +78,49 @@ function render(now) {
     requestAnimationFrame(render);
 };
 
-function renderRoom(i) {
-    var room = rooms[i];
+function renderRoom() {
+    var room = rooms[curRoomIndex];
     var verts;
+
+    setLighting();
 
     // Draw walls
     curColor = room.wallColor;
     verts = getRoomVertices(room, room.wallTexture.scale);
     vertices = verts[0];
-    texVertices = verts[1];
-    if (room.wallTexture.src == TEXTURES.NO_TEXTURE)
-        renderCurrentVertices(TEXTURES.NO_TEXTURE);
+    normals = verts[1];
+    texVertices = verts[2];
+    if (room.wallTexture.src == SETTINGS.NO_TEXTURE)
+        renderCurrentVertices(SETTINGS.NO_TEXTURE, SETTINGS.DRAW_LIGHT);
     else {
         configureTexture(room.wallTexture);
-        renderCurrentVertices(TEXTURES.DRAW_TEXTURE);
+        renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.NO_LIGHT);
     }
 
     // Draw doors
     curColor = COLORS.BLACK;
     verts = getWallObjectVertices(room.doors, room, WALL_OBJECT.DOORS);
     vertices = verts[0];
-    texVertices = verts[1];
+    normals = verts[1];
+    texVertices = verts[2];
     configureTexture(door);
-    renderCurrentVertices(TEXTURES.DRAW_TEXTURE);
+    renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.NO_LIGHT);
 
     // Draw floor & ceiling
     curColor = COLORS.FLOOR_COLOR;
     verts = getFloorVertices(room, groundHeight, room.floorTexture.scale);
     vertices = verts[0];
-    texVertices = verts[1];
+    normals = verts[1];
+    texVertices = verts[2];
     configureTexture(room.floorTexture);
-    renderCurrentVertices(TEXTURES.DRAW_TEXTURE);
+    renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.DRAW_LIGHT);
     if (renderCeiling) {
         verts = getFloorVertices(room, wallHeight, room.ceilingTexture.scale);
         vertices = verts[0];
-        texVertices = verts[1];
+        normals = verts[1]
+        texVertices = verts[2];
         configureTexture(room.ceilingTexture);
-        renderCurrentVertices(TEXTURES.DRAW_TEXTURE);
+        renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.DRAW_LIGHT);
     }
     
     // Draw paintings
@@ -115,35 +129,42 @@ function renderRoom(i) {
     for (var i = 0; i < paintings.length; i++) {
         verts = getWallObjectVertices([paintings[i]], room, WALL_OBJECT.PAINTINGS);
         vertices = verts[0];
-        texVertices = verts[1];
+        normals = verts[1];
+        texVertices = verts[2];
         configureTexture(paintings[i][2]);
-        renderCurrentVertices(TEXTURES.DRAW_TEXTURE);
+        renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.NO_LIGHT);
     }
 
     // Draw light fixture
     curColor = COLORS.YELLOW;
     vertices = getLightVertices(room);
-    renderCurrentVertices(TEXTURES.NO_TEXTURE);
+    renderCurrentVertices(SETTINGS.NO_TEXTURE, SETTINGS.NO_LIGHT);
 }
 
-function renderCurrentVertices(drawTexture) {
+function renderCurrentVertices(drawTexture, drawLight) {
     gl.bindBuffer(gl.ARRAY_BUFFER, null);
     gl.disableVertexAttribArray(vTexCoord);
+    gl.disableVertexAttribArray(normalLocation);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(flatten(vertices)), gl.STATIC_DRAW);
-    gl.uniform1i(gl.getUniformLocation(program, "isTextured"), false);
 
+    gl.uniform1i(gl.getUniformLocation(program, "isTextured"), false);
+    gl.uniform1i(gl.getUniformLocation(program, "isLit"), false);
     if (drawTexture) {
         gl.enableVertexAttribArray(vTexCoord);
         gl.uniform1i(gl.getUniformLocation(program, "isTextured"), true);
         gl.bindBuffer(gl.ARRAY_BUFFER, tBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(flatten(texVertices)), gl.STATIC_DRAW);
     }
-
+    if (drawLight) {
+        gl.enableVertexAttribArray(normalLocation);
+        gl.uniform1i(gl.getUniformLocation(program, "isLit"), true);
+        gl.bindBuffer(gl.ARRAY_BUFFER, nBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(flatten(normals)), gl.STATIC_DRAW);
+    }
     gl.uniform4fv(colorLocation, curColor);
     applyTransforms(noTranslation, noRotation, noScale);
-
     gl.drawArrays(gl.TRIANGLES, 0, vertices.length);
 }
 
@@ -170,6 +191,23 @@ function applyTransforms(translation, rotation, scaleFactor) {
 
         // Send to shader
         gl.uniformMatrix4fv(matrixLocation, false, flatify(matrix));
+}
+
+function setLighting() {
+    var room = rooms[curRoomIndex];
+    var walls = room.walls;
+
+    var lightPosition = vec4(0, 0, 0, 1.0);
+
+    ambientProduct = room.lighting.ambient;
+    diffuseProduct = room.lighting.diffuse;
+    specularProduct = room.lighting.specular;
+
+    gl.uniform4fv(gl.getUniformLocation(program, "vAmbientProduct"), flatten(ambientProduct));
+    gl.uniform4fv(gl.getUniformLocation(program, "vDiffuseProduct"), flatten(diffuseProduct));
+    gl.uniform4fv(gl.getUniformLocation(program, "vSpecularProduct"), flatten(specularProduct));
+    gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"), flatten(lightPosition));
+    gl.uniform1f(gl.getUniformLocation(program, "vShininess"), room.lighting.shininess);
 }
 
 function attemptMove(axis, dist) {

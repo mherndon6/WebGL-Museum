@@ -22,7 +22,7 @@ var initCamY = 8;
 var initCamZ = 10;
 var initAzim = 0;
 var initPitch = -10;
-var initFOV = 40;
+var initFOV = 30;
 
 var camX = initCamX;
 var camY = initCamY;
@@ -80,4 +80,10 @@ var ROOMS = {
 var WALL_OBJECT = {
 	DOORS: 0,
 	PAINTINGS: 1
-}
+};
+var SETTINGS = {
+	DRAW_TEXTURE: true,
+	NO_TEXTURE: false,
+	DRAW_LIGHT: true,
+	NO_LIGHT: false
+};
