@@ -185,10 +185,10 @@ var room6 = {
 
 var staircase = {
     numWalls: 4,
-    walls: [[midLeftWall, topWall],
-            [midLeftWall, topStairWall],
-            [midRightWall, topStairWall],
-            [midRightWall, topWall]],
+    walls: [[midLeftWall+5, topWall],
+            [midLeftWall+5, topStairWall],
+            [midRightWall-5, topStairWall],
+            [midRightWall-5, topWall]],
     wallHeight: 10,
     doors: [[(midLeftWall + midRightWall)/2 + doorWidth/2, topWall, ROOMS.HALLWAY]],
 
@@ -200,7 +200,8 @@ var staircase = {
     lighting: testLight,
 
     song: new Audio("res/elevator.mp3"),
-    paintings: [[(midLeftWall + midRightWall)/2, topStairWall, floor1]]
+    paintings: [[(midLeftWall + midRightWall)/2, topStairWall, floor1],
+                [(midLeftWall + midRightWall)/2, topStairWall, elevatorSign]]
 };
 
 var shrine = {
