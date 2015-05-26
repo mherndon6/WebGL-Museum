@@ -78,7 +78,7 @@ function render(now) {
 
     // Fade previous song out
     if (prevSong) {
-        var newVol = prevSong.volume - timeChange * 0.14;
+        var newVol = prevSong.volume - timeChange * 0.20;
         if (newVol <= 0) { 
             prevSong.pause(); 
             prevSong = null; 
@@ -277,6 +277,7 @@ function attemptMove(axis, dist) {
                 // Check movement direction so you don't switch back and forth between rooms
                 if (curDoor[1] == rightBorder && movingRight || curDoor[1] == leftBorder && !movingRight) {
                     if (curRoom.song) {
+                        if (prevSong) { prevSong.pause(); }
                         prevSong = curRoom.song;
                     }
                     curRoomIndex = curDoor[2];
@@ -303,6 +304,7 @@ function attemptMove(axis, dist) {
                 // Check movement direction so you don't switch back and forth between rooms
                 if (curDoor[1] == topBorder && movingUp || curDoor[1] == bottomBorder && movingDown) {
                     if (curRoom.song) {
+                        if (prevSong) { prevSong.pause(); }
                         prevSong = curRoom.song;
                     }
                     curRoomIndex = curDoor[2];

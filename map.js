@@ -221,6 +221,7 @@ var shrine = {
 
     lighting: testLight,
 
+    song: new Audio("res/shrine.mp3"),
     paintings: [[(midLeftWall + midRightWall)/2, shrineBottomWall - 250, scott]]
 };
 
