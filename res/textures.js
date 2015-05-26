@@ -77,6 +77,21 @@ var door = {
 
 // ---------------- PAINTINGS --------------- //
 
+// lobby
+var welcome = {
+    src: "welcome.png",
+    width: 40,
+    height: 25,
+    hangingHeight: 6
+};
+
+var instructions = {
+    src: "instructions.png",
+    width: 40,
+    height: 25,
+    hangingHeight: 6
+};
+
 // room1
 var horatii = {
     src: "oath-of-horatii.png",
@@ -258,7 +273,7 @@ var scott = {
     src: "scott.png",
     width: 1000,
     height: 1000,
-    hangingHeight: 5,
+    hangingHeight: 50,
 };
 
 // ----------------- OTHER ----------------- //

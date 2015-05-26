@@ -474,11 +474,11 @@ function timerCheck(deltaTime) {
             camZ -= 10*deltaTime;
         else if (camZ > -460)
             camZ -= 5*deltaTime;
-        if (camY < 10)
-            camY += 1*deltaTime;
-        else if (camY < 30)
-            camY += 3*deltaTime;
-        else if (camY < 80)
+        if (camY < 15)
+            camY += 2*deltaTime;
+        else if (camY < 40)
+            camY += 4*deltaTime;
+        else if (camY < 125)
             camY += 5*deltaTime;
     }
 }
@@ -498,6 +498,8 @@ function configureTexture(tex) {
 }
 
 function moveCallback(e) {
+    if (!allowControl)
+        return;
     var movementX = e.movementX || e.mozMovementX || e.webkitMovementX || 0;
     var movementY = e.movementY || e.mozMovementY || e.webkitMovementY || 0;
     azim -= 0.2 * movementX;
@@ -512,6 +514,8 @@ function moveCallback(e) {
 }
 
 function updateMovement(delta) {
+    if (!allowControl)
+        return;
     if (wHeld)
         attemptMove(1, MOVEMENT_SPEED * delta);
     if (aHeld)
@@ -557,13 +561,15 @@ function keyPressed(e) {
             leftHeld = true;
             break;
         case 38: //up
-            pitch += 2;
+            if (allowControl)
+                pitch += 2;
             break;
         case 39: //right
             rightHeld = true;
             break;
         case 40: //down
-            pitch -= 2;
+            if (allowControl)
+                pitch -= 2;
             break;
         case 65: //a
             aHeld = true;

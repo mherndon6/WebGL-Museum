@@ -33,6 +33,7 @@ var visibleDoorDepth = 0.1;
 var doorSound = new Audio("res/door.wav");
 var prevSong = null;
 
+var shrineWidth = 400;
 var leftWall = 0 * globalScale;
 var midLeftWall = 30 * globalScale;
 var midRightWall = 50 * globalScale;

@@ -29,7 +29,8 @@ var lobby = {
 
     lighting: testLight,
 
-    paintings: []
+    paintings: [[(midRightWall + midLeftWall)/2 - 8, midBottomWall, welcome],
+                [(midRightWall + midLeftWall)/2 + 8, midBottomWall, instructions]]
 };
 
 var hallway = {
@@ -205,11 +206,11 @@ var staircase = {
 
 var shrine = {
     numWalls: 4,
-    walls: [[leftWall-100, shrineBottomWall],
-            [leftWall-100, midBottomWall],
-            [rightWall+100, midBottomWall],
-            [rightWall+100, shrineBottomWall]],
-    wallHeight: 110,
+    walls: [[leftWall-shrineWidth, shrineBottomWall],
+            [leftWall-shrineWidth, midBottomWall],
+            [rightWall+shrineWidth, midBottomWall],
+            [rightWall+shrineWidth, shrineBottomWall]],
+    wallHeight: shrineWidth,
     doors: [[(midRightWall + midLeftWall)/2, midBottomWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.BLACK,
