@@ -199,7 +199,7 @@ var nocturne = {
     src: "nocturne.png",
     width: 20.1,
     height: 26.9,
-    hangingHeight: 5.2
+    hangingHeight: 6
 };
 
 var phaeton = {
@@ -213,7 +213,7 @@ var impressionSunrise = {
     src: "impression-sunrise.png",
     width: 24.8,
     height: 18.9,
-    hangingHeight: 5.5
+    hangingHeight: 6
 };
 
 // room6
