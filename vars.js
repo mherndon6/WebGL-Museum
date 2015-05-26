@@ -1,7 +1,7 @@
 // ---------------- CONSTANTS --------------- //
 INITIAL_CANVAS_WIDTH = 960;
 INITIAL_CANVAS_HEIGHT = 540;
-MOVEMENT_SPEED = 45; //TODO 15
+MOVEMENT_SPEED = 15; //TODO 15
 WALL_GAP = 0.4;
 INCHES_SCALE = 0.15;
 
@@ -38,13 +38,12 @@ var midLeftWall = 30 * globalScale;
 var midRightWall = 50 * globalScale;
 var rightWall = 75 * globalScale;
 
-var shrineBottomWall = 4500 * globalScale;
+var shrineBottomWall = 400 * globalScale;
 var bottomWall = -1 * globalScale;
 var midBottomWall = -20 * globalScale;
 var midTopWall = -45 * globalScale;
 var topWall = -70 * globalScale;
 var topStairWall = -85 * globalScale;
-
 
 // Museum variables
 var initCamX = -60;
@@ -60,6 +59,9 @@ var camZ = initCamZ;
 var azim = initAzim;
 var pitch = initPitch;
 var fov = initFOV;
+
+var allowControl = true;
+var enteredShrine = false;
 
 var wHeld = false;
 var aHeld = false;
@@ -84,6 +86,24 @@ var noScale       = [1,1,1];
 
 var curRoomIndex = 0;
 var renderCeiling = true;
+
+var timerCheck1 = false;
+var timerCheck2 = false;
+var timerCheck3 = false;
+var timerCheck4 = false;
+var timerCheck5 = false;
+var timerCheck6 = false;
+var timerCheck7 = false;
+var timerCheck8 = false;
+var timerCheck9 = false;
+var timerCheck10 = false;
+
+var numLights = 1;
+var pathWidth = 10;
+var pathLength = 40;
+var pathStart = 50;
+var timer = 0;
+var spotlightSound = new Audio("res/spotlight.mp3");
 
 var COLORS = {
 	WHITE: [1.0, 1.0, 1.0, 1.0],

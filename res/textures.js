@@ -1,7 +1,7 @@
 // ---------------- WALLS & FLOORS --------------------//
 
 var lobbyCarpet = {
-	src: "carpet1.png",
+	src: "lobby-carpet.png",
 	scale: 1
 };
 
@@ -28,16 +28,6 @@ var blueCarpet = {
 var greyCarpet = {
 	src: "grey-carpet.png",
 	scale: .25
-};
-
-var lobbyCeiling = {
-	src: "ceiling1.png",
-	scale: .2
-};
-
-var drywall = {
-	src: "drywall.jpg",
-	scale: .5
 };
 
 var marble = {
@@ -73,6 +63,11 @@ var circlePaper = {
 var elevatorWall = {
 	src: "elevator-wall.png",
 	scale: .15
+};
+
+var stars = {
+	src: "stars.png",
+	scale: 10
 };
 
 var door = {
@@ -261,9 +256,9 @@ var floor2 = {
 // shrine
 var scott = {
     src: "scott.png",
-    width: 50000,
-    height: 50000,
-    hangingHeight: 1000,
+    width: 1000,
+    height: 1000,
+    hangingHeight: 5,
 };
 
 // ----------------- OTHER ----------------- //

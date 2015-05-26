@@ -70,15 +70,15 @@ function render(now) {
 
     // Keep timing consistent on all machines
     now *= .001;
-    var timeChange = now - then;
+    var deltaTime = now - then;
     then = now;
 
-    renderRoom(curRoomIndex);
-    updateMovement(timeChange);
+    renderRoom(deltaTime);
+    updateMovement(deltaTime);
 
     // Fade previous song out
     if (prevSong) {
-        var newVol = prevSong.volume - timeChange * 0.20;
+        var newVol = prevSong.volume - deltaTime * 0.20;
         if (newVol <= 0) { 
             prevSong.pause(); 
             prevSong = null; 
@@ -88,7 +88,7 @@ function render(now) {
 
     // Fade current song in
     if (curRoom.song) {
-        var newVol = curRoom.song.volume + timeChange * 0.10;
+        var newVol = curRoom.song.volume + deltaTime * 0.10;
         if (newVol > 1) { curRoom.song.volume = 1.0; }
         else { curRoom.song.volume = newVol; }
     }
@@ -96,9 +96,21 @@ function render(now) {
     requestAnimationFrame(render);
 };
 
-function renderRoom() {
+function renderRoom(deltaTime) {
     var room = rooms[curRoomIndex];
     var verts;
+
+    // Hijack control when player enters shrine
+    if (curRoomIndex == ROOMS.SHRINE && !enteredShrine) {
+        camX = initCamX;
+        camY = initCamY;
+        camZ = initCamZ;
+        azim = 180;
+        allowControl = false;
+        enteredShrine = true;
+    }
+    if (enteredShrine)
+        timerCheck(deltaTime);
 
     setLighting();
 
@@ -153,9 +165,9 @@ function renderRoom() {
         renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.NO_LIGHT);
     }
 
-    // Draw light fixture
+    // Draw light fixture(s)
     curColor = COLORS.YELLOW;
-    vertices = getLightVertices(room);
+    vertices = getLightVertices(room, numLights);
     renderCurrentVertices(SETTINGS.NO_TEXTURE, SETTINGS.NO_LIGHT);
 }
 
@@ -236,6 +248,8 @@ function setLighting() {
 }
 
 function attemptMove(axis, dist) {
+    if (!allowControl)
+        return;
     var walls = curRoom.walls;
     var doors = curRoom.doors;
     // Assuming square room, walls defined in clockwise order from bottom-right corner
@@ -378,10 +392,10 @@ function cycleRooms() {
 }
 
 function toggleFloor() {
-/*TODO Uncomment    if (curRoomIndex != ROOMS.STAIRCASE) {
+    if (curRoomIndex != ROOMS.STAIRCASE) {
         return;
     }
-*/
+
     if (hallway.doors[0][2] == ROOMS.LOBBY) { // floor 1 -> floor 2
         staircase.paintings[0][2] = floor2;
         hallway.doors[0][2] = ROOMS.SHRINE;
@@ -397,6 +411,76 @@ function toggleFloor() {
         hallway.doors[3][2] = ROOMS.ROOM2;
     }
 
+}
+
+function timerCheck(deltaTime) {
+    timer += deltaTime;
+    if (timer > 2 && !timerCheck1) {
+        timerCheck1 = true;
+        numLights = 2;
+        spotlightSound.play();
+    }
+    if (timer > 3 && !timerCheck2) {
+        timerCheck2 = true;
+        numLights = 4;
+        spotlightSound.play();
+    }
+    if (timer > 4 && !timerCheck3) {
+        timerCheck3 = true;
+        numLights = 6;
+        spotlightSound.play();
+    }
+    if (timer > 5 && !timerCheck4) {
+        timerCheck4 = true;
+        numLights = 8;
+        spotlightSound.play();
+    }
+    if (timer > 6 && !timerCheck5) {
+        timerCheck5 = true;
+        numLights = 10;
+        spotlightSound.play();
+    }
+    if (timer > 7 && !timerCheck6) {
+        timerCheck6 = true;
+        numLights = 12;
+        spotlightSound.play();
+    }
+    if (timer > 8 && !timerCheck7) {
+        timerCheck7 = true;
+        numLights = 14;
+        spotlightSound.play();
+    }
+    if (timer > 9 && !timerCheck8) {
+        timerCheck8 = true;
+        numLights = 16;
+        spotlightSound.play();
+    }
+    if (timer > 10 && !timerCheck9) {
+        timerCheck9 = true;
+        shrine.paintings.push(shrinePainting);
+        spotlightSound.play();
+    }
+
+    if (timer > 50.5 && !timerCheck10)
+        restart();
+    if (pitch < 0)
+        pitch += 1*deltaTime;
+    if (timer > 2) {
+        if (camZ > -200)
+            camZ -= 30*deltaTime;
+        else if (camZ > -300)
+            camZ -= 20*deltaTime;
+        else if (camZ > -400)
+            camZ -= 10*deltaTime;
+        else if (camZ > -460)
+            camZ -= 5*deltaTime;
+        if (camY < 10)
+            camY += 1*deltaTime;
+        else if (camY < 30)
+            camY += 3*deltaTime;
+        else if (camY < 80)
+            camY += 5*deltaTime;
+    }
 }
 
 // From book, added options for the two different cubes to use nearest neighbor or tri-linear mipmapping
@@ -583,9 +667,20 @@ function restart() {
     pitch = initPitch;
     curRoomIndex = 0;
     curRoom = rooms[0];
+
     wallHeight = curRoom.wallHeight * globalScale;
     lightHeight = wallHeight - 1;
     hallway.doors[0][2] = ROOMS.LOBBY;
+    enteredShrine = false;
+    timer = 0;
+    allowControl = true;
+    numLights = 1;
+
+    staircase.paintings[0][2] = floor1;
+    hallway.doors[0][2] = ROOMS.LOBBY;
+    hallway.doors[1][2] = ROOMS.ROOM3;
+    hallway.doors[2][2] = ROOMS.ROOM1;
+    hallway.doors[3][2] = ROOMS.ROOM2;
 }
 
 function exitFullscreen() {
@@ -652,9 +747,4 @@ function printMatrix(description, mat) {
 function printCamCoords() {
     console.log("x: " + camX + ", y: " + camY + ", z: " + camZ);
     console.log("azim: " + azim + ", pitch: " + pitch);
-}
-
-function renderAllRooms() {
-    for (var i = 0; i < rooms.length; i++)
-        renderRoom(i);
 }
