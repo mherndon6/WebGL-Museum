@@ -65,7 +65,7 @@
 
 			void main() {
 				if (isTextured && isLit)
-					gl_FragColor = lightColor + texture2D(texture, fTexCoord);
+					gl_FragColor = lightColor * texture2D(texture, fTexCoord);
 				else if (isTextured)
 					gl_FragColor = texture2D(texture, fTexCoord);
 				else if (isLit)

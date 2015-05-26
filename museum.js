@@ -143,7 +143,7 @@ function renderRoom(deltaTime) {
     normals = verts[1];
     texVertices = verts[2];
     configureTexture(room.floorTexture);
-    renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.NO_LIGHT);
+    renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.DRAW_LIGHT);
     if (renderCeiling) {
         verts = getFloorVertices(room, wallHeight, room.ceilingTexture.scale);
         vertices = verts[0];
@@ -393,7 +393,7 @@ function cycleRooms() {
 
 function toggleFloor() {
     if (curRoomIndex != ROOMS.STAIRCASE) {
-        return;
+        //return;
     }
 
     if (hallway.doors[0][2] == ROOMS.LOBBY) { // floor 1 -> floor 2
@@ -461,7 +461,7 @@ function timerCheck(deltaTime) {
         spotlightSound.play();
     }
 
-    if (timer > 50.5 && !timerCheck10)
+    if (timer > 47.8 && !timerCheck10)
         restart();
     if (pitch < 0)
         pitch += 1*deltaTime;
@@ -685,6 +685,18 @@ function restart() {
     allowControl = true;
     numLights = 1;
     
+    shrine.paintings = [];
+    timerCheck1 = false;
+    timerCheck2 = false;
+    timerCheck3 = false;
+    timerCheck4 = false;
+    timerCheck5 = false;
+    timerCheck6 = false;
+    timerCheck7 = false;
+    timerCheck8 = false;
+    timerCheck9 = false;
+    timerCheck10 = false;
+
     staircase.paintings[0][2] = floor1;
     hallway.doors[0][2] = ROOMS.LOBBY;
     hallway.doors[1][2] = ROOMS.ROOM3;

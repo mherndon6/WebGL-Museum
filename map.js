@@ -7,7 +7,7 @@ paintings: [startPos, whichWall, painting] specifying paintings and locations
 */
 
 var testLight = {
-    ambient: vec4(0.2, 0.2, 0.0),
+    ambient: vec4(0.5, 0.0, 0.0),
     diffuse: vec4(0.2, 0.2, 0.0),
     specular: vec4(0.2, 0.2, 0.0),
     shininess: 1
@@ -23,7 +23,7 @@ var lobby = {
     doors: [[(midRightWall + midLeftWall)/2, midBottomWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.BLACK,
-    wallTexture: diamondPaper,
+    wallTexture: none,
     floorTexture: lobbyCarpet,
     ceilingTexture: diamondPaper,
 
@@ -318,11 +318,11 @@ function getLightVertices(room, numLights) {
         if (numLights > 1) {
             lightHeight1 = 0;
             lightHeight2 = 1;
-            lightX = (leftBorder + rightBorder)/2 - pathWidth + lightWidth + .5;
+            lightX = (midLeftWall + midRightWall)/2 - pathWidth - lightWidth/2;
             lightZ = topBorder + pathStart + Math.floor(i/2)*pathLength;
             lightWidth = 2;
             if (i % 2 == 1)
-                lightX = (leftBorder + rightBorder)/2 + pathWidth + lightWidth + .5;
+                lightX = (midLeftWall + midRightWall)/2 + pathWidth - lightWidth/2;
         }
 
         // just a box for now
