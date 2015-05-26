@@ -78,7 +78,7 @@ function render(now) {
 
     // Fade previous song out
     if (prevSong) {
-        var newVol = prevSong.volume - deltaTime * 0.20;
+        var newVol = prevSong.volume - deltaTime * 0.25;
         if (newVol <= 0) { 
             prevSong.pause(); 
             prevSong = null; 
@@ -659,6 +659,9 @@ function keyUpHandler(e) {
 }
 
 function restart() {
+    if (prevSong) {prevSong.pause();}
+    if (curRoom.song) {curRoom.song.pause();}
+
     fov = initFOV;
     camX = initCamX;
     camY = initCamY;
@@ -675,7 +678,7 @@ function restart() {
     timer = 0;
     allowControl = true;
     numLights = 1;
-
+    
     staircase.paintings[0][2] = floor1;
     hallway.doors[0][2] = ROOMS.LOBBY;
     hallway.doors[1][2] = ROOMS.ROOM3;
