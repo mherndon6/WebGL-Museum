@@ -52,6 +52,7 @@ var hallway = {
 
     lighting: testLight,
 
+    song: new Audio("res/hallway.mp3"),
     paintings: [[(midLeftWall + midRightWall)/2 + doorWidth/2, topWall, elevatorSign]]
 };
 
