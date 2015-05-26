@@ -60,8 +60,8 @@ var stainedWood = {
 	scale: .5
 };
 
-var stripePaper = {
-	src: "stripe-paper.png",
+var diamondPaper = {
+	src: "diamond-paper.png",
 	scale: .5
 };
 
