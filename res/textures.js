@@ -25,6 +25,11 @@ var blueCarpet = {
 	scale: .25
 };
 
+var greyCarpet = {
+	src: "grey-carpet.png",
+	scale: .25
+};
+
 var lobbyCeiling = {
 	src: "ceiling1.png",
 	scale: .2
@@ -55,14 +60,19 @@ var stainedWood = {
 	scale: .5
 };
 
-var greenMarble = {
-	src: "green-marble.png",
+var stripePaper = {
+	src: "stripe-paper.png",
 	scale: .5
+};
+
+var circlePaper = {
+	src: "circles.png",
+	scale: .3
 };
 
 var elevatorWall = {
 	src: "elevator-wall.png",
-	scale: .25
+	scale: .15
 };
 
 var door = {

@@ -23,10 +23,9 @@ var lobby = {
     doors: [[(midRightWall + midLeftWall)/2, midBottomWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.BLACK,
-    wallTexture: none,
-
+    wallTexture: stripePaper,
     floorTexture: lobbyCarpet,
-    ceilingTexture: lobbyCeiling,
+    ceilingTexture: stripePaper,
 
     lighting: testLight,
 
@@ -47,10 +46,10 @@ var hallway = {
             [(midLeftWall + midRightWall)/2 + doorWidth/2, topWall, ROOMS.STAIRCASE]],
 
     wallColor: COLORS.WHITE,
-    wallTexture: drywall,
+    wallTexture: stripePaper,
 
     floorTexture: lobbyCarpet,
-    ceilingTexture: lobbyCeiling,
+    ceilingTexture: stripePaper,
 
     lighting: testLight,
 
@@ -151,9 +150,9 @@ var room5 = {
     doors: room2.doors,
     
     wallColor: COLORS.WHITE,
-    wallTexture: drywall,
-    floorTexture: drywall,
-    ceilingTexture: lobbyCeiling,
+    wallTexture: circlePaper,
+    floorTexture: greyCarpet,
+    ceilingTexture: circlePaper,
 
     lighting: testLight,
 
