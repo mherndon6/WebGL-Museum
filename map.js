@@ -8,7 +8,7 @@ paintings: [startPos, whichWall, painting] specifying paintings and locations
 
 var testLight = { 
     ambient: vec4(0.1, 0.1, 0.0),
-    lightColor: vec4(1, 1, 1)
+    lightColor: vec4(0.9, 0.9, 0.7)
 };
 
 var lobby = {
@@ -380,10 +380,14 @@ function getWallObjectVertices(objects, room, type) {
     for (var i = 0; i < objects.length; i++) {
         var curObject = objects[i];
 
+        var rightNorm = norm4big;
+        var rightNormsmall = norm4;
         if (type == WALL_OBJECT.PAINTINGS) {
             objectWidth = curObject[2].width * INCHES_SCALE;
             objectHeight = curObject[2].height * INCHES_SCALE;
             hangingHeight = curObject[2].hangingHeight;
+            rightNorm = norm4;
+            rightNormsmall = norm4small;
         }
 
         var pointOne = curObject[0] - objectWidth/2;
@@ -427,7 +431,7 @@ function getWallObjectVertices(objects, room, type) {
                 verts.push(vec3(curDepth, hangingHeight + objectHeight, pointTwo));
                 texVerts.push(vec2(1, 1));
 
-                norms.push(norm4small, norm4small, norm4, norm4small, norm4, norm4);
+                norms.push(rightNormsmall, rightNormsmall, rightNorm, rightNormsmall, rightNorm, rightNorm);
             }
         }
         else { //door goes east-west
