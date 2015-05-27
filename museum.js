@@ -105,6 +105,7 @@ function renderRoom(deltaTime) {
         camX = initCamX;
         camY = initCamY;
         camZ = initCamZ;
+        pitch = -10;
         azim = 180;
         allowControl = false;
         enteredShrine = true;
