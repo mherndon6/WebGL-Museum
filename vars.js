@@ -106,6 +106,15 @@ var pathStart = 50;
 var timer = 0;
 var spotlightSound = new Audio("res/spotlight.mp3");
 
+var norm1 = vec3(0, 0, 1);
+var norm1small = vec3(0, 0, 0.5);
+var norm2 = vec3(0, 0, -1);
+var norm2small = vec3(0, 0, -0.5);
+var norm3 = vec3(1, 0, 0);
+var norm3small = vec3(0.5, 0, 0);
+var norm4 = vec3(-1, 0, 0);
+var norm4small = vec3(-0.5, 0, 0);
+
 var COLORS = {
 	WHITE: [1.0, 1.0, 1.0, 1.0],
 	LIGHT_GREY: [0.8, 0.8, 0.8, 0.8],

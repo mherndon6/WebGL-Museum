@@ -259,15 +259,14 @@ function getRoomVertices(room, scaleDown) {
         verts.push(vec3(pointOne[0], wallHeight, pointOne[1]));
         texVerts.push(vec2(0, 1*heightFactor));
 
-        var normal = vec3(1, 0, 0); //left wall
-        if (i == 1) //top wall
-            normal = vec3(0, 0, 1);
-        if (i == 2) //right wall
-            normal = vec3(-1, 0, 0);
-        if (i == 3) //bottom wall
-            normal = vec3(0, 0, -1);
-
-        norms.push(normal, normal, normal, normal, normal, normal);
+        if (i == 0) //left wall
+            norms.push(norm2small, norm2, norm1small, norm1small, norm1, norm2);
+        else if (i == 1) //top wall
+            norms.push(norm1small, norm1, norm1small, norm1small, norm1, norm1);
+        else if (i == 2) //right wall
+            norms.push(norm1small, norm1, norm2small, norm2small, norm2, norm1);
+        else if (i == 3) //bottom wall
+            norms.push(norm2small, norm2, norm2small, norm2small, norm2, norm2);
 
     }
     return [verts, norms, texVerts];
@@ -298,10 +297,10 @@ function getFloorVertices(room, height, scaleDown) {
     texVerts.push(vec2(1*roomWidth, 0));
 
     // Vertical normals for all floors
-    var normal = vec3(0, 1.5, 0);
     if (height != groundHeight) //ceiling
-        normal = vec3(0, -2.5, 0);
-    norms.push(normal, normal, normal, normal, normal, normal);
+        norms.push(norm2, norm1, norm2, norm1, norm1, norm2);
+    else
+        norms.push(norm2small, norm1small, norm2small, norm1small, norm1small, norm2small);
 
     return [verts, norms, texVerts];
 }
@@ -391,7 +390,7 @@ function getWallObjectVertices(objects, room, type) {
         var pointTwo = curObject[0] + objectWidth/2;
 
         //two triangles per door
-        if (curObject[1] == leftWall || curObject[1] == midLeftWall || curObject[1] == midRightWall || curObject[1] == rightWall) { //door goes north-south
+        if (curObject[1] == leftWall || curObject[1] == midLeftWall || curObject[1] == midRightWall || curObject[1] == rightWall) {
             if (curObject[1] == walls[0][0]) { //on left wall
                 var curDepth = curObject[1] + visibleDoorDepth;
 
@@ -409,8 +408,7 @@ function getWallObjectVertices(objects, room, type) {
                 verts.push(vec3(curDepth, hangingHeight + objectHeight, pointTwo));
                 texVerts.push(vec2(-1, 1));
 
-                var normal = vec3(1, 0, 0);
-                norms.push(normal, normal, normal, normal, normal, normal);
+                norms.push(norm3small, norm3small, norm3, norm3small, norm3, norm3);
             }
             else { //on right wall
                 var curDepth = curObject[1] - visibleDoorDepth;
@@ -429,8 +427,7 @@ function getWallObjectVertices(objects, room, type) {
                 verts.push(vec3(curDepth, hangingHeight + objectHeight, pointTwo));
                 texVerts.push(vec2(1, 1));
 
-                var normal = vec3(-1, 0, 0);
-                norms.push(normal, normal, normal, normal, normal, normal);
+                norms.push(norm4small, norm4small, norm4, norm4small, norm4, norm4);
             }
         }
         else { //door goes east-west
@@ -451,8 +448,7 @@ function getWallObjectVertices(objects, room, type) {
                 verts.push(vec3(pointTwo, hangingHeight + objectHeight, curDepth));
                 texVerts.push(vec2(1, 1));
 
-                var normal = vec3(0, 0, 1);
-                norms.push(normal, normal, normal, normal, normal, normal);
+                norms.push(norm1small, norm1small, norm1, norm1small, norm1, norm1);
             }
             else { //on bottom wall
                 var curDepth = curObject[1] - visibleDoorDepth;
@@ -471,8 +467,7 @@ function getWallObjectVertices(objects, room, type) {
                 verts.push(vec3(pointTwo, hangingHeight + objectHeight, curDepth));
                 texVerts.push(vec2(-1, 1));
 
-                var normal = vec3(0, 0, -1);
-                norms.push(normal, normal, normal, normal, normal, normal);
+                norms.push(norm2small, norm2small, norm2, norm2small, norm2, norm2);
             }
         }
     }

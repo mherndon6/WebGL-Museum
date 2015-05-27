@@ -5,27 +5,10 @@ To add a texture, make an object in textures.js and add an img tag in the html
 
 Make sure to run chrome with option --allow-file-access-from-files
 
-Added single light sources to each room, but weird stuff is going on. Lobby shows some lighting but it's fading in the wrong direction on each wall.
-
 --------------------TODO-----------------------
 
--Think of exhibits (paintings)
--Bump mapping on walls and tiles on floor
--Frame pictures
--Light geometries on ceiling
+-Bump mapping on walls and tiles on floor (?)
 -Lighting
--Front plaque
--Painting info (?)
--Music
--Sounds
--Taking stairs now changes lobby to shrine room - need to make rooms 4-6, add to toggleFloor()
-
---------------------Ideas----------------------
-
-	Mirror
-		show self as smiley face
-	Themed rooms w/ matching music
-		fade into idle song in hallway
 
 -----------------Rooms-------------------------
 	__Stairs_
@@ -108,7 +91,3 @@ Shrine:
     Song: Also Sprach Zarathustra - Richard Strauss
     Light: Spotlight
     Painting: Scott
-
-
-cd C:/Program Files (x86)/Google/Chrome/Application
-start chrome.exe --allow-file-access-from-files

@@ -25,6 +25,7 @@
 
 	            vec4 transformedNormal = vNormal;
 	            float directionalLightWeighting = max(dot(transformedNormal.xyz, lightDirection), 0.0);
+	            float distanceFactor = dot(lightDirection, lightDirection);
 	            vLightWeighting = vAmbientProduct + vLightColor * directionalLightWeighting;
 
 		        fTexCoord = vTexCoord;
@@ -46,7 +47,7 @@
 			uniform vec4 vColor;
 
 			void main() {
-				if (isTextured && isLit)
+				if (isLit)
 					gl_FragColor = vLightWeighting * texture2D(texture, fTexCoord);
 				else if (isTextured)
 					gl_FragColor = texture2D(texture, fTexCoord);

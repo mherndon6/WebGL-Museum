@@ -173,6 +173,10 @@ function renderRoom(deltaTime) {
 }
 
 function renderCurrentVertices(drawTexture, drawLight) {
+    var isLit = drawLight;
+    if (curRoomIndex == ROOMS.SHRINE)
+        isLit = false;
+
     gl.bindBuffer(gl.ARRAY_BUFFER, null);
     gl.disableVertexAttribArray(vTexCoord);
     gl.disableVertexAttribArray(normalLocation);
@@ -188,7 +192,7 @@ function renderCurrentVertices(drawTexture, drawLight) {
         gl.bindBuffer(gl.ARRAY_BUFFER, tBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(flatten(texVertices)), gl.STATIC_DRAW);
     }
-    if (drawLight) {
+    if (isLit) {
         gl.enableVertexAttribArray(normalLocation);
         gl.uniform1i(gl.getUniformLocation(program, "isLit"), true);
         gl.bindBuffer(gl.ARRAY_BUFFER, nBuffer);
