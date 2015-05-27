@@ -11,43 +11,25 @@
 			attribute vec4 vNormal;
 			attribute vec2 vTexCoord;
 
-			varying vec4 lightColor;
+			varying vec4 vLightWeighting;
 			varying vec2 fTexCoord;
 
-			uniform vec4 vAmbientProduct, vDiffuseProduct, vSpecularProduct;
-			uniform vec4 lightPosition;
-			uniform float vShininess;
+			uniform vec4 vAmbientProduct, vLightColor;
+			uniform vec3 lightPosition;
 			uniform mat4 matrix;
 
-			void main() {
-				// Calculate Gauraud vars, pass to fragment shader
-			    // pos is vertex position
-			    vec3 pos = -vPosition.xyz;
-			    // vector from vertex position to light source
-			    vec3 vL = normalize(lightPosition.xyz - pos);
-			    // Because the eye point the is at the origin
-			    // the vector from the vertex position to the eye is
-			    vec3 vE = -normalize(pos);
-			    // halfway vector
-			    vec3 vH = normalize(vL + vE);
-			    // Transform vertex normal into eye coordinates
-			    vec3 vN = normalize(vNormal.xyz);
-			    // Compute terms in the illumination equation
-			    vec4 ambient = vAmbientProduct;
-			    float Kd = max(dot(vL, vN), 0.0);
-			    vec4  diffuse = Kd * vDiffuseProduct;
-			    float Ks = pow(max(dot(vN, vH), 0.0), vShininess);
-			    vec4  specular = Ks * vSpecularProduct;
-			    if(dot(vL, vN) < 0.0)
-					specular = vec4(0.0, 0.0, 0.0, 1.0);
-			    lightColor = ambient + diffuse + specular;
-				lightColor.a = 1.0;
+		    void main(void) {
+		    	vec4 norm = matrix * vNormal;
 
-				// Apply translation, rotation, perspective to the position
-				fTexCoord = vTexCoord;
-				gl_Position = matrix * vPosition;
-			}
+	            vec3 lightDirection = normalize(lightPosition - vPosition.xyz);
 
+	            vec4 transformedNormal = vNormal;
+	            float directionalLightWeighting = max(dot(transformedNormal.xyz, lightDirection), 0.0);
+	            vLightWeighting = vAmbientProduct + vLightColor * directionalLightWeighting;
+
+		        fTexCoord = vTexCoord;
+		        gl_Position = matrix * vPosition;
+		    }
 		</script>
 
 		<script id="fragment-shader" type="x-shader/x-fragment">
@@ -58,18 +40,18 @@
 			uniform bool isTextured;
 			uniform sampler2D texture;
 
-			varying vec4 lightColor;
+			varying vec4 vLightWeighting;
 			varying vec2 fTexCoord;
 
 			uniform vec4 vColor;
 
 			void main() {
 				if (isTextured && isLit)
-					gl_FragColor = lightColor * texture2D(texture, fTexCoord);
+					gl_FragColor = vLightWeighting * texture2D(texture, fTexCoord);
 				else if (isTextured)
 					gl_FragColor = texture2D(texture, fTexCoord);
 				else if (isLit)
-					gl_FragColor = vColor + lightColor;
+					gl_FragColor = vColor + vLightWeighting;
 				else
 					gl_FragColor = vColor;
 			}

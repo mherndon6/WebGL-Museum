@@ -124,7 +124,7 @@ function renderRoom(deltaTime) {
         renderCurrentVertices(SETTINGS.NO_TEXTURE, SETTINGS.DRAW_LIGHT);
     else {
         configureTexture(room.wallTexture);
-        renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.NO_LIGHT);
+        renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.DRAW_LIGHT);
     }
 
     // Draw doors
@@ -134,7 +134,7 @@ function renderRoom(deltaTime) {
     normals = verts[1];
     texVertices = verts[2];
     configureTexture(door);
-    renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.NO_LIGHT);
+    renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.DRAW_LIGHT);
 
     // Draw floor & ceiling
     curColor = COLORS.FLOOR_COLOR;
@@ -150,7 +150,7 @@ function renderRoom(deltaTime) {
         normals = verts[1]
         texVertices = verts[2];
         configureTexture(room.ceilingTexture);
-        renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.NO_LIGHT);
+        renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.DRAW_LIGHT);
     }
     
     // Draw paintings
@@ -162,7 +162,7 @@ function renderRoom(deltaTime) {
         normals = verts[1];
         texVertices = verts[2];
         configureTexture(paintings[i][2]);
-        renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.NO_LIGHT);
+        renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.DRAW_LIGHT);
     }
 
     // Draw light fixture(s)
@@ -231,20 +231,14 @@ function setLighting() {
     var bottomBorder = walls[0][1];
     var topBorder = walls[2][1];
 
-    var lightX = (leftBorder + rightBorder)/2;
-    var lightZ = (bottomBorder + topBorder)/2;
-    // Lights are in center of room, at lightHeight
-    var lightPosition = vec4(lightX, room.wallHeight - 1, lightZ, 1.0);
+    var lightPosition = vec3((leftBorder+rightBorder)/2, room.wallHeight-1, (bottomBorder+topBorder)/2, 1.0);
 
     ambientProduct = room.lighting.ambient;
-    diffuseProduct = room.lighting.diffuse;
-    specularProduct = room.lighting.specular;
+    lightColor = room.lighting.lightColor;
 
     gl.uniform4fv(gl.getUniformLocation(program, "vAmbientProduct"), flatten(ambientProduct));
-    gl.uniform4fv(gl.getUniformLocation(program, "vDiffuseProduct"), flatten(diffuseProduct));
-    gl.uniform4fv(gl.getUniformLocation(program, "vSpecularProduct"), flatten(specularProduct));
-    gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"), flatten(lightPosition));
-    gl.uniform1f(gl.getUniformLocation(program, "vShininess"), room.lighting.shininess);
+    gl.uniform4fv(gl.getUniformLocation(program, "vLightColor"), flatten(lightColor));
+    gl.uniform3fv(gl.getUniformLocation(program, "lightPosition"), flatten(lightPosition));
 }
 
 function attemptMove(axis, dist) {

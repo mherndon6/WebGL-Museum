@@ -6,11 +6,9 @@ lighting: specify lighting type, ambient values, light positions, etc...
 paintings: [startPos, whichWall, painting] specifying paintings and locations
 */
 
-var testLight = {
-    ambient: vec4(0.5, 0.0, 0.0),
-    diffuse: vec4(0.2, 0.2, 0.0),
-    specular: vec4(0.2, 0.2, 0.0),
-    shininess: 1
+var testLight = { 
+    ambient: vec4(0.1, 0.1, 0.0),
+    lightColor: vec4(1, 1, 1)
 };
 
 var lobby = {
@@ -23,7 +21,7 @@ var lobby = {
     doors: [[(midRightWall + midLeftWall)/2, midBottomWall, ROOMS.HALLWAY]],
 
     wallColor: COLORS.BLACK,
-    wallTexture: none,
+    wallTexture: diamondPaper,
     floorTexture: lobbyCarpet,
     ceilingTexture: diamondPaper,
 
@@ -261,9 +259,14 @@ function getRoomVertices(room, scaleDown) {
         verts.push(vec3(pointOne[0], wallHeight, pointOne[1]));
         texVerts.push(vec2(0, 1*heightFactor));
 
-        var normal = vec3(0, 0, -1);
-        if (i == 0 || i == 2) //vertical walls
-            normal = vec3(1, 0, 0);
+        var normal = vec3(1, 0, 0); //left wall
+        if (i == 1) //top wall
+            normal = vec3(0, 0, 1);
+        if (i == 2) //right wall
+            normal = vec3(-1, 0, 0);
+        if (i == 3) //bottom wall
+            normal = vec3(0, 0, -1);
+
         norms.push(normal, normal, normal, normal, normal, normal);
 
     }
@@ -295,7 +298,9 @@ function getFloorVertices(room, height, scaleDown) {
     texVerts.push(vec2(1*roomWidth, 0));
 
     // Vertical normals for all floors
-    var normal = vec3(0, 1, 0);
+    var normal = vec3(0, 1.5, 0);
+    if (height != groundHeight) //ceiling
+        normal = vec3(0, -2.5, 0);
     norms.push(normal, normal, normal, normal, normal, normal);
 
     return [verts, norms, texVerts];
@@ -429,7 +434,7 @@ function getWallObjectVertices(objects, room, type) {
             }
         }
         else { //door goes east-west
-            if (curObject[1] != walls[0][1]) { //on bottom wall
+            if (curObject[1] != walls[0][1]) { //on top wall
                 var curDepth = curObject[1] + visibleDoorDepth;
 
                 verts.push(vec3(pointOne, hangingHeight, curDepth));
@@ -446,10 +451,10 @@ function getWallObjectVertices(objects, room, type) {
                 verts.push(vec3(pointTwo, hangingHeight + objectHeight, curDepth));
                 texVerts.push(vec2(1, 1));
 
-                var normal = vec3(0, 0, -1);
+                var normal = vec3(0, 0, 1);
                 norms.push(normal, normal, normal, normal, normal, normal);
             }
-            else { //on top wall
+            else { //on bottom wall
                 var curDepth = curObject[1] - visibleDoorDepth;
 
                 verts.push(vec3(pointOne, hangingHeight, curDepth));
@@ -466,7 +471,7 @@ function getWallObjectVertices(objects, room, type) {
                 verts.push(vec3(pointTwo, hangingHeight + objectHeight, curDepth));
                 texVerts.push(vec2(-1, 1));
 
-                var normal = vec3(0, 0, 1);
+                var normal = vec3(0, 0, -1);
                 norms.push(normal, normal, normal, normal, normal, normal);
             }
         }
