@@ -9,9 +9,15 @@ Members:
 After cloning the repo, make sure to run chrome with option
 --allow-file-access-from-files or use firefox (has much more lag).
 
+For our term project, we created a museum in WebGL. The museum incorporates all of the basic topics from the first half of the course, including:
+    -Transformations
+    -Texture mapping
+    -Lighting
+    -Culling
+Our advanced topic, collision detection, is implemented in two ways. First, we detect collisions between the player and the walls of the museum. If the wall happens to be a door, it can be entered. If there is no door there, the player moves against the wall according to their azimuth. Second, we detect collisions between the player and the museum goer. This fellow walks randomly between the paintings in each exhibit and contemplates them for a few seconds each. He rudely shoves the player out of his way to get to his destination.
 
+Enjoy! A map of the museum can be found below.
 
-Notes:
     __Stairs_
     |       |2/4
 3/6 | Hall  |
