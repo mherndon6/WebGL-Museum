@@ -1,93 +1,52 @@
+Team #22 - CS 174A Spring 2015 Final Project
+
+Members:
+    Bartholomew Elliott
+    Mitchell Herndon
+    Austin Pineda
+
+
+After cloning the repo, make sure to run chrome with option
+--allow-file-access-from-files or use firefox (has much more lag).
+
+
+
 Notes:
-Map: http://imgur.com/ecyLIHv
+    __Stairs_
+    |       |2/4
+3/6 | Hall  |
+    |_     _|1/5
+      Shrine
 
-To add a texture, make an object in textures.js and add an img tag in the html
-
-Make sure to run chrome with option --allow-file-access-from-files
-
---------------------TODO-----------------------
-
--Bump mapping on walls and tiles on floor (?)
--Lighting
-
------------------Rooms-------------------------
-	__Stairs_
-	|  		|2/4
-3/6 | Hall 	|
-	|_ 	   _|1/5
-	  Shrine
-
-Hallway:
-    Walls:
-    Floor:
-    Song:
-
-1 (small) Neoclassical:
-    Walls: marble
-    Floor: marble tile
-    Song: Bach Harpsichord
-    Paintings:
+Room 1 Neoclassical:
         Oath of the Horatii - Jacques-Louis David
         Napoleon I on his Imperial Throne - Jean-Auguste-Dominique Ingres
         The Death of General Wolfe - Benjamin West
 
-2 (small) Landscapes:
-    Walls:
-    Floor:
-    Song:
-    Paintings:
+Room 2 Landscapes:
         Ulysses deriding Polyphemus - J.M.W. Turner
         XP wallpaper - Charles O'Rear
         Moonlit landscape - Rembrandt van Rijn
 
-3 (big) Famous:
-    Walls: marble
-    Floor: marble tile
-    Song: 
-    Paintings: 
+Room 3 Famous:
         A Sunday Afternoon on the Island of La Grande Jatte - Georges-Pierre Seurat
         Girl with a Pearl Earring - Johannes Vermeer
         Starry Night - Van Gogh
         The Mona Lisa - Leonardo da Vinci
         Ecce Homo - Elias Garcia Martinez
         
-
-Upper Hallway:
-    Walls:
-    Floor:
-    Song:
-
-4 (small) Landscapes:
-    Walls:
-    Floor:
-    Song:
-    Paintings:
+Room 4 Landscapes:
         A View of Het Steen in the Early Morning - Peter Paul Rubens
         Sunset over a Forest Lake - Peder Monsted
         Sleigh Ride on a Sunny Winter Day - Peder Monsted
 
-5 (small) Light:
-    Walls:
-    Floor:
-    Song:
-    Paintings:
+Room 5 Light:
         The Fall of Phaeton - Peter Paul Rubens
         Nocturne: Blue and Gold – Old Battersea Bridge - James Whistler
         Impression, Sunrise - Claude Monet
 
-6 (big) Dark:
-    Walls: pyramids sticking out
-    Floor: some weird pattern
-    Song: 
-    Paintings:
+Room 6 Dark:
         The Weeping Woman - Pablo Picasso
         Snow Storm - J.M.W. Turner
         The Scream - Edvard Munch
         The Last Day of Pompeii - Karl Briullov
-
-Shrine:
-    Walls:
-    Floor:
-    Song: Also Sprach Zarathustra - Richard Strauss
-    Light: Spotlight
-    Painting: Scott

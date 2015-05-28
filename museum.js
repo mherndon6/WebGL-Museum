@@ -484,7 +484,7 @@ function cycleRooms() {
 
 function toggleFloor() {
     if (curRoomIndex != ROOMS.STAIRCASE) {
-        //return;
+        return;
     }
 
     if (hallway.doors[0][2] == ROOMS.LOBBY) { // floor 1 -> floor 2
