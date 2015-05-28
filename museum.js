@@ -172,6 +172,7 @@ function renderRoom(deltaTime) {
         var scottCoords = getScottPosition(deltaTime);
         scottX = scottCoords[0];
         scottZ = scottCoords[1];
+        checkScottCollision();
         // Body
         verts = getPersonVertices(0);
         vertices = verts[0];
@@ -227,6 +228,8 @@ function getScottPosition(deltaTime) {
 
 function getContemplationPosition() {
     var painting = curRoom.paintings[paintingNum];
+    if (painting == null)
+        return [0,0];
     var walls = curRoom.walls;
     var leftBorder = walls[0][0];
     var rightBorder = walls[2][0];
@@ -256,6 +259,46 @@ function pickRandomPainting() {
     prevPaintingCoords = getContemplationPosition();
     paintingNum = Math.floor(Math.random()*len);
     paintingCoords = getContemplationPosition();
+}
+
+function resetScott() {
+    paintingNum = 0;
+    scottTimer = 0;
+    pickRandomPainting();
+}
+
+function checkScottCollision() {
+    var leftBorder = scottX - shoveRadius/2;
+    var rightBorder = leftBorder + shoveRadius;
+    var bottomBorder = scottZ + shoveRadius/2;
+    var topBorder = scottZ - shoveRadius;
+    var posX = -camX;
+    var posZ = -camZ;
+    if (posX > leftBorder && posX < rightBorder && posZ < bottomBorder && posZ > topBorder) {
+        // Collision, shove player away
+        heyMan.play();
+        var left = Math.abs(leftBorder - posX);
+        var right = Math.abs(rightBorder - posX);
+        var top = Math.abs(topBorder - posZ);
+        var bottom = Math.abs(bottomBorder - posZ);
+        var min = Math.min(left, right, top, bottom);
+        switch (min) {
+            case left:
+                camX += shoveDistance;
+                break;
+            case right:
+                camX -= shoveDistance;
+                break;
+            case top:
+                camZ += shoveDistance;
+                break;
+            case bottom:
+                camZ -= shoveDistance;
+                break;
+            default:
+                console.log("bad");
+        }
+    }
 }
 
 function renderCurrentVertices(drawTexture, drawLight) {
@@ -381,9 +424,7 @@ function attemptMove(axis, dist) {
                     }
                     curRoomIndex = curDoor[2];
                     curRoom = rooms[curRoomIndex];
-                    if (curRoomIndex != ROOMS.LOBBY && curRoomIndex != ROOMS.HALLWAY && 
-                    curRoomIndex != ROOMS.SHRINE && curRoomIndex != ROOMS.STAIRCASE)
-                        pickRandomPainting();
+                    resetScott();
                     wallHeight = curRoom.wallHeight * globalScale;
                     lightHeight = wallHeight - 1;
                     movingRight? camX -= 1 : camX += 1;
@@ -411,9 +452,7 @@ function attemptMove(axis, dist) {
                     }
                     curRoomIndex = curDoor[2];
                     curRoom = rooms[curRoomIndex];
-                    if (curRoomIndex != ROOMS.LOBBY && curRoomIndex != ROOMS.HALLWAY && 
-                    curRoomIndex != ROOMS.SHRINE && curRoomIndex != ROOMS.STAIRCASE)
-                        pickRandomPainting();
+                    resetScott();
                     wallHeight = curRoom.wallHeight * globalScale;
                     lightHeight = wallHeight - 1;
                     movingUp? camZ += 1 : camZ -= 1;
@@ -459,6 +498,7 @@ function attemptMove(axis, dist) {
             }
         }
     }
+    checkScottCollision();
 }
 
 // Convert the given distance to changes in global X and Z coordinates based on the azimuth
@@ -859,4 +899,5 @@ function printMatrix(description, mat) {
 function printCamCoords() {
     console.log("x: " + camX + ", y: " + camY + ", z: " + camZ);
     console.log("azim: " + azim + ", pitch: " + pitch);
+    console.log("Scott x: " + scottX + ", Scott Z: " + scottZ);
 }

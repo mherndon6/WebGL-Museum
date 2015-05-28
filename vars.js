@@ -36,6 +36,7 @@ var prevSong = null;
 
 var torsoWidth = 3;
 var headWidth = 4;
+var shoveRadius = 5;
 var torsoHeight = 6;
 var personHeight = 9;
 var standingDistance = 8;
@@ -46,6 +47,8 @@ var prevPaintingNum = 0;
 var prevPaintingCoords = [0,0];
 var paintingNum = 0;
 var paintingCoords = [0,0];
+var shoveDistance = headWidth-1;
+var heyMan = new Audio("res/hey-man.wav");
 
 var shrineWidth = 400;
 var leftWall = 0 * globalScale;
