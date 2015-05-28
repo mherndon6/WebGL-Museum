@@ -477,3 +477,137 @@ function getWallObjectVertices(objects, room, type) {
     }
     return [verts, norms, texVerts];
 }
+
+function getPersonVertices(type) {
+    var verts = [];
+    var texVerts = [];
+
+    var personX = scottX - torsoWidth/2;
+    var personZ = scottZ - torsoWidth/2;
+    var headX = scottX - headWidth/2;
+    var headZ = scottZ - headWidth/2;
+
+    if (type == 0) {
+        // skinny box for body
+        verts.push(vec3(personX, torsoHeight, personZ));
+        texVerts.push(vec2(0,1));
+        verts.push(vec3(personX, 0, personZ));
+        texVerts.push(vec2(0,0));
+        verts.push(vec3(personX + torsoWidth, torsoHeight, personZ));
+        texVerts.push(vec2(1,1));
+        verts.push(vec3(personX + torsoWidth, 0, personZ));
+        texVerts.push(vec2(1,0));
+        verts.push(vec3(personX, 0, personZ));
+        texVerts.push(vec2(0,0));
+        verts.push(vec3(personX + torsoWidth, torsoHeight, personZ));
+        texVerts.push(vec2(1,1));
+
+        verts.push(vec3(personX, torsoHeight, personZ + torsoWidth));
+        texVerts.push(vec2(0,1));
+        verts.push(vec3(personX, 0, personZ + torsoWidth));
+        texVerts.push(vec2(0,0));
+        verts.push(vec3(personX + torsoWidth, torsoHeight, personZ + torsoWidth));
+        texVerts.push(vec2(1,1));
+        verts.push(vec3(personX + torsoWidth, 0, personZ + torsoWidth));
+        texVerts.push(vec2(1,0));
+        verts.push(vec3(personX, 0, personZ + torsoWidth));
+        texVerts.push(vec2(0,0));
+        verts.push(vec3(personX + torsoWidth, torsoHeight, personZ + torsoWidth));
+        texVerts.push(vec2(1,1));
+
+        verts.push(vec3(personX, torsoHeight, personZ));
+        texVerts.push(vec2(0,1));
+        verts.push(vec3(personX, torsoHeight, personZ + torsoWidth));
+        texVerts.push(vec2(1,1));
+        verts.push(vec3(personX, 0, personZ + torsoWidth));
+        texVerts.push(vec2(1,0));
+        verts.push(vec3(personX, torsoHeight, personZ));
+        texVerts.push(vec2(0,1));
+        verts.push(vec3(personX, 0, personZ));
+        texVerts.push(vec2(0,0));
+        verts.push(vec3(personX, 0, personZ + torsoWidth));
+        texVerts.push(vec2(1,0));
+
+        verts.push(vec3(personX + torsoWidth, torsoHeight, personZ));
+        texVerts.push(vec2(0,1));
+        verts.push(vec3(personX + torsoWidth, torsoHeight, personZ + torsoWidth));
+        texVerts.push(vec2(1,1));
+        verts.push(vec3(personX + torsoWidth, 0, personZ + torsoWidth));
+        texVerts.push(vec2(1,0));
+        verts.push(vec3(personX + torsoWidth, torsoHeight, personZ));
+        texVerts.push(vec2(0,1));
+        verts.push(vec3(personX + torsoWidth, 0, personZ));
+        texVerts.push(vec2(0,0));
+        verts.push(vec3(personX + torsoWidth, 0, personZ + torsoWidth));
+        texVerts.push(vec2(1,0));
+    }
+    else {
+        // bigger box for head
+        verts.push(vec3(headX, personHeight, headZ));
+        texVerts.push(vec2(1,1));
+        verts.push(vec3(headX, personHeight, headZ + headWidth));
+        texVerts.push(vec2(1,1));
+        verts.push(vec3(headX + headWidth, personHeight, headZ));
+        texVerts.push(vec2(1,1));
+        verts.push(vec3(headX, personHeight, headZ + headWidth));
+        texVerts.push(vec2(1,1));
+        verts.push(vec3(headX + headWidth, personHeight, headZ));
+        texVerts.push(vec2(1,1));
+        verts.push(vec3(headX + headWidth, personHeight, headZ + headWidth));
+        texVerts.push(vec2(1,1));
+
+        verts.push(vec3(headX, personHeight, headZ));
+        texVerts.push(vec2(0,1));
+        verts.push(vec3(headX, torsoHeight, headZ));
+        texVerts.push(vec2(0,0));
+        verts.push(vec3(headX + headWidth, personHeight, headZ));
+        texVerts.push(vec2(1,1));
+        verts.push(vec3(headX + headWidth, torsoHeight, headZ));
+        texVerts.push(vec2(1,0));
+        verts.push(vec3(headX, torsoHeight, headZ));
+        texVerts.push(vec2(0,0));
+        verts.push(vec3(headX + headWidth, personHeight, headZ));
+        texVerts.push(vec2(1,1));
+
+        verts.push(vec3(headX, personHeight, headZ + headWidth));
+        texVerts.push(vec2(0,1));
+        verts.push(vec3(headX, torsoHeight, headZ + headWidth));
+        texVerts.push(vec2(0,0));
+        verts.push(vec3(headX + headWidth, personHeight, headZ + headWidth));
+        texVerts.push(vec2(1,1));
+        verts.push(vec3(headX + headWidth, torsoHeight, headZ + headWidth));
+        texVerts.push(vec2(1,0));
+        verts.push(vec3(headX, torsoHeight, headZ + headWidth));
+        texVerts.push(vec2(0,0));
+        verts.push(vec3(headX + headWidth, personHeight, headZ + headWidth));
+        texVerts.push(vec2(1,1));
+
+        verts.push(vec3(headX, personHeight, headZ));
+        texVerts.push(vec2(0,1));
+        verts.push(vec3(headX, personHeight, headZ + headWidth));
+        texVerts.push(vec2(1,1));
+        verts.push(vec3(headX, torsoHeight, headZ + headWidth));
+        texVerts.push(vec2(1,0));
+        verts.push(vec3(headX, personHeight, headZ));
+        texVerts.push(vec2(0,1));
+        verts.push(vec3(headX, torsoHeight, headZ));
+        texVerts.push(vec2(0,0));
+        verts.push(vec3(headX, torsoHeight, headZ + headWidth));
+        texVerts.push(vec2(1,0));
+
+        verts.push(vec3(headX + headWidth, personHeight, headZ));
+        texVerts.push(vec2(0,1));
+        verts.push(vec3(headX + headWidth, personHeight, headZ + headWidth));
+        texVerts.push(vec2(1,1));
+        verts.push(vec3(headX + headWidth, torsoHeight, headZ + headWidth));
+        texVerts.push(vec2(1,0));
+        verts.push(vec3(headX + headWidth, personHeight, headZ));
+        texVerts.push(vec2(0,1));
+        verts.push(vec3(headX + headWidth, torsoHeight, headZ));
+        texVerts.push(vec2(0,0));
+        verts.push(vec3(headX + headWidth, torsoHeight, headZ + headWidth));
+        texVerts.push(vec2(1,0));
+    }
+
+    return [verts, texVerts];
+}

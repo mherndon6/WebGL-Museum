@@ -1,3 +1,13 @@
+var plaid = {
+    src: "plaid.png",
+    scale: 1
+};
+
+var thinkingScott = {
+    src: "thinking-scott.png",
+    scale: 1
+};
+
 // ---------------- WALLS & FLOORS --------------------//
 
 var lobbyCarpet = {

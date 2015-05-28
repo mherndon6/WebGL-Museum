@@ -166,10 +166,96 @@ function renderRoom(deltaTime) {
         renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.DRAW_LIGHT);
     }
 
+    // Draw museum goer, only in exhibit rooms
+    if (curRoomIndex != ROOMS.LOBBY && curRoomIndex != ROOMS.HALLWAY && 
+    curRoomIndex != ROOMS.SHRINE && curRoomIndex != ROOMS.STAIRCASE) {
+        var scottCoords = getScottPosition(deltaTime);
+        scottX = scottCoords[0];
+        scottZ = scottCoords[1];
+        // Body
+        verts = getPersonVertices(0);
+        vertices = verts[0];
+        texVertices = verts[1];
+        configureTexture(plaid);
+        renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.NO_LIGHT);
+        // Head
+        verts = getPersonVertices(1);
+        vertices = verts[0];
+        texVertices = verts[1];
+        configureTexture(thinkingScott);
+        renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.NO_LIGHT);
+    }
+
     // Draw light fixture(s)
     curColor = COLORS.YELLOW;
     vertices = getLightVertices(room, numLights);
     renderCurrentVertices(SETTINGS.NO_TEXTURE, SETTINGS.NO_LIGHT);
+}
+
+function getScottPosition(deltaTime) {
+    scottTimer += deltaTime;
+    var contemplationTime = Math.random()*6 + 4;
+    if (scottTimer > contemplationTime) {
+        pickRandomPainting();
+        if (prevPaintingNum != paintingNum) // need to move to next painting
+            scottTimer = -100;
+        else
+            scottTimer = 2; // don't stay as long
+    }
+    if (scottTimer >= 0)
+        return paintingCoords;
+    else { // on the move
+        var posX = scottX;
+        var posZ = scottZ;
+        if (Math.abs(paintingCoords[0] - posX) > 0.1) {
+            if (posX < paintingCoords[0])
+                posX += SCOTT_SPEED*deltaTime;
+            else if (posX > paintingCoords[0])
+                posX -= SCOTT_SPEED*deltaTime;
+        }
+        if (Math.abs(paintingCoords[1] - posZ) > 0.1) {
+            if (posZ < paintingCoords[1])
+                posZ += SCOTT_SPEED*deltaTime;
+            else if (posZ > paintingCoords[1])
+                posZ -= SCOTT_SPEED*deltaTime;
+        }
+        if (Math.abs(paintingCoords[0] - posX) <= 0.1 && Math.abs(paintingCoords[1] - posZ) <= 0.1)
+            scottTimer = 0;
+        return [posX, posZ];
+    }
+}
+
+function getContemplationPosition() {
+    var painting = curRoom.paintings[paintingNum];
+    var walls = curRoom.walls;
+    var leftBorder = walls[0][0];
+    var rightBorder = walls[2][0];
+    var bottomBorder = walls[0][1];
+    var topBorder = walls[2][1];
+
+    var posX = painting[0];
+    var posZ = topBorder + standingDistance;
+    if (painting[1] == leftBorder) {
+        posX = leftBorder + standingDistance;
+        posZ = painting[0];
+    }
+    else if (painting[1] == rightBorder) {
+        posX = rightBorder - standingDistance;
+        posZ = painting[0];
+    }
+    else if (painting[1] == bottomBorder) {
+        posX = painting[0];
+        posZ = bottomBorder - standingDistance;
+    }
+    return [posX, posZ];
+}
+
+function pickRandomPainting() {
+    var len = curRoom.paintings.length;
+    prevPaintingNum = paintingNum;
+    prevPaintingCoords = getContemplationPosition();
+    paintingNum = Math.floor(Math.random()*len);
+    paintingCoords = getContemplationPosition();
 }
 
 function renderCurrentVertices(drawTexture, drawLight) {
@@ -295,6 +381,9 @@ function attemptMove(axis, dist) {
                     }
                     curRoomIndex = curDoor[2];
                     curRoom = rooms[curRoomIndex];
+                    if (curRoomIndex != ROOMS.LOBBY && curRoomIndex != ROOMS.HALLWAY && 
+                    curRoomIndex != ROOMS.SHRINE && curRoomIndex != ROOMS.STAIRCASE)
+                        pickRandomPainting();
                     wallHeight = curRoom.wallHeight * globalScale;
                     lightHeight = wallHeight - 1;
                     movingRight? camX -= 1 : camX += 1;
@@ -322,6 +411,9 @@ function attemptMove(axis, dist) {
                     }
                     curRoomIndex = curDoor[2];
                     curRoom = rooms[curRoomIndex];
+                    if (curRoomIndex != ROOMS.LOBBY && curRoomIndex != ROOMS.HALLWAY && 
+                    curRoomIndex != ROOMS.SHRINE && curRoomIndex != ROOMS.STAIRCASE)
+                        pickRandomPainting();
                     wallHeight = curRoom.wallHeight * globalScale;
                     lightHeight = wallHeight - 1;
                     movingUp? camZ += 1 : camZ -= 1;

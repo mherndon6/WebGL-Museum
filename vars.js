@@ -1,7 +1,8 @@
 // ---------------- CONSTANTS --------------- //
 INITIAL_CANVAS_WIDTH = 960;
 INITIAL_CANVAS_HEIGHT = 540;
-MOVEMENT_SPEED = 15; //TODO 15
+MOVEMENT_SPEED = 15;
+SCOTT_SPEED = 5;
 WALL_GAP = 0.4;
 INCHES_SCALE = 0.15;
 
@@ -32,6 +33,19 @@ var doorDepth = 0.5;
 var visibleDoorDepth = 0.1;
 var doorSound = new Audio("res/door.wav");
 var prevSong = null;
+
+var torsoWidth = 3;
+var headWidth = 4;
+var torsoHeight = 6;
+var personHeight = 9;
+var standingDistance = 8;
+var scottX = 0;
+var scottZ = 0;
+var scottTimer = 0;
+var prevPaintingNum = 0;
+var prevPaintingCoords = [0,0];
+var paintingNum = 0;
+var paintingCoords = [0,0];
 
 var shrineWidth = 400;
 var leftWall = 0 * globalScale;
@@ -138,7 +152,7 @@ var ROOMS = {
         ROOM4: 6,
         ROOM5: 7,
         ROOM6: 8,
-	SHRINE: 9
+		SHRINE: 9
 };
 var WALL_OBJECT = {
 	DOORS: 0,
