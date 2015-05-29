@@ -48,7 +48,8 @@ var prevPaintingCoords = [0,0];
 var paintingNum = 0;
 var paintingCoords = [0,0];
 var shoveDistance = headWidth-1;
-var heyMan = new Audio("res/hey-man.wav");
+var idleSounds = [new Audio("res/idle1.ogg"), new Audio("res/idle2.ogg"), new Audio("res/idle3.ogg")];
+var shoveSound = new Audio("res/shove.ogg");
 
 var shrineWidth = 400;
 var leftWall = 0 * globalScale;

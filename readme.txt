@@ -8,6 +8,7 @@ Members:
 
 After cloning the repo, make sure to run chrome with option
 --allow-file-access-from-files or use firefox (has much more lag).
+Since there are so many textures, the project is fairly graphics-intensive. Some older laptops have a harder time running it smoothly.
 
 For our term project, we created a museum in WebGL. The museum incorporates all of the basic topics from the first half of the course, including:
     -Transformations

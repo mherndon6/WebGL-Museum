@@ -198,6 +198,8 @@ function getScottPosition(deltaTime) {
     var contemplationTime = Math.random()*6 + 4;
     if (scottTimer > contemplationTime) {
         pickRandomPainting();
+        var idleSound = Math.floor(Math.random()*3);
+        idleSounds[idleSound].play();
         if (prevPaintingNum != paintingNum) // need to move to next painting
             scottTimer = -100;
         else
@@ -276,7 +278,7 @@ function checkScottCollision() {
     var posZ = -camZ;
     if (posX > leftBorder && posX < rightBorder && posZ < bottomBorder && posZ > topBorder) {
         // Collision, shove player away
-        heyMan.play();
+        shoveSound.play();
         var left = Math.abs(leftBorder - posX);
         var right = Math.abs(rightBorder - posX);
         var top = Math.abs(topBorder - posZ);
@@ -737,9 +739,9 @@ function keyPressed(e) {
             break;
         case 78: //n
         case 80: //p
+            restart();
             break;
         case 82: //r
-            restart();
             break;
         case 83: //s
             sHeld = true;
