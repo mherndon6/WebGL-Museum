@@ -5,8 +5,13 @@ window.onload = function init()
     configureWebgl();
     setupShaders();
     restart();
-    requestAnimationFrame(render);
+
 };
+
+function bodyLoaded() {
+    console.log("loaded body");
+    requestAnimationFrame(render);
+}
 
 function setupCanvas() {
     // Set up canvas, context, etc.
@@ -614,10 +619,10 @@ function timerCheck(deltaTime) {
     }
 }
 
-// From book, added options for the two different cubes to use nearest neighbor or tri-linear mipmapping
+// From book
 function configureTexture(tex) {
-    image = document.getElementById(tex.src);
-    texture = gl.createTexture();
+    var image = document.getElementById(tex.src);
+    var texture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
