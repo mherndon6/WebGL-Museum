@@ -50,7 +50,6 @@ function setupShaders() {
     vTexCoord = gl.getAttribLocation(program, "vTexCoord");
     matrixLocation = gl.getUniformLocation(program, "matrix");
     colorLocation = gl.getUniformLocation(program, "vColor");
-    fragTypeLocation = gl.getUniformLocation(program, "fragType");
 
     // Set up buffer for vertices
     vBuffer = gl.createBuffer();
