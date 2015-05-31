@@ -196,6 +196,8 @@ function renderRoom(deltaTime) {
     // Draw light fixture(s)
     curColor = COLORS.YELLOW;
     vertices = getLightVertices(room, numLights);
+    normals = [];
+    texVertices = [];
     renderCurrentVertices(SETTINGS.NO_TEXTURE, SETTINGS.NO_LIGHT);
 }
 

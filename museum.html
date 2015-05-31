@@ -47,7 +47,7 @@
 			uniform vec4 vColor;
 
 			void main() {
-				if (isLit)
+				if (isLit && isTextured)
 					gl_FragColor = vLightWeighting * texture2D(texture, fTexCoord);
 				else if (isTextured)
 					gl_FragColor = texture2D(texture, fTexCoord);
