@@ -1,12 +1,11 @@
 // Main
-window.onload = function init()
+window.onload = function()
 {
     setupCanvas();
     configureWebgl();
     setupShaders();
     restart();
-
-};
+}
 
 function bodyLoaded() {
     console.log("loaded body");
@@ -42,12 +41,16 @@ function setupShaders() {
     gl.useProgram(program);
 
     // Data locations
+    gl.bindAttribLocation(program, 0, "vPosition");
+    gl.bindAttribLocation(program, 1, "vNormal");
+    gl.bindAttribLocation(program, 2, "vTexCoord");
+
     positionLocation = gl.getAttribLocation(program, "vPosition");
     normalLocation = gl.getAttribLocation(program, "vNormal");
+    vTexCoord = gl.getAttribLocation(program, "vTexCoord");
     matrixLocation = gl.getUniformLocation(program, "matrix");
     colorLocation = gl.getUniformLocation(program, "vColor");
     fragTypeLocation = gl.getUniformLocation(program, "fragType");
-    vTexCoord = gl.getAttribLocation(program, "vTexCoord");
 
     // Set up buffer for vertices
     vBuffer = gl.createBuffer();
@@ -66,7 +69,6 @@ function setupShaders() {
     gl.bindBuffer(gl.ARRAY_BUFFER, tBuffer);
     gl.vertexAttribPointer(vTexCoord, 2, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(vTexCoord);
-
 }
 
 function render(now) {
@@ -99,7 +101,7 @@ function render(now) {
     }
 
     requestAnimationFrame(render);
-};
+}
 
 function renderRoom(deltaTime) {
     var room = rooms[curRoomIndex];
