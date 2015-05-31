@@ -8,6 +8,11 @@ var thinkingScott = {
     scale: 1
 };
 
+var lightFixture = {
+    src: "light-fixture.png",
+    scale: 1
+}
+
 // ---------------- WALLS & FLOORS --------------------//
 
 var lobbyCarpet = {

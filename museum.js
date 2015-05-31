@@ -9,7 +9,6 @@ window.onload = function init()
 };
 
 function bodyLoaded() {
-    console.log("loaded body");
     requestAnimationFrame(render);
 }
 
@@ -45,25 +44,27 @@ function setupShaders() {
     positionLocation = gl.getAttribLocation(program, "vPosition");
     normalLocation = gl.getAttribLocation(program, "vNormal");
     matrixLocation = gl.getUniformLocation(program, "matrix");
-    colorLocation = gl.getUniformLocation(program, "vColor");
     fragTypeLocation = gl.getUniformLocation(program, "fragType");
     vTexCoord = gl.getAttribLocation(program, "vTexCoord");
 
     // Set up buffer for vertices
     vBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
+    gl.bindAttribLocation(program, 0, 'vPosition');
     gl.vertexAttribPointer(positionLocation, itemSize, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(positionLocation);
 
     // Set up buffer for normals
     nBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, nBuffer);
+    //gl.bindAttribLocation(program, 1, 'vNormal');
     gl.vertexAttribPointer(normalLocation, itemSize, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(normalLocation);
 
     // Set up buffer for texture vertices
     tBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, tBuffer);
+    //gl.bindAttribLocation(program, 2, 'vTexCoord');
     gl.vertexAttribPointer(vTexCoord, 2, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(vTexCoord);
 
@@ -121,7 +122,6 @@ function renderRoom(deltaTime) {
     setLighting();
 
     // Draw walls
-    curColor = room.wallColor;
     verts = getRoomVertices(room, room.wallTexture.scale);
     vertices = verts[0];
     normals = verts[1];
@@ -134,7 +134,6 @@ function renderRoom(deltaTime) {
     }
 
     // Draw doors
-    curColor = COLORS.BLACK;
     verts = getWallObjectVertices(room.doors, room, WALL_OBJECT.DOORS);
     vertices = verts[0];
     normals = verts[1];
@@ -143,7 +142,6 @@ function renderRoom(deltaTime) {
     renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.DRAW_LIGHT);
 
     // Draw floor & ceiling
-    curColor = COLORS.FLOOR_COLOR;
     verts = getFloorVertices(room, groundHeight, room.floorTexture.scale);
     vertices = verts[0];
     normals = verts[1];
@@ -160,7 +158,6 @@ function renderRoom(deltaTime) {
     }
     
     // Draw paintings
-    curColor = COLORS.GREEN;
     paintings = room.paintings;
     for (var i = 0; i < paintings.length; i++) {
         verts = getWallObjectVertices([paintings[i]], room, WALL_OBJECT.PAINTINGS);
@@ -181,21 +178,44 @@ function renderRoom(deltaTime) {
         // Body
         verts = getPersonVertices(0);
         vertices = verts[0];
-        texVertices = verts[1];
+        normals = verts[1];
+        texVertices = verts[2];
         configureTexture(plaid);
-        renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.NO_LIGHT);
+        renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.DRAW_LIGHT);
         // Head
         verts = getPersonVertices(1);
         vertices = verts[0];
-        texVertices = verts[1];
+        normals = verts[1];
+        texVertices = verts[2];
         configureTexture(thinkingScott);
-        renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.NO_LIGHT);
+        renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.DRAW_LIGHT);
     }
 
     // Draw light fixture(s)
-    curColor = COLORS.YELLOW;
-    vertices = getLightVertices(room, numLights);
-    renderCurrentVertices(SETTINGS.NO_TEXTURE, SETTINGS.NO_LIGHT);
+    verts = getLightVertices(room, numLights);
+    vertices = verts[0];
+    normals = verts[1];
+    texVertices = verts[2];
+    configureTexture(lightFixture);
+    renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.DRAW_LIGHT);
+    
+}
+
+function renderCurrentVertices(drawTexture, drawLight) {
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(flatten(vertices)), gl.STATIC_DRAW);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, tBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(flatten(texVertices)), gl.STATIC_DRAW);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, nBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(flatten(normals)), gl.STATIC_DRAW);
+
+    applyTransforms(noTranslation, noRotation, noScale);
+    gl.drawArrays(gl.TRIANGLES, 0, vertices.length);
 }
 
 function getScottPosition(deltaTime) {
@@ -306,37 +326,6 @@ function checkScottCollision() {
                 console.log("bad");
         }
     }
-}
-
-function renderCurrentVertices(drawTexture, drawLight) {
-    var isLit = drawLight;
-    if (curRoomIndex == ROOMS.SHRINE)
-        isLit = false;
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, null);
-    gl.disableVertexAttribArray(vTexCoord);
-    gl.disableVertexAttribArray(normalLocation);
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(flatten(vertices)), gl.STATIC_DRAW);
-
-    gl.uniform1i(gl.getUniformLocation(program, "isTextured"), false);
-    gl.uniform1i(gl.getUniformLocation(program, "isLit"), false);
-    if (drawTexture) {
-        gl.enableVertexAttribArray(vTexCoord);
-        gl.uniform1i(gl.getUniformLocation(program, "isTextured"), true);
-        gl.bindBuffer(gl.ARRAY_BUFFER, tBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(flatten(texVertices)), gl.STATIC_DRAW);
-    }
-    if (isLit) {
-        gl.enableVertexAttribArray(normalLocation);
-        gl.uniform1i(gl.getUniformLocation(program, "isLit"), true);
-        gl.bindBuffer(gl.ARRAY_BUFFER, nBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(flatten(normals)), gl.STATIC_DRAW);
-    }
-    gl.uniform4fv(colorLocation, curColor);
-    applyTransforms(noTranslation, noRotation, noScale);
-    gl.drawArrays(gl.TRIANGLES, 0, vertices.length);
 }
 
 function applyTransforms(translation, rotation, scaleFactor) {

@@ -28,8 +28,8 @@
 	            float distanceFactor = dot(lightDirection, lightDirection);
 	            vLightWeighting = vAmbientProduct + vLightColor * directionalLightWeighting;
 
-		        fTexCoord = vTexCoord;
-		        gl_Position = matrix * vPosition;
+      	        fTexCoord = vTexCoord;
+      	        gl_Position = matrix * vPosition;
 		    }
 		</script>
 
@@ -37,24 +37,13 @@
 
 			precision mediump float;
 
-			uniform bool isLit;
-			uniform bool isTextured;
 			uniform sampler2D texture;
 
 			varying vec4 vLightWeighting;
 			varying vec2 fTexCoord;
 
-			uniform vec4 vColor;
-
 			void main() {
-				if (isLit)
-					gl_FragColor = vLightWeighting * texture2D(texture, fTexCoord);
-				else if (isTextured)
-					gl_FragColor = texture2D(texture, fTexCoord);
-				else if (isLit)
-					gl_FragColor = vColor + vLightWeighting;
-				else
-					gl_FragColor = vColor;
+				gl_FragColor = vLightWeighting * texture2D(texture, fTexCoord);
 			}
 
 		</script>
@@ -78,7 +67,8 @@
       
       <img id='welcome.png' src='res/welcome.png' hidden/>
       <img id='instructions.png' src='res/instructions.png' hidden/>
-      
+      <img id='light-fixture.png' src='res/light-fixture.png' hidden/>
+
       <img id='lobby-carpet.png' src='res/lobby-carpet.png' hidden/>
       <img id='marble-tile.png' src='res/marble-tile.png' hidden/>
       <img id='wood-floor.png' src='res/wood-floor.png' hidden/>
