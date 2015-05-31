@@ -1,12 +1,11 @@
 // Main
-window.onload = function init()
+window.onload = function()
 {
     setupCanvas();
     configureWebgl();
     setupShaders();
     restart();
-
-};
+}
 
 function bodyLoaded() {
     requestAnimationFrame(render);
@@ -41,10 +40,14 @@ function setupShaders() {
     gl.useProgram(program);
 
     // Data locations
+    gl.bindAttribLocation(program, 0, "vPosition");
+    gl.bindAttribLocation(program, 1, "vNormal");
+    gl.bindAttribLocation(program, 2, "vTexCoord");
+
     positionLocation = gl.getAttribLocation(program, "vPosition");
     normalLocation = gl.getAttribLocation(program, "vNormal");
+    vTexCoord = gl.getAttribLocation(program, "vTexCoord");
     matrixLocation = gl.getUniformLocation(program, "matrix");
-    fragTypeLocation = gl.getUniformLocation(program, "fragType");
     vTexCoord = gl.getAttribLocation(program, "vTexCoord");
 
     // Set up buffer for vertices
@@ -67,7 +70,6 @@ function setupShaders() {
     //gl.bindAttribLocation(program, 2, 'vTexCoord');
     gl.vertexAttribPointer(vTexCoord, 2, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(vTexCoord);
-
 }
 
 function render(now) {
@@ -100,7 +102,7 @@ function render(now) {
     }
 
     requestAnimationFrame(render);
-};
+}
 
 function renderRoom(deltaTime) {
     var room = rooms[curRoomIndex];
@@ -216,6 +218,7 @@ function renderCurrentVertices(drawTexture, drawLight) {
 
     applyTransforms(noTranslation, noRotation, noScale);
     gl.drawArrays(gl.TRIANGLES, 0, vertices.length);
+
 }
 
 function getScottPosition(deltaTime) {
