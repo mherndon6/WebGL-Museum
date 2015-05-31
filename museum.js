@@ -50,24 +50,24 @@ function setupShaders() {
     matrixLocation = gl.getUniformLocation(program, "matrix");
     vTexCoord = gl.getAttribLocation(program, "vTexCoord");
 
+    gl.uniform4fv(gl.getUniformLocation(program, "vColor"), vec4(1.0, 1.0, 0.0, 1.0));
+    gl.uniform1i(gl.getUniformLocation(program, "isLit"), true);
+
     // Set up buffer for vertices
     vBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
-    gl.bindAttribLocation(program, 0, 'vPosition');
     gl.vertexAttribPointer(positionLocation, itemSize, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(positionLocation);
 
     // Set up buffer for normals
     nBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, nBuffer);
-    //gl.bindAttribLocation(program, 1, 'vNormal');
     gl.vertexAttribPointer(normalLocation, itemSize, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(normalLocation);
 
     // Set up buffer for texture vertices
     tBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, tBuffer);
-    //gl.bindAttribLocation(program, 2, 'vTexCoord');
     gl.vertexAttribPointer(vTexCoord, 2, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(vTexCoord);
 }
@@ -121,7 +121,10 @@ function renderRoom(deltaTime) {
     if (enteredShrine)
         timerCheck(deltaTime);
 
-    setLighting();
+    if (curRoomIndex == ROOMS.SHRINE)
+        setLighting(false);
+    else
+        setLighting(true);
 
     // Draw walls
     verts = getRoomVertices(room, room.wallTexture.scale);
@@ -170,6 +173,7 @@ function renderRoom(deltaTime) {
         renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.DRAW_LIGHT);
     }
 
+    gl.uniform1i(gl.getUniformLocation(program, "isLit"), false);
     // Draw museum goer, only in exhibit rooms
     if (curRoomIndex != ROOMS.LOBBY && curRoomIndex != ROOMS.HALLWAY && 
     curRoomIndex != ROOMS.SHRINE && curRoomIndex != ROOMS.STAIRCASE) {
@@ -356,7 +360,7 @@ function applyTransforms(translation, rotation, scaleFactor) {
         gl.uniformMatrix4fv(matrixLocation, false, flatify(matrix));
 }
 
-function setLighting() {
+function setLighting(useLighting) {
     var room = rooms[curRoomIndex];
     var walls = room.walls;
     var leftBorder = walls[0][0];
@@ -369,6 +373,7 @@ function setLighting() {
     ambientProduct = room.lighting.ambient;
     lightColor = room.lighting.lightColor;
 
+    gl.uniform1i(gl.getUniformLocation(program, "isLit"), useLighting);
     gl.uniform4fv(gl.getUniformLocation(program, "vAmbientProduct"), flatten(ambientProduct));
     gl.uniform4fv(gl.getUniformLocation(program, "vLightColor"), flatten(lightColor));
     gl.uniform3fv(gl.getUniformLocation(program, "lightPosition"), flatten(lightPosition));

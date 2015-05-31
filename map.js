@@ -330,7 +330,6 @@ function getLightVertices(room, numLights) {
             if (i % 2 == 1)
                 lightX = (midLeftWall + midRightWall)/2 + pathWidth - lightWidth/2;
         }
-
         // just a box for now
         verts.push(vec3(lightX, lightHeight2, lightZ));
         verts.push(vec3(lightX, lightHeight2, lightZ + lightWidth));
@@ -367,7 +366,7 @@ function getLightVertices(room, numLights) {
         verts.push(vec3(lightX + lightWidth, lightHeight1, lightZ));
         verts.push(vec3(lightX + lightWidth, lightHeight1, lightZ + lightWidth));
         
-        for (var i = 0; i < 30  ; i++) {
+        for (var j = 0; j < 30; j++) {
             norms.push(vec3(1.0, 1.0, 1.0));
             texVerts.push(vec2(1.0, 1.0));
         }
@@ -619,7 +618,7 @@ function getPersonVertices(type) {
         texVerts.push(vec2(0,0));
         verts.push(vec3(headX + headWidth, torsoHeight, headZ + headWidth));
         texVerts.push(vec2(1,0));
-        
+
         for (var i = 0; i < 30; i++)
             norms.push(vec3(1.0, 1.0, 1.0));
     }

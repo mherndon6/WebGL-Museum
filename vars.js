@@ -134,7 +134,6 @@ var norm4 = vec3(-1, 0, 0);
 var norm4small = vec3(-0.5, 0, 0);
 var norm4big = vec3(-1.5, 0, 0);
 
-
 var COLORS = {
 	WHITE: [1.0, 1.0, 1.0, 1.0],
 	LIGHT_GREY: [0.8, 0.8, 0.8, 0.8],

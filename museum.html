@@ -37,13 +37,18 @@
 
 			precision mediump float;
 
+                  uniform bool isLit;
 			uniform sampler2D texture;
+                  uniform vec4 vColor;
 
 			varying vec4 vLightWeighting;
 			varying vec2 fTexCoord;
 
 			void main() {
-				gl_FragColor = vLightWeighting * texture2D(texture, fTexCoord);
+                        if (isLit)
+      				gl_FragColor = vLightWeighting * texture2D(texture, fTexCoord);
+                        else
+                              gl_FragColor = texture2D(texture, fTexCoord);
 			}
 
 		</script>
