@@ -1,13 +1,10 @@
 // Main
-window.onload = function()
-{
+function bodyLoaded() {
     setupCanvas();
     configureWebgl();
     setupShaders();
     restart();
-}
 
-function bodyLoaded() {
     requestAnimationFrame(render);
 }
 
@@ -18,7 +15,13 @@ function setupCanvas() {
     // Multi-browser support for pointer locking
     canvas.requestPointerLock = canvas.requestPointerLock ||
                                 canvas.mozRequestPointerLock ||
-                                canvas.webkitRequestPointerLock;
+                                canvas.webkitRequestPointerLock ||
+                                canvas.msRequestPointerLock;
+
+    canvas.requestFullscreen = canvas.requestFullscreen ||
+                               canvas.mozRequestFullScreen ||
+                               canvas.webkitRequestFullscreen ||
+                               canvas.msRequestFullscreen;
 
     aspect = canvas.width / canvas.height;
     gl = WebGLUtils.setupWebGL(canvas);
@@ -548,52 +551,57 @@ function toggleFloor() {
 
 }
 
+function playSpotlight() {
+    spotlightSound.load();
+    spotlightSound.play();
+}
+
 function timerCheck(deltaTime) {
     timer += deltaTime;
     if (timer > 2 && !timerCheck1) {
         timerCheck1 = true;
         numLights = 2;
-        spotlightSound.play();
+        playSpotlight();
     }
     if (timer > 3 && !timerCheck2) {
         timerCheck2 = true;
         numLights = 4;
-        spotlightSound.play();
+        playSpotlight();
     }
     if (timer > 4 && !timerCheck3) {
         timerCheck3 = true;
         numLights = 6;
-        spotlightSound.play();
+        playSpotlight();
     }
     if (timer > 5 && !timerCheck4) {
         timerCheck4 = true;
         numLights = 8;
-        spotlightSound.play();
+        playSpotlight();
     }
     if (timer > 6 && !timerCheck5) {
         timerCheck5 = true;
         numLights = 10;
-        spotlightSound.play();
+        playSpotlight();
     }
     if (timer > 7 && !timerCheck6) {
         timerCheck6 = true;
         numLights = 12;
-        spotlightSound.play();
+        playSpotlight();
     }
     if (timer > 8 && !timerCheck7) {
         timerCheck7 = true;
         numLights = 14;
-        spotlightSound.play();
+        playSpotlight();
     }
     if (timer > 9 && !timerCheck8) {
         timerCheck8 = true;
         numLights = 16;
-        spotlightSound.play();
+        playSpotlight();
     }
     if (timer > 10 && !timerCheck9) {
         timerCheck9 = true;
         shrine.paintings.push(shrinePainting);
-        spotlightSound.play();
+        playSpotlight();
     }
 
     if (timer > 47.8 && !timerCheck10)
@@ -863,16 +871,8 @@ function toggleFullscreen() {
     else {
         canvas.requestPointerLock();
         document.addEventListener("mousemove", this.moveCallback, false);
+        canvas.requestFullscreen();
         
-        if(canvas.requestFullscreen)
-            canvas.requestFullscreen();
-        else if(canvas.mozRequestFullScreen)
-            canvas.mozRequestFullScreen();
-        else if(canvas.webkitRequestFullscreen)
-            canvas.webkitRequestFullscreen();
-        else if(canvas.msRequestFullscreen)
-            canvas.msRequestFullscreen();
-
         fullScreenEnabled = true;
         canvas.width = screen.width;
         canvas.height = screen.height;
