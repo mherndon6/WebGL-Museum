@@ -718,7 +718,7 @@ function keyPressed(e) {
             aHeld = true;
             break;
         case 67: //c
-            printCamCoords();
+            renderCeiling = !renderCeiling;
             break;
         case 68: //d
             dHeld = true;
@@ -727,6 +727,7 @@ function keyPressed(e) {
             toggleFullscreen();
             break;
         case 72: //h
+            printCamCoords();
             break;
         case 73: //i
             iHeld = true;
