@@ -32,6 +32,7 @@ var doorHeight = 7 * globalScale;
 var doorDepth = 0.5;
 var visibleDoorDepth = 0.1;
 var doorSound = new Audio("res/door.wav");
+var dingSound = new Audio("res/ding.mp3");
 var prevSong = null;
 
 var torsoWidth = 3;

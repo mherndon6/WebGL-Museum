@@ -533,6 +533,8 @@ function toggleFloor() {
     if (curRoomIndex != ROOMS.STAIRCASE) {
         return;
     }
+    
+    dingSound.play();
 
     if (hallway.doors[0][2] == ROOMS.LOBBY) { // floor 1 -> floor 2
         staircase.paintings[0][2] = floor2;
