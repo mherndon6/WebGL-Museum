@@ -1,10 +1,9 @@
-UCLA - CS 174A Spring 2015 Final Project
+    UCLA - CS 174A Spring 2015 Final Project
 
 Contributors:
     Bartholomew Elliott
     Mitchell Herndon
     Austin Pineda
-
 
 After cloning the repo, make sure to run chrome with option
 --allow-file-access-from-files or use firefox (lags a bit worse).
@@ -18,7 +17,7 @@ For our term project, we created a museum in WebGL. The museum incorporates all 
 Our advanced topic, collision detection, is implemented in two ways. First, we detect collisions between the player and the walls of the museum. If the wall happens to be a door, it can be entered. If there is no door there, the player moves against the wall according to their azimuth. Second, we detect collisions between the player and the museum goer. This fellow walks randomly between the paintings in each exhibit and contemplates them for a few seconds each. He rudely shoves the player out of his way to get to his destination.
 
 Enjoy! A map of the museum can be found below.
-
+```
     __Stairs_
     |       |2/4
 3/6 | Hall  |
@@ -57,3 +56,4 @@ Room 6 Dark:
         Snow Storm - J.M.W. Turner
         The Scream - Edvard Munch
         The Last Day of Pompeii - Karl Briullov
+```
