@@ -233,8 +233,7 @@ function getScottPosition(deltaTime) {
     var contemplationTime = Math.random()*6 + 4;
     if (scottTimer > contemplationTime) {
         pickRandomPainting();
-        var idleSound = Math.floor(Math.random()*3);
-        idleSounds[idleSound].play();
+        playHmm();
         if (prevPaintingNum != paintingNum) // need to move to next painting
             scottTimer = -100;
         else
@@ -531,6 +530,7 @@ function cycleRooms() {
 
 function toggleFloor() {
     if (curRoomIndex != ROOMS.STAIRCASE) {
+        playHmm();
         return;
     }
     
@@ -556,6 +556,12 @@ function toggleFloor() {
 function playSpotlight() {
     spotlightSound.load();
     spotlightSound.play();
+}
+
+function playHmm() {
+    var idleSound = Math.floor(Math.random()*3);
+    idleSounds[idleSound].load();
+    idleSounds[idleSound].play();
 }
 
 function timerCheck(deltaTime) {
