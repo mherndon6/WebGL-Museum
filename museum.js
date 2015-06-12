@@ -84,6 +84,10 @@ function render(now) {
     var deltaTime = now - then;
     then = now;
 
+    frameCount++;
+    if (frameCount % 30 == 0)
+        console.log("FPS: " + frameCount/now);
+
     renderRoom(deltaTime);
     updateMovement(deltaTime);
 
@@ -130,10 +134,11 @@ function renderRoom(deltaTime) {
         setLighting(true);
 
     // Draw walls
-    verts = getRoomVertices(room, room.wallTexture.scale);
-    vertices = verts[0];
-    normals = verts[1];
-    texVertices = verts[2];
+    if (!room.hasRendered)
+        room.verts["walls"] = getRoomVertices(room, room.wallTexture.scale);
+    vertices = room.verts["walls"][0];
+    normals = room.verts["walls"][1];
+    texVertices = room.verts["walls"][2];
     if (room.wallTexture.src == SETTINGS.NO_TEXTURE)
         renderCurrentVertices(SETTINGS.NO_TEXTURE, SETTINGS.DRAW_LIGHT);
     else {
@@ -142,25 +147,28 @@ function renderRoom(deltaTime) {
     }
 
     // Draw doors
-    verts = getWallObjectVertices(room.doors, room, WALL_OBJECT.DOORS);
-    vertices = verts[0];
-    normals = verts[1];
-    texVertices = verts[2];
+    if (!room.hasRendered)
+        room.verts["doors"] = getWallObjectVertices(room.doors, room, WALL_OBJECT.DOORS);
+    vertices = room.verts["doors"][0];
+    normals = room.verts["doors"][1];
+    texVertices = room.verts["doors"][2];
     configureTexture(door);
     renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.DRAW_LIGHT);
 
     // Draw floor & ceiling
-    verts = getFloorVertices(room, groundHeight, room.floorTexture.scale);
-    vertices = verts[0];
-    normals = verts[1];
-    texVertices = verts[2];
+    if (!room.hasRendered)
+        room.verts["floor"] = getFloorVertices(room, groundHeight, room.floorTexture.scale);
+    vertices = room.verts["floor"][0];
+    normals = room.verts["floor"][1];
+    texVertices = room.verts["floor"][2];
     configureTexture(room.floorTexture);
     renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.DRAW_LIGHT);
+    if (!room.hasRendered)
+        room.verts["ceiling"] = getFloorVertices(room, wallHeight, room.ceilingTexture.scale);
     if (renderCeiling) {
-        verts = getFloorVertices(room, wallHeight, room.ceilingTexture.scale);
-        vertices = verts[0];
-        normals = verts[1]
-        texVertices = verts[2];
+        vertices = room.verts["ceiling"][0];
+        normals = room.verts["ceiling"][1]
+        texVertices = room.verts["ceiling"][2];
         configureTexture(room.ceilingTexture);
         renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.DRAW_LIGHT);
     }
@@ -207,7 +215,9 @@ function renderRoom(deltaTime) {
     texVertices = verts[2];
     configureTexture(lightFixture);
     renderCurrentVertices(SETTINGS.DRAW_TEXTURE, SETTINGS.DRAW_LIGHT);
-    
+
+    if (!room.hasRendered)
+        room.hasRendered = true;
 }
 
 function renderCurrentVertices(drawTexture, drawLight) {

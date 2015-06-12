@@ -28,7 +28,10 @@ var lobby = {
     lighting: testLight,
 
     paintings: [[(midRightWall + midLeftWall)/2 - 8, midBottomWall, welcome],
-                [(midRightWall + midLeftWall)/2 + 8, midBottomWall, instructions]]
+                [(midRightWall + midLeftWall)/2 + 8, midBottomWall, instructions]],
+
+    hasRendered: false,
+    verts: {}
 };
 
 var hallway = {
@@ -52,7 +55,10 @@ var hallway = {
     lighting: testLight,
 
     song: new Audio("res/hallway.mp3"),
-    paintings: [[(midLeftWall + midRightWall)/2 + doorWidth/2, topWall, elevatorSign]]
+    paintings: [[(midLeftWall + midRightWall)/2 + doorWidth/2, topWall, elevatorSign]],
+
+    hasRendered: false,
+    verts: {}
 };
 
 var room1 = {
@@ -74,7 +80,10 @@ var room1 = {
     song: new Audio("res/room1.mp3"),
     paintings: [[(rightWall + midRightWall)/2, midTopWall, horatii],
                 [(midBottomWall + midTopWall)/2, rightWall, napoleon],
-                [(rightWall + midRightWall)/2, midBottomWall, wolfe]]
+                [(rightWall + midRightWall)/2, midBottomWall, wolfe]],
+
+    hasRendered: false,
+    verts: {}
 };
 
 var room2 = {
@@ -96,7 +105,10 @@ var room2 = {
     song: new Audio("res/room2.mp3"),
     paintings: [[(rightWall + midRightWall)/2, topWall, ulysses],
                 [(topWall + midTopWall)/2, rightWall, moonlitLandscape],
-                [(rightWall + midRightWall)/2, midTopWall, xp]]
+                [(rightWall + midRightWall)/2, midTopWall, xp]],
+
+    hasRendered: false,
+    verts: {}
 };
 
 var room3 = {
@@ -120,7 +132,10 @@ var room3 = {
                 [(midBottomWall + midTopWall)/2, leftWall, pearlEarring],
                 [midTopWall, leftWall, ecceHomo],
                 [(midTopWall + topWall)/2, leftWall, monaLisa],
-                [(leftWall + midLeftWall)/2, topWall, starryNight]]
+                [(leftWall + midLeftWall)/2, topWall, starryNight]],
+
+    hasRendered: false,
+    verts: {}
 };
 
 var room4 = {
@@ -139,7 +154,10 @@ var room4 = {
     song: new Audio("res/room4.mp3"),
     paintings: [[(rightWall + midRightWall)/2, midTopWall, sunset],
                 [(midBottomWall + midTopWall)/2, rightWall, hetSteen],
-                [(rightWall + midRightWall)/2, midBottomWall, sleighRide]]
+                [(rightWall + midRightWall)/2, midBottomWall, sleighRide]],
+
+    hasRendered: false,
+    verts: {}
 };
 
 var room5 = {
@@ -158,7 +176,10 @@ var room5 = {
     song: new Audio("res/room5.mp3"),
     paintings: [[(rightWall + midRightWall)/2, topWall, nocturne],
                 [(topWall + midTopWall)/2, rightWall, phaeton],
-                [(rightWall + midRightWall)/2, midTopWall, impressionSunrise]]
+                [(rightWall + midRightWall)/2, midTopWall, impressionSunrise]],
+
+    hasRendered: false,
+    verts: {}
 };
 
 var room6 = {
@@ -178,7 +199,10 @@ var room6 = {
     paintings: [[(leftWall + midLeftWall)/2, midBottomWall, weepingWoman],
                 [(midBottomWall + midTopWall)/2, leftWall, snowStorm],
                 [(midTopWall + topWall)/2, leftWall, scream],
-                [(leftWall + midLeftWall)/2, topWall, pompeii]]
+                [(leftWall + midLeftWall)/2, topWall, pompeii]],
+
+    hasRendered: false,
+    verts: {}
 };
 
 var staircase = {
@@ -199,7 +223,10 @@ var staircase = {
 
     song: new Audio("res/elevator.mp3"),
     paintings: [[(midLeftWall + midRightWall)/2, topStairWall, floor1],
-                [(midLeftWall + midRightWall)/2, topStairWall, elevatorSign]]
+                [(midLeftWall + midRightWall)/2, topStairWall, elevatorSign]],
+
+    hasRendered: false,
+    verts: {}
 };
 
 var shrine = {
@@ -220,7 +247,10 @@ var shrine = {
     lighting: testLight,
 
     song: new Audio("res/shrine.mp3"),
-    paintings: []
+    paintings: [],
+
+    hasRendered: false,
+    verts: {}
 };
 var shrinePainting = [(midLeftWall + midRightWall)/2, shrineBottomWall, scott];
 

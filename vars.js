@@ -9,6 +9,9 @@ INCHES_SCALE = 0.15;
 // ---------------- GLOBALS ---------------- //
 var gl;
 
+var frameCount = 0;
+var secondCount = 0;
+
 var fullScreenEnabled = false;
 
 var vertices = [];
