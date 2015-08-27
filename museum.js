@@ -85,8 +85,8 @@ function render(now) {
     then = now;
 
     frameCount++;
-    if (frameCount % 30 == 0)
-        console.log("FPS: " + frameCount/now);
+    //if (frameCount % 30 == 0)
+        //console.log("FPS: " + frameCount/now);
 
     renderRoom(deltaTime);
     updateMovement(deltaTime);
@@ -537,14 +537,37 @@ function cycleRooms() {
     wallHeight = curRoom.wallHeight * globalScale;
     lightHeight = wallHeight - 1;
 }
+function cycleIdol() {
+    if (curRoomIndex == ROOMS.HALLWAY && !bottomFloor) {
+        switch(idolSign.src) {
+            case 'idols1.png':
+                idolSign.src = 'idols2.png';
+                idol.src = 'cage.png';
+                break;
+            case 'idols2.png':
+                idolSign.src = 'idols3.png';
+                idol.src = 'friedman.png';
+                break;
+            case 'idols3.png':
+                idolSign.src = 'idols4.png';
+                idol.src = 'blogum.png';
+                break;
+            case 'idols4.png':
+                idolSign.src = 'idols1.png';
+                idol.src = 'stallman.png';
+                break;
+        }
+    }
+}
 
 function toggleFloor() {
     if (curRoomIndex != ROOMS.STAIRCASE) {
         playHmm();
         return;
     }
-    
     dingSound.play();
+    
+    bottomFloor = !bottomFloor;
 
     if (hallway.doors[0][2] == ROOMS.LOBBY) { // floor 1 -> floor 2
         staircase.paintings[0][2] = floor2;
@@ -552,6 +575,8 @@ function toggleFloor() {
         hallway.doors[1][2] = ROOMS.ROOM6;
         hallway.doors[2][2] = ROOMS.ROOM4;
         hallway.doors[3][2] = ROOMS.ROOM5;
+        hallway.paintings[1][2] = shrineSign;
+        hallway.paintings.push([(midLeftWall + midRightWall)/2 - 1.5*doorWidth, midBottomWall, idolSign]);
     }
     else { // floor 2 -> floor 1
         staircase.paintings[0][2] = floor1;
@@ -559,6 +584,8 @@ function toggleFloor() {
         hallway.doors[1][2] = ROOMS.ROOM3;
         hallway.doors[2][2] = ROOMS.ROOM1;
         hallway.doors[3][2] = ROOMS.ROOM2;
+        hallway.paintings[1][2] = lobbySign;
+        hallway.paintings.pop();
     }
 
 }
@@ -622,8 +649,10 @@ function timerCheck(deltaTime) {
         playSpotlight();
     }
 
-    if (timer > 47.8 && !timerCheck10)
+    if (timer > 47.8 && !timerCheck10) {
+        toggleFloor();
         restart();
+    }
     if (pitch < 0)
         pitch += 1*deltaTime;
     if (timer > 2) {
@@ -698,9 +727,9 @@ function updateMovement(delta) {
     if (leftHeld)
         azim += 2;
     if (shiftHeld)
-        camY -= .25;
+        camY -= 0;//.25;
     if (spaceHeld)
-        camY += .25;
+        camY += 0;//.25;
 }
 
 document.onkeydown = keyPressed;
@@ -736,10 +765,13 @@ function keyPressed(e) {
             aHeld = true;
             break;
         case 67: //c
-            renderCeiling = !renderCeiling;
+            //renderCeiling = !renderCeiling;
             break;
         case 68: //d
             dHeld = true;
+            break;
+        case 69:
+            cycleIdol();
             break;
         case 70: //f
             toggleFullscreen();

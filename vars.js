@@ -25,6 +25,8 @@ var itemSize = 3;
 var globalScale = 1.5;
 var textureScale = .05;
 
+var bottomFloor = true;
+
 var groundHeight = 0;
 var wallHeight = 10 * globalScale;
 var lightHeight = wallHeight - 1;

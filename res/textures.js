@@ -261,12 +261,33 @@ var pompeii = {
 };
 
 // hallway
+var lobbySign = {
+    src: "lobby.png",
+    width: 40,
+    height: 14,
+    hangingHeight: doorHeight + 1
+};
+
 var elevatorSign = {
-	src: "elevator.png",
-	width: 40,
-	height: 14,
-	hangingHeight: doorHeight + 1
-}
+    src: "elevator.png",
+    width: 40,
+    height: 14,
+    hangingHeight: doorHeight + 1
+};
+
+var shrineSign = {
+    src: "shrine.png",
+    width: 40,
+    height: 14,
+    hangingHeight: doorHeight + 1
+};
+
+var idolSign = {
+    src: "idols1.png",
+    width: 50,
+    height: 50,
+    hangingHeight: 4
+};
 
 // stairs
 var floor1 = {
@@ -274,18 +295,18 @@ var floor1 = {
     width: 40,
     height: 14,
     hangingHeight: 8
-}
+};
 
 var floor2 = {
     src: "floor2.png",
     width: 40,
     height: 14,
     hangingHeight: 8
-}
+};
 
 // shrine
-var scott = {
-    src: "scott.png",
+var idol = {
+    src: "stallman.png",
     width: 1000,
     height: 1000,
     hangingHeight: 50,

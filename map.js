@@ -55,7 +55,8 @@ var hallway = {
     lighting: testLight,
 
     song: new Audio("res/hallway.mp3"),
-    paintings: [[(midLeftWall + midRightWall)/2 + doorWidth/2, topWall, elevatorSign]],
+    paintings: [[(midLeftWall + midRightWall)/2 + doorWidth/2, topWall, elevatorSign],
+                [(midLeftWall + midRightWall)/2, midBottomWall, lobbySign]],
 
     hasRendered: false,
     verts: {}
@@ -252,7 +253,7 @@ var shrine = {
     hasRendered: false,
     verts: {}
 };
-var shrinePainting = [(midLeftWall + midRightWall)/2, shrineBottomWall, scott];
+var shrinePainting = [(midLeftWall + midRightWall)/2, shrineBottomWall, idol];
 
 var rooms = [lobby, hallway, room1, room2, room3, staircase, 
              room4, room5, room6, shrine];
